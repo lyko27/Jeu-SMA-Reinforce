@@ -15,19 +15,18 @@
 #define LARGEUR 200
 #define HAUTEUR 200
 
-/* ENtrées : le tableau de chèvre
+/* ENtrées : le tableau de chèvre, nombre de chèvre
     Sotie : aucune
     Synopsis : libère toute les goats du tableau*/
-void free_goat(Goat **goat)
+void free_goat(Goat **goat, int nombre)
 {
     if (goat != NULL)
     {
         int i = 0;
         Goat *current_goat = goat[i];
-        while (current_goat != NULL)
+        for(int i = 0; i<nombre; i++)
         {
             free(current_goat);
-            i++;
             current_goat = goat[i];
         }
     }
@@ -199,7 +198,7 @@ int main(int argc, char **argv)
         SDL_Delay(200);
     }
     quitter_affichage();
-    free_goat(monde_courrant->goats_tab);
+    free_goat(monde_courrant->goats_tab, monde_courrant->nb_goat);
     free(monde_courrant->goats_tab);
     free(monde_courrant->fermiers);
     free(monde_courrant);

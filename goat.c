@@ -43,9 +43,9 @@ Goat *init_goat(Goat *g)
  * Sortie   : Pointeur vers la chèvre mise à jour.
  */
 Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
-    
+
     // On génère un angle entre 0 et 2Pi
-    float angle = (rand()/RAND_MAX) * 2.0 * 3.14;
+    float angle = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
 
     float dx = cos(angle) * g->speed;
     float dy = sin(angle) * g->speed;

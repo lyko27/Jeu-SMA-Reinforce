@@ -83,7 +83,7 @@ monde * generer_un_monde(monde * monde_courant)
         {
             une_goat->frame = 0;
             une_goat->direction_sprite = 2;
-            une_goat = init_goats(une_goat);
+            une_goat = init_goat(une_goat);
             monde_courant = ajouter_goat(monde_courant, une_goat);
         }
         else
@@ -131,11 +131,11 @@ monde * mis_à_jour_monde(monde * monde_courant)
     for(int i = 0 ; i < monde_courant->nb_goat ; i++)
     {
         Goat * current_goat = monde_courant->goats_tab[i];
-        current_goat = update_goats(current_goat, monde_courant->goats_tab, monde_courant->nb_goat);
+        current_goat = update_goat(current_goat, monde_courant->goats_tab, monde_courant->nb_goat);
         current_goat->x = current_goat->dir_x;
         current_goat->y = current_goat->dir_y;
     }
-    monde_courant->fermiers = update_farmer(monde_courant->fermiers, monde_courant->fermiers->x, monde_courant->fermiers->y);
+    monde_courant->fermiers = update_fermier(monde_courant->fermiers, monde_courant->fermiers->x, monde_courant->fermiers->y);
     return monde_courant;
 }
 
@@ -167,7 +167,7 @@ int main(int argc, char **argv)
                     en_pause = !en_pause;
                 }
                 // déplacement du fermier au cas où l'utilsateur avait appuyé sur une des flèche
-                monde_courrant->fermiers = update_farmer(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
+                monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
 
                 afficher_monde(monde_courrant);
 

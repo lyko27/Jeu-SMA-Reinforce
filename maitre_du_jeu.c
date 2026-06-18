@@ -9,10 +9,10 @@
 #define LARGEUR 200
 #define HAUTEUR 200
 
-/* ENtrées : le monde actuel dans sa structure
-    Sotie : Le monde mis a jour avec la nouvelle entitée en plus
-    Synopsis : prend une entitée et l'ajoute au monde*/
-monde * ajouter_entitee(monde * monde_courant, Goat * goat, Fermier * fermier)
+/* ENtrées : le monde actuel dans sa structure et une chèvre
+    Sotie : Le monde mis a jour avec la nouvelle chèvre en plus
+    Synopsis : prend une chèvre et l'ajoute au monde*/
+monde * ajouter_goat(monde * monde_courant, Goat * goat)
 {
     if(monde_courant->nb_goat+1 > monde_courant->capacite_max_goat)
     {
@@ -63,7 +63,7 @@ monde * generer_un_monde(monde * monde_courant)
         le_fermier->frame = 0;
         le_fermier->direction_sprite = 2;
         le_fermier = init_farmer(le_fermier);
-        monde_courant = ajouter_entitee(monde_courant, NULL, le_fermier);
+        monde_courant->fermiers = le_fermier;
     }
     else
     {
@@ -78,7 +78,7 @@ monde * generer_un_monde(monde * monde_courant)
             une_goat->frame = 0;
             une_goat->direction_sprite = 2;
             une_goat = init_goat(une_goat);
-            monde_courant = ajouter_entitee(monde_courant, une_goat, NULL);
+            monde_courant = ajouter_goat(monde_courant, une_goat, NULL);
         }
         else
         {
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
     monde * monde_courrant = creer_monde(LARGEUR, HAUTEUR);
     monde_courrant = generer_un_monde(monde_courrant);
     int quiiter_le_programme = 0; // variable de gestion de la boucle
-    int en_pause = 1;
+    int en_pause = 0;
     while (quiiter_le_programme == 0)
     {
         if (!en_pause)
@@ -163,6 +163,6 @@ int main(int argc, char **argv)
                 SDL_Delay(100);
             }
         }
-    return 0;
     }
+    return 0;
 }

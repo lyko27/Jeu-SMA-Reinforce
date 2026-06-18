@@ -1,7 +1,7 @@
 
 #include "utilisateur.h"
 
-interaction_utilisateur * recupere_mouvement(interaction_utilisateur *resultat)
+interaction_utilisateur * recuperer_mouvement(interaction_utilisateur *resultat)
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))

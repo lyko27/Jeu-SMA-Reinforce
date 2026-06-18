@@ -24,11 +24,11 @@ int init_affichage() {
     window = SDL_CreateWindow("Jeu de la Ferme", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     
-    texture_fond = IMG_LoadTexture(renderer, "./img/map.png");
-    texture_chevre = IMG_LoadTexture(renderer, "./img/goat.png");
-    texture_chevreau = IMG_LoadTexture(renderer, "./img/baby_goat.png");
-    texture_fermier = IMG_LoadTexture(renderer, "./img/fermier_marche.png");
-    texture_fermier = IMG_LoadTexture(renderer, "./img/loup.png");
+    texture_fond = IMG_LoadTexture(renderer, "./images/map.png");
+    texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");
+    texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
+    texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
+    texture_loup = IMG_LoadTexture(renderer, "./images/loup.png");
 
     if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier) {
         printf("Erreur chargement image : %s\n", IMG_GetError());

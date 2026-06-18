@@ -52,10 +52,41 @@ monde * creer_monde(int largeur, int hauteur)
     }
 }
 
+/* Entrée : le monde actuel, normalement complètement vide
+    Sortie : le monde avec le fermier et 10 chèvre qui apparaisse aléatoirement
+    Synopsis : remplie le monde de 10 chèvre à des endroits aléatoire et le fermier devant sa maison */
 monde * generer_un_monde(monde * monde_courant)
 {
-
-
+    Fermier * le_fermier = malloc(sizeof(Fermier));
+    if(le_fermier)
+    {
+        le_fermier->frame = 0;
+        le_fermier->direction_sprite = 2;
+        le_fermier = init_fermier(le_fermier);
+        monde_courant = ajouter_entitee(monde_courant, NULL, le_fermier);
+    }
+    else
+    {
+        free(le_fermier);
+        return NULL;
+    }
+    for (int i = 0 ; i<10 ; i++)
+    {
+        Goat * une_goat = malloc(sizeof(Goat));
+        if(une_goat)
+        {
+            une_goat->frame = 0;
+            une_goat->direction_sprite = 2;
+            une_goat = init_goat(une_goat);
+            monde_courant = ajouter_entitee(monde_courant, une_goat, NULL);
+        }
+        else
+        {
+            free(une_goat);
+            return NULL;
+        }
+    }
+    return monde_courant;
 }
 
 int main(int argc, char **argv)
@@ -64,7 +95,7 @@ int main(int argc, char **argv)
     (void)argv;
     // création et initialisation du monde
     monde * monde_courrant = creer_monde(LARGEUR, HAUTEUR);
-
+    monde_courrant = generer_un_monde(monde_courrant);
     int quiiter_le_programme = 0; // variable de gestion de la boucle
     int en_pause = 1;
     while (quiiter_le_programme == 0)

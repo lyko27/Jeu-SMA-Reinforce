@@ -12,15 +12,15 @@
 /* ENtrées : le monde actuel dans sa structure
     Sotie : Le monde mis a jour avec la nouvelle entitée en plus
     Synopsis : prend une entitée et l'ajoute au monde*/
-monde * ajouter_entitee(monde * monde_courant, entitee_t entitee)
+monde * ajouter_entitee(monde * monde_courant, Goat * goat, Fermier * fermier)
 {
-    if(monde_courant->nb_entites+1 > monde_courant->capacite_max)
+    if(monde_courant->nb_goat+1 > monde_courant->capacite_max_goat)
     {
-        realloc(monde_courant->entites, monde_courant->capacite_max * 2 * sizeof(entitee_t));
-        monde_courant->capacite_max *= 2;
+        realloc(monde_courant->goats_tab, monde_courant->capacite_max_goat * 2 * sizeof(Goat));
+        monde_courant->capacite_max_goat *= 2;
     }
-    monde_courant->entites[monde_courant->nb_entites] = entitee;
-    monde_courant->nb_entites++;
+    monde_courant->goats_tab[monde_courant->nb_goat] = goat;
+    monde_courant->nb_goat++;
     return monde_courant;
 }
 
@@ -34,15 +34,15 @@ monde * creer_monde(int largeur, int hauteur)
     {
         monde_courant->largeur = largeur;
         monde_courant->hauteur = hauteur;
-        monde_courant->capacite_max = 100;
-        monde_courant->nb_entites = 0;
-        monde_courant->entites = malloc(monde_courant->capacite_max * sizeof(entitee_t));
-        if(monde_courant->entites) return monde_courant;
+        monde_courant->capacite_max_goat = 100;
+        monde_courant->nb_goat = 0;
+        monde_courant->goats_tab = malloc(monde_courant->capacite_max_goat * sizeof(Goat));
+        if(monde_courant->goats_tab) return monde_courant;
         else
         {
-            free(monde_courant->entites);
+            free(monde_courant->goats_tab);
             free(monde_courant);
-            return NULL
+            return NULL;
         }
     }
     else 
@@ -54,9 +54,7 @@ monde * creer_monde(int largeur, int hauteur)
 
 monde * generer_un_monde(monde * monde_courant)
 {
-    entitee_t * fermier = malloc(sizeof(fermier_t));
-    fermier->en_vie = 1;
-    fermier->type = FERMIER;
+
 
 }
 
@@ -79,8 +77,8 @@ int main(int argc, char **argv)
             interaction_utilisateur * utilisateur = malloc(sizeof(interaction_utilisateur));
             if (utilisateur)
             {
-                utilisateur->deplacement_x = 0;
-                utilisateur->deplacement_y = 0;
+                utilisateur->x_deplacement = 0;
+                utilisateur->y_deplacement = 0;
                 utilisateur = recuperer_mouvement(utilisateur);
                 quiiter_le_programme = utilisateur->quitter; // si quitter = 1 le programme prendra fin à a la fin de la boucle
 
@@ -88,7 +86,7 @@ int main(int argc, char **argv)
                 {
                     en_pause = !en_pause;
                 }
-                dessiner_monde(monde_courrant, offset_x, offset_y, zoom);
+                //dessiner_monde(monde_courrant, offset_x, offset_y, zoom);
                 free(utilisateur);
                 SDL_Delay(100);
             }

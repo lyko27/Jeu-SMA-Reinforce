@@ -7,7 +7,7 @@ SDL_Texture *texture_fond = NULL;
 SDL_Texture *texture_chevre = NULL;
 SDL_Texture *texture_chevreau = NULL;
 SDL_Texture *texture_fermier = NULL;
-
+SDL_Texture *texture_loup = NULL;
 
 int init_affichage() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -27,8 +27,9 @@ int init_affichage() {
     texture_fond = IMG_LoadTexture(renderer, "./img/map.png");
     texture_chevre = IMG_LoadTexture(renderer, "./img/goat.png");
     texture_chevreau = IMG_LoadTexture(renderer, "./img/baby_goat.png");
-    texture_fermier = IMG_LoadTexture(renderer, "./img/fermier.png");
-    
+    texture_fermier = IMG_LoadTexture(renderer, "./img/fermier_marche.png");
+    texture_fermier = IMG_LoadTexture(renderer, "./img/loup.png");
+
     if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier) {
         printf("Erreur chargement image : %s\n", IMG_GetError());
         return 0;

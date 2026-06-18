@@ -15,6 +15,21 @@
 #define LARGEUR 200
 #define HAUTEUR 200
 
+void free_goat(Goat ** goat)
+{
+    if(goat != NULL)
+    {
+        int i = 0;
+        Goat * current_goat = goat[i];
+        while(current_goat != NULL)
+        {
+            free(current_goat);
+            i++;
+            current_goat = goat[i];
+        }
+    }
+}
+
 /* ENtrées : le monde actuel dans sa structure et une chèvre
     Sotie : Le monde mis a jour avec la nouvelle chèvre en plus
     Synopsis : prend une chèvre et l'ajoute au monde*/
@@ -76,7 +91,7 @@ monde * generer_un_monde(monde * monde_courant)
         free(le_fermier);
         return NULL;
     }
-    for (int i = 0 ; i<10 ; i++)
+    for (int i = 0 ; i<1 ; i++)
     {
         Goat * une_goat = malloc(sizeof(Goat));
         if(une_goat)
@@ -159,6 +174,8 @@ int main(int argc, char **argv)
             {
                 utilisateur->x_deplacement = 0;
                 utilisateur->y_deplacement = 0;
+                utilisateur->pause = 0;
+                utilisateur->quitter = 0;
                 utilisateur = recuperer_mouvement(utilisateur);
                 quiiter_le_programme = utilisateur->quitter; // si quitter = 1 le programme prendra fin à a la fin de la boucle
 
@@ -172,9 +189,13 @@ int main(int argc, char **argv)
                 afficher_monde(monde_courrant);
 
                 free(utilisateur);
-                SDL_Delay(100);
+                SDL_Delay(200);
             }
         }
     }
+    quitter_affichage();
+    free_goat(monde_courrant->goats_tab);
+    free(monde_courrant->goats_tab);
+    free(monde_courrant);
     return 0;
 }

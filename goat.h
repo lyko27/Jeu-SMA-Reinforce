@@ -2,7 +2,7 @@
 #define goat_h
 
 #define WIDTH_GOAT 50
-#define HEIGHT 30
+#define HEIGHT_GOAT 30
 #define TAILLE_MAP 1024
 
 typedef struct {

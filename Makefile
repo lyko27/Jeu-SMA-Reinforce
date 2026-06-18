@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra $(shell sdl2-config --cflags | sed 's/include\/SDL2/include/g') $(shell sdl2-config --cflags) -O3 -fsanitize=address,undefined
-LDFLAGS = $(shell sdl2-config --libs) -lSDL2_image -lm -g 
+CFLAGS = -Wall -Wextra $(shell sdl2-config --cflags | sed 's/include\/SDL2/include/g') $(shell sdl2-config --cflags) -O3
+LDFLAGS = $(shell sdl2-config --libs) -lSDL2main -lSDL2 -lSDL2_image -lm -g
 
 ifeq ($(OS),Windows_NT)
     EXE = .exe

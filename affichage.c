@@ -40,8 +40,8 @@ int init_affichage() {
 
 
 void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
-    int nb_image=4;
-    int nb_ligne=4;
+    int nb_image=0;
+    int nb_ligne=0;
     float zoom=2.0;
     SDL_Texture* texture_actuelle = NULL;
     SDL_Rect 
@@ -50,11 +50,19 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
          state = {0};                     // Rectangle de la vignette en cours dans la planche 
        
     if (type_entite == 1) {
-        texture_actuelle = texture_chevre;    } 
+        texture_actuelle = texture_chevre;
+        nb_image=4;
+        nb_ligne=5;
+        } 
     else if (type_entite == 2) { 
-        texture_actuelle = texture_fermier;    }
+        texture_actuelle = texture_fermier;
+        nb_image=9;
+        nb_ligne=4;
+        }
     else if (type_entite == 3) { 
         texture_actuelle = texture_chevreau;
+        nb_image=4;
+        nb_ligne=5;
     }
     SDL_QueryTexture(texture_actuelle, NULL, NULL, &source.w, &source.h);
 
@@ -62,12 +70,14 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
     int offset_x = source.w / nb_image; 
     int offset_y = source.h / nb_ligne;
 
+    
     state.w = offset_x;
     state.h = offset_y;
 
     state.x = frame * offset_x;      // Décale en X selon l'étape de l'animation
     state.y = direction * offset_y;
-    
+
+
    /* la position du sprite sur l ecran avec sa longuer et sa largeur*/
     destination.x = position_x; 
     destination.y = position_y;

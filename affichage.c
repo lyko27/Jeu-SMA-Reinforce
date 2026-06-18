@@ -39,7 +39,7 @@ int init_affichage() {
 }
 
 
-void dessiner_entite(int type_entite, int position_x, int position_y,int frame) {
+void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
     
     if (type_entite == 1) {
         //ajouter des if type entite pour chaque entite pour faire la decoupe de l image pour voir que partie du sprite utiliser

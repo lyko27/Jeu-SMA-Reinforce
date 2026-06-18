@@ -16,7 +16,7 @@ monde * ajouter_goat(monde * monde_courant, Goat * goat)
 {
     if(monde_courant->nb_goat+1 > monde_courant->capacite_max_goat)
     {
-        realloc(monde_courant->goats_tab, monde_courant->capacite_max_goat * 2 * sizeof(Goat));
+        monde_courant->goats_tab = realloc(monde_courant->goats_tab, monde_courant->capacite_max_goat * 2 * sizeof(Goat));
         monde_courant->capacite_max_goat *= 2;
     }
     monde_courant->goats_tab[monde_courant->nb_goat] = goat;
@@ -62,7 +62,7 @@ monde * generer_un_monde(monde * monde_courant)
     {
         le_fermier->frame = 0;
         le_fermier->direction_sprite = 2;
-        le_fermier = init_farmer(le_fermier);
+        le_fermier = init_fermier(le_fermier);
         monde_courant->fermiers = le_fermier;
     }
     else
@@ -77,8 +77,8 @@ monde * generer_un_monde(monde * monde_courant)
         {
             une_goat->frame = 0;
             une_goat->direction_sprite = 2;
-            une_goat = init_goat(une_goat);
-            monde_courant = ajouter_goat(monde_courant, une_goat, NULL);
+            une_goat = init_goats(une_goat);
+            monde_courant = ajouter_goat(monde_courant, une_goat);
         }
         else
         {
@@ -101,11 +101,11 @@ void afficher_monde(monde * monde_courant)
         for(int w = 0; w<monde_courant->nb_goat; w++)
         {
             Goat * current_goat = monde_courant->goats_tab[w];
-            dessiner_entite(1, current_goat->dir_x - pas_goat *4-w, current_goat->dir_y - pas_goat *4-w,current_goat->frame, current_goat->direction_sprite);
+            dessiner_entite(1, current_goat->dir_x - pas_goat *4-j, current_goat->dir_y - pas_goat *4-j,current_goat->frame, current_goat->direction_sprite);
             if(current_goat->frame == 4) current_goat->frame = 0;
             else current_goat->frame++;
         }
-        dessiner_entite(2, monde_courant->fermiers->x - pas_goat *4-w, monde_courant->fermiers->y-pas_goat *4-w, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
+        dessiner_entite(2, monde_courant->fermiers->x - pas_goat *4-j, monde_courant->fermiers->y-pas_goat *4-j, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
         if(monde_courant->fermiers->frame == 9) monde_courant->fermiers->frame = 0;
         else monde_courant->fermiers->frame++;
         SDL_Delay(200);
@@ -120,7 +120,7 @@ monde * mis_à_jour_monde(monde * monde_courant)
     for(int i = 0 ; i < monde_courant->nb_goat ; i++)
     {
         Goat * current_goat = monde_courant->goats_tab[i];
-        current_goat = update_goat(current_goat);
+        current_goat = update_goats(current_goat);
         current_goat->x = current_goat->dir_x;
         current_goat->y = current_goat->dir_y;
     }

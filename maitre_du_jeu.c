@@ -108,9 +108,25 @@ void afficher_monde(monde * monde_courant)
         dessiner_entite(2, monde_courant->fermiers->x - pas_goat *4-w, monde_courant->fermiers->y-pas_goat *4-w, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
         if(monde_courant->fermiers->frame == 9) monde_courant->fermiers->frame = 0;
         else monde_courant->fermiers->frame++;
+        SDL_Delay(200);
     }
 }
 
+/* Entrée : le monde actuel
+    Sortie : le monde mis à jour
+    Synopsis : Met à jour la position de chaque entité après déplacement dans notre jeu */
+monde * mis_à_jour_monde(monde * monde_courant)
+{
+    for(int i = 0 ; i < monde_courant->nb_goat ; i++)
+    {
+        Goat * current_goat = monde_courant->goats_tab[i];
+        current_goat = update_goat(current_goat);
+        current_goat->x = current_goat->dir_x;
+        current_goat->y = current_goat->dir_y;
+    }
+    monde_courant->fermiers = update_farmer(monde_courant->fermiers, monde_courant->fermiers->x, monde_courant->fermiers->y);
+    return monde_courant;
+}
 
 int main(int argc, char **argv)
 {

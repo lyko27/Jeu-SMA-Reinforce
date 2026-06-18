@@ -40,16 +40,16 @@ int init_affichage() {
 
 int gestion_direction_chevre(int direction){
     if (direction==1) return 2;
-    if (direction==2) return 1;
-    if (direction==3) return 0;
-    if (direction==4) return 3;
+    else if (direction==2) return 1;
+    else if (direction==3) return 0;
+    else if (direction==4) return 3;
 }
 
 int gestion_direction_fermier(int direction){
     if (direction==1) return 0;
-    if (direction==2) return 3;
-    if (direction==3) return 2;
-    if (direction==4) return 1;
+    else if (direction==2) return 3;
+    else if (direction==3) return 2;
+    else if (direction==4) return 1;
 }
 
 

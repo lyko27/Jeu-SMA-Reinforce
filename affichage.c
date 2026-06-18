@@ -42,7 +42,7 @@ int init_affichage() {
 void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
     int nb_image=0;
     int nb_ligne=0;
-    float zoom=2.0;
+    float zoom=1.0;
     SDL_Texture* texture_actuelle = NULL;
     SDL_Rect 
          source = {0},                    // Rectangle définissant la zone totale de la planche

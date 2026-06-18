@@ -98,16 +98,21 @@ void afficher_monde(monde * monde_courant)
     init_affichage();
     for(int j = 0; j<4; j++)
     {
+        dessiner_monde();
+        actualiser_ecran();
         for(int w = 0; w<monde_courant->nb_goat; w++)
         {
             Goat * current_goat = monde_courant->goats_tab[w];
             dessiner_entite(1, current_goat->dir_x - pas_goat *4-j, current_goat->dir_y - pas_goat *4-j,current_goat->frame, current_goat->direction_sprite);
             if(current_goat->frame == 4) current_goat->frame = 0;
             else current_goat->frame++;
+            actualiser_ecran();
         }
         dessiner_entite(2, monde_courant->fermiers->x - pas_goat *4-j, monde_courant->fermiers->y-pas_goat *4-j, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
         if(monde_courant->fermiers->frame == 9) monde_courant->fermiers->frame = 0;
         else monde_courant->fermiers->frame++;
+        actualiser_ecran();
+        actualiser_ecran();
         SDL_Delay(200);
     }
 }

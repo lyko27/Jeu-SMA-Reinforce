@@ -1,5 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <time.h>
+
 #include "goat.h"
 #include "utilisateur.h"
 #include "affichage.h"
@@ -125,7 +131,7 @@ monde * mis_à_jour_monde(monde * monde_courant)
     for(int i = 0 ; i < monde_courant->nb_goat ; i++)
     {
         Goat * current_goat = monde_courant->goats_tab[i];
-        current_goat = update_goats(current_goat);
+        current_goat = update_goats(current_goat, monde_courant->goats_tab, monde_courant->nb_goat);
         current_goat->x = current_goat->dir_x;
         current_goat->y = current_goat->dir_y;
     }
@@ -137,6 +143,7 @@ int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
+    srand(time(NULL));
     // création et initialisation du monde
     monde * monde_courrant = creer_monde(LARGEUR, HAUTEUR);
     monde_courrant = generer_un_monde(monde_courrant);

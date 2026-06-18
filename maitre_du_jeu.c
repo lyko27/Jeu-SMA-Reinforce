@@ -95,7 +95,7 @@ monde *generer_un_monde(monde *monde_courant)
         free(le_fermier);
         return NULL;
     }
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 10; i++)
     {
         Goat *une_goat = malloc(sizeof(Goat));
         if (une_goat)
@@ -192,10 +192,10 @@ int main(int argc, char **argv)
                 monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
             }
             afficher_monde(monde_courrant);
-            mis_à_jour_monde(monde_courrant);
             free(utilisateur);
-            SDL_Delay(200);
         }
+        monde_courrant = mis_à_jour_monde(monde_courrant);
+        SDL_Delay(200);
     }
     quitter_affichage();
     free_goat(monde_courrant->goats_tab);

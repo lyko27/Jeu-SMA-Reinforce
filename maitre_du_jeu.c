@@ -139,6 +139,7 @@ void afficher_monde(monde *monde_courant)
         else
             monde_courant->fermiers->frame++;
         actualiser_ecran();
+        SDL_Delay(200);
         
     }
 }

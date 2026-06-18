@@ -12,6 +12,8 @@ typedef struct {
     float x;
     float y;
     float speed;
+    int frame;
+    int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
 } Fermier;
 
 void init_farmer(Fermier *fermier);

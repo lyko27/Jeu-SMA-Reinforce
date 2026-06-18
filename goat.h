@@ -11,6 +11,8 @@ typedef struct {
     float speed;
     float dir_x;
     float dir_y;
+    int frame;
+    int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
 } Goat;
 
 void init_goats(Goat *goats, int num_goats);

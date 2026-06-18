@@ -36,7 +36,7 @@ monde * creer_monde(int largeur, int hauteur)
         monde_courant->hauteur = hauteur;
         monde_courant->capacite_max_goat = 100;
         monde_courant->nb_goat = 0;
-        monde_courant->goats_tab = malloc(monde_courant->capacite_max_goat * sizeof(Goat));
+        monde_courant->goats_tab = malloc(monde_courant->capacite_max_goat * sizeof(Goat*));
         if(monde_courant->goats_tab) return monde_courant;
         else
         {
@@ -95,7 +95,7 @@ monde * generer_un_monde(monde * monde_courant)
 void afficher_monde(monde * monde_courant)
 {
     int pas_goat = monde_courant->goats_tab[0]->speed/4;
-    dessiner_monde();
+    init_affichage();
     for(int j = 0; j<4; j++)
     {
         for(int w = 0; w<monde_courant->nb_goat; w++)

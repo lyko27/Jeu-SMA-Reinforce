@@ -3,6 +3,11 @@
 #include <math.h>
 #include "goat.h"
 
+ /**
+ * Synopsis : Vérifie la collision entre deux objets rectangulaires.
+ * Entrée   : Coordonnées (x1, y1) du premier objet, coordonnées (x2, y2) du deuxième objet.
+ * Sortie   : 1 si collision, 0 sinon.
+ */
 int check_collision(float x1, float y1, float x2, float y2)
 {
     if (x1 + WIDTH_GOAT < x2 || x2 + WIDTH_GOAT < x1 || y1 + HEIGHT_GOAT < y2 || y2 + HEIGHT_GOAT < y1)
@@ -12,6 +17,11 @@ int check_collision(float x1, float y1, float x2, float y2)
     return 1; // Collision
 }
 
+ /**
+ * Synopsis : Initialise une chèvre avec des coordonnées aléatoires et une direction par défaut.
+ * Entrée   : Pointeur vers la structure Goat à initialiser.
+ * Sortie   : Pointeur vers la structure Goat initialisée.
+ */
 Goat *init_goat(Goat *g)
 {
     g->x = rand() % (TAILLE_MAP - WIDTH_GOAT);
@@ -27,6 +37,11 @@ Goat *init_goat(Goat *g)
     return g;
 }
 
+ /**
+ * Synopsis : Met à jour la position et la direction d'une chèvre en fonction d'un déplacement aléatoire et des collisions.
+ * Entrée   : Pointeur vers la chèvre à mettre à jour, tableau de toutes les chèvres, nombre total de chèvres.
+ * Sortie   : Pointeur vers la chèvre mise à jour.
+ */
 Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
     
     // On génère un angle entre 0 et 2Pi

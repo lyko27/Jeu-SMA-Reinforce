@@ -1,5 +1,10 @@
 #include "fermier.h"
 
+ /**
+ * Synopsis : Initialise le fermier devant sa maison.
+ * Entrée   : Pointeur vers la structure Fermier à initialiser.
+ * Sortie   : Pointeur vers la structure Fermier initialisée.
+ */
 Fermier * init_fermier(Fermier *fermier) {
     fermier->x = 347;
     fermier->y = 185;
@@ -7,6 +12,11 @@ Fermier * init_fermier(Fermier *fermier) {
     return fermier;
 }
 
+ /**
+ * Synopsis : Met à jour la position du fermier en fonction des flèches directionnelles saisies et gère les collisions avec les bords de la carte.
+ * Entrée   : Pointeur vers le fermier à mettre à jour, direction de déplacement en x, direction de déplacement en y.
+ * Sortie   : Pointeur vers le fermier mis à jour.
+ */
 Fermier * update_fermier(Fermier *fermier, int x, int y) {
     if (x==0){
         if(y==1){fermier->y+=VITESSE_FERMIER;}

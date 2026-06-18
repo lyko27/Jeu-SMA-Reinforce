@@ -7,8 +7,8 @@ typedef enum {
 } TypeEntite;
 
 typedef struct {
-    float x;
-    float y;
+    int x;
+    int y;
 } Vecteur2D;
 
 // une entitée

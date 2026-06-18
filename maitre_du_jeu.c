@@ -9,6 +9,20 @@
 #define LARGEUR 200
 #define HAUTEUR 200
 
+/* ENtrées : le monde actuel dans sa structure
+    Sotie : Le monde mis a jour avec la nouvelle entitée en plus
+    Synopsis : prend une entitée et l'ajoute au monde*/
+monde * ajouter_entitee(monde * monde_courant, entitee_t entitee)
+{
+    if(monde_courant->nb_entites+1 > monde_courant->capacite_max)
+    {
+        realloc(monde_courant->entites, monde_courant->capacite_max * 2 * sizeof(entitee_t));
+        monde_courant->capacite_max *= 2;
+    }
+    monde_courant->entites[monde_courant->nb_entites] = entitee;
+    monde_courant->nb_entites++;
+    return monde_courant;
+}
 
 /* Entrée : deux entier la largeur et la hauteur du monde
    Sortie : le monde vide

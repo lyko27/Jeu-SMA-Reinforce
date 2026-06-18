@@ -40,36 +40,53 @@ void dessiner_monde() {
     SDL_RenderCopy(renderer, texture_fond, NULL, NULL);
 }
 
+int deplacement(int i_initial,int i_final){
+    if (i_initial < i_final) {
+        i_initial++;
+        }
+    else if(i_initial > i_final) {
+        i_initial--;
+    return i_initial;
+        }
+    }
+
 void dessiner_entite(int type_entite, int x_initial, int y_initial, int x_final, int y_final) {
     
-
+    int prochain_x=x_initial;
+    int prochain_y=y_initial;
     if (type_entite == 1) {
-        while (x_initial < x_final || y_initial < y_final || x_initial > x_final || y_initial >y_final ) {
-            if (x_initial < x_final) {
-                x_initial++;
-            }
-            else if(x_initial > x_final) {
-                x_initial--;
-            }
-            if (y_initial < y_final) {
-                y_initial++;
-            }
-            else if(y_initial > y_final) {
-                y_initial--;
-            }
+        while (prochain_x < x_final || prochain_y < y_final || prochain_x > x_final || prochain_y >y_final ) {
+            prochain_x=deplacement(prochain_x,x_final);
+            prochain_y=deplacement(prochain_y,y_final);
             SDL_Rect destination = {x_initial, y_initial, 64, 64};
             SDL_RenderCopy(renderer, texture_chevre, NULL, &destination);
             SDL_RenderPresent(renderer);
-            SDL_Delay(10); // Ajustez la vitesse de déplacement ici
+            SDL_Delay(10); 
         }
         SDL_Rect destination = {x, y, 64, 64};
         SDL_RenderCopy(renderer, texture_chevre, NULL, &destination);
     } 
     else if (type_entite == 2) { 
+        while (prochain_x < x_final || prochain_y < y_final || prochain_x > x_final || prochain_y >y_final ) {
+            prochain_x=deplacement(prochain_x,x_final);
+            prochain_y=deplacement(prochain_y,y_final);
+            SDL_Rect destination = {x_initial, y_initial, 64, 64};
+            SDL_RenderCopy(renderer, texture_chevre, NULL, &destination);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(10); 
+        }
         SDL_Rect destination = {x, y, 64, 64};
         SDL_RenderCopy(renderer, texture_fermier, NULL, &destination);
     }
     else if (type_entite == 3) { 
+        while (prochain_x < x_final || prochain_y < y_final || prochain_x > x_final || prochain_y >y_final ) {
+            prochain_x=deplacement(prochain_x,x_final);
+            prochain_y=deplacement(prochain_y,y_final);
+            SDL_Rect destination = {x_initial, y_initial, 64, 64};
+            SDL_RenderCopy(renderer, texture_chevre, NULL, &destination);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(10); 
+        }
         SDL_Rect destination = {x, y, 64, 64};
         SDL_RenderCopy(renderer, texture_chevreau, NULL, &destination);
     }

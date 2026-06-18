@@ -40,20 +40,41 @@ int init_affichage() {
 
 
 void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
-    
+    int nb_image=4;
+    int nb_ligne=4;
+    float zoom=2.0;
+    SDL_Texture* texture_actuelle = NULL;
+    SDL_Rect 
+         source = {0},                    // Rectangle définissant la zone totale de la planche
+         destination = {0},               // Rectangle définissant où la zone_source doit être déposée dans le renderer
+         state = {0};                     // Rectangle de la vignette en cours dans la planche 
+       
     if (type_entite == 1) {
-        //ajouter des if type entite pour chaque entite pour faire la decoupe de l image pour voir que partie du sprite utiliser
-        SDL_Rect destination = {position_x, position_y, 64, 64};
-        SDL_RenderCopy(renderer, texture_chevre, NULL, &destination);
-    } 
+        texture_actuelle = texture_chevre;    } 
     else if (type_entite == 2) { 
-        SDL_Rect destination = {position_x, position_y, 64, 64};
-        SDL_RenderCopy(renderer, texture_fermier, NULL, &destination);
-    }
+        texture_actuelle = texture_fermier;    }
     else if (type_entite == 3) { 
-        SDL_Rect destination = {position_x, position_y, 64, 64};
-        SDL_RenderCopy(renderer, texture_chevreau, NULL, &destination);
+        texture_actuelle = texture_chevreau;
     }
+    SDL_QueryTexture(texture_actuelle, NULL, NULL, &source.w, &source.h);
+
+    /*calcul de l'offset */
+    int offset_x = source.w / nb_image; 
+    int offset_y = source.h / nb_ligne;
+
+    state.w = offset_x;
+    state.h = offset_y;
+
+    state.x = frame * offset_x;      // Décale en X selon l'étape de l'animation
+    state.y = direction * offset_y;
+    
+   /* la position du sprite sur l ecran avec sa longuer et sa largeur*/
+    destination.x = position_x; 
+    destination.y = position_y;
+    destination.w = offset_x * zoom;
+    destination.h = offset_y * zoom;
+
+    SDL_RenderCopy(renderer, texture_actuelle, &state, &destination);
 }
 
 void dessiner_monde() {

@@ -15,6 +15,9 @@
 #define LARGEUR 200
 #define HAUTEUR 200
 
+/* ENtrées : le tableau de chèvre
+    Sotie : aucune
+    Synopsis : libère toute les goats du tableau*/
 void free_goat(Goat ** goat)
 {
     if(goat != NULL)

@@ -16,8 +16,8 @@ typedef struct {
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
 } Fermier;
 
-Fermier * init_farmer(Fermier *fermier);
+Fermier * init_fermier(Fermier *fermier);
 
-Fermier * update_farmer(Fermier *fermier, int x, int y);
+Fermier * update_fermier(Fermier *fermier, int x, int y);
 
 #endif

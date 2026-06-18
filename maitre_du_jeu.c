@@ -100,11 +100,9 @@ int main(int argc, char **argv)
     int en_pause = 1;
     while (quiiter_le_programme == 0)
     {
-        
-
         if (!en_pause)
         {
-
+            /* recuperation des  input utilisateur */
             interaction_utilisateur * utilisateur = malloc(sizeof(interaction_utilisateur));
             if (utilisateur)
             {
@@ -117,7 +115,7 @@ int main(int argc, char **argv)
                 {
                     en_pause = !en_pause;
                 }
-                //dessiner_monde(monde_courrant, offset_x, offset_y, zoom);
+
                 free(utilisateur);
                 SDL_Delay(100);
             }

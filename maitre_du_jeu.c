@@ -1,1 +1,98 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "goat.h"
+#include "utilisateur.h"
+#include "affichage.h"
+#include "fermier.h"
+#include "monde.h"
+
+#define LARGEUR 200
+#define HAUTEUR 200
+
+/* ENtrées : le monde actuel dans sa structure
+    Sotie : Le monde mis a jour avec la nouvelle entitée en plus
+    Synopsis : prend une entitée et l'ajoute au monde*/
+monde * ajouter_entitee(monde * monde_courant, entitee_t entitee)
+{
+    if(monde_courant->nb_entites+1 > monde_courant->capacite_max)
+    {
+        realloc(monde_courant->entites, monde_courant->capacite_max * 2 * sizeof(entitee_t));
+        monde_courant->capacite_max *= 2;
+    }
+    monde_courant->entites[monde_courant->nb_entites] = entitee;
+    monde_courant->nb_entites++;
+    return monde_courant;
+}
+
+/* Entrée : deux entier la largeur et la hauteur du monde
+   Sortie : le monde vide
+   synopsis : créer un monde vide avec la structure monde*/
+monde * creer_monde(int largeur, int hauteur)
+{
+    monde * monde_courant = malloc(sizeof(monde));
+    if(monde_courant)
+    {
+        monde_courant->largeur = largeur;
+        monde_courant->hauteur = hauteur;
+        monde_courant->capacite_max = 100;
+        monde_courant->nb_entites = 0;
+        monde_courant->entites = malloc(monde_courant->capacite_max * sizeof(entitee_t));
+        if(monde_courant->entites) return monde_courant;
+        else
+        {
+            free(monde_courant->entites);
+            free(monde_courant);
+            return NULL
+        }
+    }
+    else 
+    {
+        free(monde_courant);
+        return NULL;
+    }
+}
+
+monde * generer_un_monde(monde * monde_courant)
+{
+    entitee_t * fermier = malloc(sizeof(fermier_t));
+    fermier->en_vie = 1;
+    fermier->type = FERMIER;
+
+}
+
+int main(int argc, char **argv)
+{
+    (void)argc;
+    (void)argv;
+    // création et initialisation du monde
+    monde * monde_courrant = creer_monde(LARGEUR, HAUTEUR);
+
+    int quiiter_le_programme = 0; // variable de gestion de la boucle
+    int en_pause = 1;
+    while (quiiter_le_programme == 0)
+    {
+        
+
+        if (!en_pause)
+        {
+
+            interaction_utilisateur * utilisateur = malloc(sizeof(interaction_utilisateur));
+            if (utilisateur)
+            {
+                utilisateur->deplacement_x = 0;
+                utilisateur->deplacement_y = 0;
+                utilisateur = recuperer_mouvement(utilisateur);
+                quiiter_le_programme = utilisateur->quitter; // si quitter = 1 le programme prendra fin à a la fin de la boucle
+
+                if (utilisateur->pause)
+                {
+                    en_pause = !en_pause;
+                }
+                dessiner_monde(monde_courrant, offset_x, offset_y, zoom);
+                free(utilisateur);
+                SDL_Delay(100);
+            }
+        }
+    return 0;
+    }
+}

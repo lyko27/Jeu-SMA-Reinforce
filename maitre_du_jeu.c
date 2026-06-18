@@ -62,7 +62,7 @@ monde * generer_un_monde(monde * monde_courant)
     {
         le_fermier->frame = 0;
         le_fermier->direction_sprite = 2;
-        le_fermier = init_fermier(le_fermier);
+        le_fermier = init_farmer(le_fermier);
         monde_courant = ajouter_entitee(monde_courant, NULL, le_fermier);
     }
     else
@@ -88,6 +88,29 @@ monde * generer_un_monde(monde * monde_courant)
     }
     return monde_courant;
 }
+
+/* Entrée : le monde actuel
+    Sortie : aucune
+    Synopsis : prend le monde et pour chaque entité, demande à la SDL d'annimer 4 frame de l'entité pour qu'elle se déplacent sur l'écran*/
+void afficher_monde(monde * monde_courant)
+{
+    int pas_goat = monde_courant->goats_tab[0]->speed/4;
+    dessiner_monde();
+    for(int j = 0; j<4; j++)
+    {
+        for(int w = 0; w<monde_courant->nb_goat; w++)
+        {
+            Goat * current_goat = monde_courant->goats_tab[w];
+            dessiner_entite(1, current_goat->dir_x - pas_goat *4-w, current_goat->dir_y - pas_goat *4-w,current_goat->frame, current_goat->direction_sprite);
+            if(current_goat->frame == 4) current_goat->frame = 0;
+            else current_goat->frame++;
+        }
+        dessiner_entite(2, monde_courant->fermiers->x - pas_goat *4-w, monde_courant->fermiers->y-pas_goat *4-w, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
+        if(monde_courant->fermiers->frame == 9) monde_courant->fermiers->frame = 0;
+        else monde_courant->fermiers->frame++;
+    }
+}
+
 
 int main(int argc, char **argv)
 {
@@ -115,6 +138,10 @@ int main(int argc, char **argv)
                 {
                     en_pause = !en_pause;
                 }
+                // déplacement du fermier au cas où l'utilsateur avait appuyé sur une des flèche
+                monde_courrant->fermiers = update_farmer(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
+
+                afficher_monde(monde_courrant);
 
                 free(utilisateur);
                 SDL_Delay(100);

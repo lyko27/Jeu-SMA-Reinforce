@@ -5,7 +5,8 @@
 #define HEIGHT_GOAT 30
 #define TAILLE_MAP 1024
 
-typedef struct {
+typedef struct
+{
     float x;
     float y;
     float speed;
@@ -15,7 +16,8 @@ typedef struct {
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
 } Goat;
 
-void init_goats(Goat *goats, int num_goats);
-void update_goats(Goat *goats, int num_goats);
+Goat *init_goat(Goat *g);
+Goat *update_goat(Goat *g, Goat **all_goats, int nb_goats);
+int check_collision(float x1, float y1, float x2, float y2);
 
 #endif

@@ -52,10 +52,20 @@ monde * creer_monde(int largeur, int hauteur)
     }
 }
 
+monde * generer_un_monde(monde * monde_courant)
+{
+    entitee_t * fermier = malloc(sizeof(fermier_t));
+    fermier->en_vie = 1;
+    fermier->type = FERMIER;
+
+}
+
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
+    // création et initialisation du monde
+    monde * monde_courrant = creer_monde(LARGEUR, HAUTEUR);
 
     int quiiter_le_programme = 0; // variable de gestion de la boucle
     int en_pause = 1;
@@ -65,6 +75,7 @@ int main(int argc, char **argv)
 
         if (!en_pause)
         {
+
             interaction_utilisateur * utilisateur = malloc(sizeof(interaction_utilisateur));
             if (utilisateur)
             {

@@ -6,15 +6,12 @@ typedef enum {
     CHEVRE,
 } TypeEntite;
 
-typedef struct {
-    int x;
-    int y;
-} Vecteur2D;
-
 // une entitée
 typedef struct {
-    Vecteur2D position;
-    Vecteur2D velocite; // La direction et la vitesse actuelles
+    int position_x;
+    int position_y;
+    int destination_x;
+    int destination_y;  // La direction et la position actuelles
     TypeEntite type;
     int en_vie;         // 1 si actif, 0 si mort (à retirer du tableau)
 } entitee_t;

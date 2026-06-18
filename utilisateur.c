@@ -19,19 +19,19 @@ interaction_utilisateur * recupere_mouvement(interaction_utilisateur *resultat)
             }
             else if (event.key.keysym.sym == SDLK_UP)
             {
-                resultat->deplacement_y = 1;
+                resultat->y_deplacement = 1;
             }
             else if (event.key.keysym.sym == SDLK_DOWN)
             {
-                resultat->deplacement_y = -1;
+                resultat->y_deplacement = -1;
             }
             else if (event.key.keysym.sym == SDLK_LEFT)
             {
-                resultat->deplacement_x = 1;
+                resultat->x_deplacement = 1;
             }
             else if (event.key.keysym.sym == SDLK_RIGHT)
             {
-                resultat->deplacement_x = -1;
+                resultat->x_deplacement = -1;
             }
             break;
         default:

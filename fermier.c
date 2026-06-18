@@ -1,19 +1,19 @@
 #include "fermier.h"
 
 void init_fermier(Fermier *fermier) {
-    fermier->x = TAILLE_MAP / 2.0f;
-    fermier->y = TAILLE_MAP / 2.0f;
+    fermier->x = 347;
+    fermier->y = 185;
     fermier->speed = VITESSE_FERMIER;
 }
 
 void update_fermier(Fermier *fermier, int x, int y) {
     if (x=0){
-        if(y=1)
-        if(y=-1)
+        if(y=1){fermier->y+=VITESSE_FERMIER;}
+        if(y=-1){fermier->y-=VITESSE_FERMIER;}
     }
     if (y=0){
-        if(x=1)
-        if(x=-1)
+        if(x=1){fermier->x+=VITESSE_FERMIER;}
+        if(x=-1){fermier->x-=VITESSE_FERMIER;}
     }   
 
     if (fermier->x < 0) fermier->x = 0;

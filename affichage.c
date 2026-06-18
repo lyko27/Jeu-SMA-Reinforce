@@ -38,6 +38,21 @@ int init_affichage() {
     return 1;
 }
 
+int gestion_direction_chevre(int direction){
+    if (direction==1) return 2;
+    if (direction==2) return 1;
+    if (direction==3) return 0;
+    if (direction==4) return 3;
+}
+
+int gestion_direction_fermier(int direction){
+    if (direction==1) return 0;
+    if (direction==2) return 3;
+    if (direction==3) return 2;
+    if (direction==4) return 1;
+}
+
+
 
 void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
     int nb_image=0;
@@ -53,11 +68,13 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
         texture_actuelle = texture_chevre;
         nb_image=4;
         nb_ligne=5;
+        direction=gestion_direction_chevre(direction);
         } 
     else if (type_entite == 2) { 
         texture_actuelle = texture_fermier;
         nb_image=9;
         nb_ligne=4;
+        direction=gestion_direction_fermier(direction);
         }
     else if (type_entite == 3) { 
         texture_actuelle = texture_chevreau;

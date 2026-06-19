@@ -37,7 +37,6 @@ Fermier * update_fermier(Fermier *fermier, int x, int y) {
     }  
     if(x==0 && y==0) {
         fermier->frame=5;
-        fermier->direction_sprite=0;
         return fermier; 
     }
 

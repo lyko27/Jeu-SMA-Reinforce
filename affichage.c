@@ -51,7 +51,6 @@ int gestion_direction_fermier(int direction){
     else if (direction==2) return 3;
     else if (direction==3) return 2;
     else if (direction==4) return 1;
-    else if (direction==0) return 2;
     return 2;
 }
 
@@ -94,6 +93,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
         nb_ligne=5;
     }
     else if (type_entite == 4) { 
+        zoom=0.5;
         texture_actuelle = texture_loup;
         nb_image=4;
         nb_ligne=5;

@@ -10,6 +10,10 @@ typedef struct {
     Goat ** goats_tab;
     int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
     int nb_goat ;      // Nombre actuel de chèvres
+    Wolf ** wolfs_tab;
+    int capacite_max_wolf;
+    int nb_wolf ; 
+
                             // L'économie du joueur...
 } monde;
 

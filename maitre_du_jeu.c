@@ -7,13 +7,14 @@
 #include <time.h>
 
 #include "goat.h"
+#include "loup.h"
 #include "utilisateur.h"
 #include "affichage.h"
 #include "fermier.h"
 #include "monde.h"
 
-#define LARGEUR 200
-#define HAUTEUR 200
+#define LARGEUR 1024
+#define HAUTEUR 1024
 
 /* ENtrées : le tableau de chèvre, nombre de chèvre
     Sotie : aucune
@@ -28,6 +29,20 @@ void free_goat(Goat **goat, int nombre)
         {
             free(current_goat);
             current_goat = goat[i];
+        }
+    }
+}
+
+void free_wolf(Wolf **wolf, int nombre)
+{
+    if (wolf != NULL)
+    {
+        int i = 0;
+        Wolf * current_wolf = wolf[i];
+        for(int i = 0; i<nombre; i++)
+        {
+            free(current_wolf);
+            current_wolf = wolf[i];
         }
     }
 }
@@ -47,6 +62,20 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
     return monde_courant;
 }
 
+
+
+monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
+{
+    if (monde_courant->nb_wolf + 1 > monde_courant->capacite_max_wolf)
+    {
+        monde_courant->wolfs_tab = realloc(monde_courant->wolfs_tab, monde_courant->capacite_max_wolf * 2 * sizeof(Wolf));
+        monde_courant->capacite_max_wolf *= 2;
+    }
+    monde_courant->wolfs_tab[monde_courant->nb_wolf] = wolf;
+    monde_courant->nb_wolf++;
+    return monde_courant;
+}
+
 /* Entrée : deux entier la largeur et la hauteur du monde
    Sortie : le monde vide
    synopsis : créer un monde vide avec la structure monde*/
@@ -59,12 +88,16 @@ monde *creer_monde(int largeur, int hauteur)
         monde_courant->hauteur = hauteur;
         monde_courant->capacite_max_goat = 100;
         monde_courant->nb_goat = 0;
+        monde_courant->capacite_max_wolf = 100;
+        monde_courant->nb_wolf = 0;
         monde_courant->goats_tab = malloc(monde_courant->capacite_max_goat * sizeof(Goat *));
-        if (monde_courant->goats_tab)
+        monde_courant->wolfs_tab = malloc(monde_courant->capacite_max_wolf * sizeof(Wolf *));
+
+        if (monde_courant->wolfs_tab)
             return monde_courant;
         else
         {
-            free(monde_courant->goats_tab);
+            free(monde_courant->wolfs_tab);
             free(monde_courant);
             return NULL;
         }
@@ -110,6 +143,22 @@ monde *generer_un_monde(monde *monde_courant)
             return NULL;
         }
     }
+    for (int i = 0; i < 10; i++)
+    {
+        Wolf * un_wolf = malloc(sizeof(Wolf));
+        if (un_wolf)
+        {
+            un_wolf->frame = 0;
+            un_wolf->direction_sprite = 2;
+            un_wolf = init_wolf(un_wolf);
+            monde_courant = ajouter_wolf(monde_courant, un_wolf);
+        }
+        else
+        {
+            free(un_wolf);
+            return NULL;
+        }
+    }
     return monde_courant;
 }
 
@@ -125,11 +174,15 @@ void afficher_monde(monde *monde_courant)
         dessiner_entite(1, current_goat->dir_x , current_goat->dir_y , current_goat->frame, current_goat->direction_sprite);
         
     }
-    dessiner_entite(2, monde_courant->fermiers->x  , monde_courant->fermiers->y , monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
     
-    actualiser_ecran();
+    for (int w = 0; w < monde_courant->nb_wolf; w++)
+    {
+        Wolf *current_wolf = monde_courant->wolfs_tab[w];
+        dessiner_entite(4, current_wolf->dir_x , current_wolf->dir_y , current_wolf->frame, current_wolf->direction_sprite);
         
-    
+    }
+    dessiner_entite(2, monde_courant->fermiers->x  , monde_courant->fermiers->y , monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
+    actualiser_ecran();
 }
 
 /* Entrée : le monde actuel

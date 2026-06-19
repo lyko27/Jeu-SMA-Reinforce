@@ -105,6 +105,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
 }
 
 void dessiner_monde() {
+    SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture_fond, NULL, NULL);
 }
 

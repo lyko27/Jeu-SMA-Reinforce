@@ -19,14 +19,27 @@ Fermier * init_fermier(Fermier *fermier) {
  */
 Fermier * update_fermier(Fermier *fermier, int x, int y) {
     if (x==0){
-        if(y==1){fermier->y-=VITESSE_FERMIER;}
-        if(y==-1){fermier->y+=VITESSE_FERMIER;}
+        if(y==1){
+            fermier->y-=VITESSE_FERMIER;
+            fermier->direction_sprite=1;
+        }
+        if(y==-1){fermier->y+=VITESSE_FERMIER;
+            fermier->direction_sprite=3;
+        }
     }
     if (y==0){
-        if(x==1){fermier->x-=VITESSE_FERMIER;}
-        if(x==-1){fermier->x+=VITESSE_FERMIER;}
+        if(x==1){fermier->x-=VITESSE_FERMIER;
+            fermier->direction_sprite=4;
+        }
+        if(x==-1){fermier->x+=VITESSE_FERMIER;
+            fermier->direction_sprite=2;
+        }
     }  
-    if(x==0 && y==0) return fermier; 
+    if(x==0 && y==0) {
+        fermier->frame=5;
+        fermier->direction_sprite=0;
+        return fermier; 
+    }
 
     if (fermier->x < 0) fermier->x = 0;
     if (fermier->x + WIDTH_FERMIER > TAILLE_MAP) fermier->x = TAILLE_MAP - WIDTH_FERMIER;

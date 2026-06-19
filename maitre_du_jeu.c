@@ -147,6 +147,7 @@ monde *mis_à_jour_monde(monde *monde_courant)
         current_goat->y = current_goat->dir_y;
         current_goat->frame = (current_goat->frame + 1) % 4;
     }
+
     monde_courant->fermiers = update_fermier(monde_courant->fermiers, monde_courant->fermiers->x, monde_courant->fermiers->y);
     monde_courant->fermiers->frame = (monde_courant->fermiers->frame + 1) % 9;
     return monde_courant;
@@ -183,7 +184,9 @@ int main(int argc, char **argv)
             if (!en_pause)
             {
                 // déplacement du fermier au cas où l'utilsateur avait appuyé sur une des flèche
+                
                 monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
+            
             }
             afficher_monde(monde_courrant);
             free(utilisateur);

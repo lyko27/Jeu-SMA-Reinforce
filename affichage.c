@@ -51,6 +51,7 @@ int gestion_direction_fermier(int direction){
     else if (direction==2) return 3;
     else if (direction==3) return 2;
     else if (direction==4) return 1;
+    else if (direction==0) return 2;
     return -1;
 }
 

@@ -21,6 +21,6 @@ typedef struct
 
 Goat *init_goat(Goat *g);
 Goat *update_goat(Goat *g, Goat **all_goats, int nb_goats);
-int check_collision(float x1, float y1, float x2, float y2);
+int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2);
 
 #endif

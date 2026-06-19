@@ -8,8 +8,9 @@
  * Entrée   : Coordonnées (x1, y1) du premier objet, coordonnées (x2, y2) du deuxième objet.
  * Sortie   : 1 si collision, 0 sinon.
  */
-int check_collision(float x1, float y1, float x2, float y2){
-    if (x1 + WIDTH_GOAT < x2 || x2 + WIDTH_GOAT < x1 || y1 + HEIGHT_GOAT < y2 || y2 + HEIGHT_GOAT < y1)
+int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
+{
+    if (x1 + w1 < x2 || x2 + w2 < x1 || y1 + h1 < y2 || y2 + h2 < y1)
     {
         return 0; // Pas de collision
     }
@@ -103,7 +104,8 @@ Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
     int collision = 0;
     for (int i = 0; i < nb_goats; i++) {
         if (all_goats[i] != g) {
-            if (check_collision(next_x, next_y, all_goats[i]->dir_x, all_goats[i]->dir_y)) {
+            if (check_collision_rect(next_x, next_y, WIDTH_GOAT, HEIGHT_GOAT, all_goats[i]->dir_x, all_goats[i]->dir_y, WIDTH_GOAT, HEIGHT_GOAT))
+            {
                 collision = 1;
                 g->timer_mouvement = 0; // s'il ya collision la chevre arrete de marcher
             }

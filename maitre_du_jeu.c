@@ -234,10 +234,26 @@ int main(int argc, char **argv)
             }
             if (!en_pause)
             {
-                // déplacement du fermier au cas où l'utilsateur avait appuyé sur une des flèche
-                
+                // Sauvegarde de l'ancienne position
+                float old_f_x = monde_courrant->fermiers->x;
+                float old_f_y = monde_courrant->fermiers->y;
+
                 monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
-            
+                
+                // Vérification de collision avec les chèvres
+                int collision_fermier = 0;
+                for (int i = 0; i < monde_courrant->nb_goat; i++) {
+                    if (check_collision_rect(monde_courrant->fermiers->x, monde_courrant->fermiers->y, WIDTH_FERMIER, HEIGHT_FERMIER, monde_courrant->goats_tab[i]->x, monde_courrant->goats_tab[i]->y, WIDTH_GOAT, HEIGHT_GOAT)) {
+                        collision_fermier = 1;
+                        break;
+                    }
+                }
+                
+                // Annule le mouvement s'il y a collision
+                if (collision_fermier) {
+                    monde_courrant->fermiers->x = old_f_x;
+                    monde_courrant->fermiers->y = old_f_y;
+                }
             }
             afficher_monde(monde_courrant);
             free(utilisateur);

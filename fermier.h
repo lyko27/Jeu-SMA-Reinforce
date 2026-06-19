@@ -3,7 +3,7 @@
 
 #include "utilisateur.h"
 
-#define VITESSE_FERMIER 15.0f
+#define VITESSE_FERMIER 5.0f
 #define WIDTH_FERMIER 50
 #define HEIGHT_FERMIER 30
 #define TAILLE_MAP 1024

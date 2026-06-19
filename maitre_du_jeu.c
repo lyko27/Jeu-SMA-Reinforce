@@ -189,19 +189,50 @@ void afficher_monde(monde *monde_courant)
 /* Entrée : le monde actuel
     Sortie : le monde mis à jour
     Synopsis : Met à jour la position de chaque entité après déplacement dans notre jeu */
-monde *mis_à_jour_monde(monde *monde_courant)
+monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
 {
+    // Mise à jour des chèvres (mouvement et animation)
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {
         Goat *current_goat = monde_courant->goats_tab[i];
         current_goat = update_goat(current_goat, monde_courant->goats_tab, monde_courant->nb_goat);
         current_goat->x = current_goat->dir_x;
         current_goat->y = current_goat->dir_y;
-        current_goat->frame = (current_goat->frame + 1) % 4;
+        
+        if (tick_animation % 6 == 0)
+        {
+            if (current_goat->en_mouvement)
+            {
+                current_goat->frame = (current_goat->frame + 1) % 4;
+            }
+            else
+            {
+                current_goat->frame = 0; // Frame statique
+            }
+        }
     }
 
-    monde_courant->fermiers = update_fermier(monde_courant->fermiers, monde_courant->fermiers->x, monde_courant->fermiers->y);
-    monde_courant->fermiers->frame = (monde_courant->fermiers->frame + 1) % 9;
+    // Mise à jour des loups (mouvement et animation)
+    for (int i = 0; i < monde_courant->nb_wolf; i++)
+    {
+        Wolf *current_wolf = monde_courant->wolfs_tab[i];
+        current_wolf = update_wolf(current_wolf, monde_courant->wolfs_tab, monde_courant->nb_wolf);
+        current_wolf->x = current_wolf->dir_x;
+        current_wolf->y = current_wolf->dir_y;
+        
+        if (tick_animation % 6 == 0)
+        {
+            if (current_wolf->x != current_wolf->dir_x || current_wolf->y != current_wolf->dir_y)
+            {
+                current_wolf->frame = (current_wolf->frame + 1) % 4;
+            }
+            else
+            {
+                current_wolf->frame = 0; // Frame statique
+            }
+        }
+    }
+
     return monde_courant;
 }
 
@@ -216,7 +247,6 @@ int main(int argc, char **argv)
     int quiiter_le_programme = 0; // variable de gestion de la boucle
     int en_pause = 0;
     int tick_animation = 0;
-    tick_animation++;
     init_affichage();
     while (quiiter_le_programme == 0)
     {
@@ -237,24 +267,17 @@ int main(int argc, char **argv)
             }
             if (!en_pause)
             {
-                monde_courrant = mis_à_jour_monde(monde_courrant);
+                tick_animation++;
+                monde_courrant = mis_à_jour_monde(monde_courrant, tick_animation);
+                monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
+                
                 if (tick_animation % 6 == 0)
                 {
-                    for (int i = 0; i < monde_courrant->nb_goat; i++)
+                    if (utilisateur->x_deplacement != 0 || utilisateur->y_deplacement != 0)
                     {
-                        Goat *goat = monde_courrant->goats_tab[i];
-                        if (goat->en_mouvement)
-                        {
-                            goat->frame = (goat->frame + 1) % 4;
-                        }
-                        else
-                        {
-                            goat->frame = 0; // Frame statique
-                        }
+                        monde_courrant->fermiers->frame = (monde_courrant->fermiers->frame + 1) % 9;
                     }
                 }
-
-                monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
             }
             afficher_monde(monde_courrant);
             free(utilisateur);

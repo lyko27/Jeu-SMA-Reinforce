@@ -76,6 +76,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
          state = {0};                     // Rectangle de la vignette en cours dans la planche 
        
     if (type_entite == 1) {
+        zoom=1.5;
         texture_actuelle = texture_chevre;
         nb_image=4;
         nb_ligne=6;

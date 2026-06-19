@@ -12,13 +12,14 @@ interaction_utilisateur * recuperer_mouvement(interaction_utilisateur *resultat)
         case SDL_QUIT:
             resultat->quitter = 1;
             break;
+        case SDL_KEYDOWN:
+            if (event.key.keysym.sym == SDLK_SPACE)
+            {
+                resultat->pause = 1;
+            }
         default:
             break;
         }
-    }
-    if (Keyborad[SDL_SCANCODE_SPACE])
-    {
-        resultat->pause = 1;
     }
     if (Keyborad[SDL_SCANCODE_UP] || Keyborad[SDL_SCANCODE_Z] || Keyborad[SDL_SCANCODE_W])
     {

@@ -13,6 +13,7 @@ typedef struct
     float dir_x;
     float dir_y;
     int frame;
+    int en_mouvement;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
@@ -20,6 +21,6 @@ typedef struct
 
 Wolf *init_wolf(Wolf *g);
 Wolf *update_wolf(Wolf *g, Wolf **all_wolfs, int nb_wolfs);
-int check_collision(float x1, float y1, float x2, float y2);
+int check_collision_wolf(float x1, float y1, float x2, float y2);
 
 #endif

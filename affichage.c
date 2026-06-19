@@ -23,7 +23,7 @@ int init_affichage() {
     }
     
     window = SDL_CreateWindow("Jeu de la Ferme", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, SDL_WINDOW_SHOWN);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     
     texture_fond = IMG_LoadTexture(renderer, "./images/map.png");
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");

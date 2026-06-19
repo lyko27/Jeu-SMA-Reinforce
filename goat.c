@@ -30,9 +30,10 @@ Goat *init_goat(Goat *g)
     g->dir_x = g->x;// Initialisation, pas encore de direction
     g->dir_y = g->y;// Initialisation, pas encore de direction
 
-    g->speed = 20;
+    g->speed = 2;
     g->direction_sprite = 1 + (rand() % 4);
     g->frame = 0;
+    g->timer_mouvement=10;
 
     return g;
 }
@@ -44,6 +45,12 @@ Goat *init_goat(Goat *g)
  */
 Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
 
+    //pourcentage de chances que le goat ne bouge pas 80% de chances
+    if ((rand() % 100) < 80) { 
+        g->dir_x = g->x;
+        g->dir_y = g->y;
+        return g; 
+    }
     // On génère un angle entre 0 et 2Pi
     float angle = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
 

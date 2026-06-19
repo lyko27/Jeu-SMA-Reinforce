@@ -118,8 +118,6 @@ monde *generer_un_monde(monde *monde_courant)
     Synopsis : prend le monde et pour chaque entité, demande à la SDL d'annimer 4 frame de l'entité pour qu'elle se déplacent sur l'écran*/
 void afficher_monde(monde *monde_courant)
 {
-    
-    
     dessiner_monde();
     for (int w = 0; w < monde_courant->nb_goat; w++)
     {
@@ -192,7 +190,7 @@ int main(int argc, char **argv)
             free(utilisateur);
         }
         monde_courrant = mis_à_jour_monde(monde_courrant);
-        SDL_Delay(100);
+        SDL_Delay(16);
     }
     quitter_affichage();
     free_goat(monde_courrant->goats_tab, monde_courrant->nb_goat);

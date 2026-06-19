@@ -14,6 +14,7 @@ typedef struct
     float dir_y;
     int frame;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
+    int en_mouvement;
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
 } Goat;

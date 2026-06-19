@@ -8,8 +8,7 @@
  * Entrée   : Coordonnées (x1, y1) du premier objet, coordonnées (x2, y2) du deuxième objet.
  * Sortie   : 1 si collision, 0 sinon.
  */
-int check_collision(float x1, float y1, float x2, float y2)
-{
+int check_collision(float x1, float y1, float x2, float y2){
     if (x1 + WIDTH_GOAT < x2 || x2 + WIDTH_GOAT < x1 || y1 + HEIGHT_GOAT < y2 || y2 + HEIGHT_GOAT < y1)
     {
         return 0; // Pas de collision
@@ -30,10 +29,12 @@ Goat *init_goat(Goat *g)
     g->dir_x = g->x;// Initialisation, pas encore de direction
     g->dir_y = g->y;// Initialisation, pas encore de direction
 
-    g->speed = 2;
+    g->speed = 0; // on initialise la vitesse des chevres a 0
     g->direction_sprite = 1 + (rand() % 4);
     g->frame = 0;
     g->timer_mouvement=10;
+    g->en_mouvement=0;
+    g->angle_actuel=0.0f;
 
     return g;
 }
@@ -45,17 +46,35 @@ Goat *init_goat(Goat *g)
  */
 Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
 
-    //pourcentage de chances que le goat ne bouge pas 80% de chances
-    if ((rand() % 100) < 80) { 
+    //gestion du timer de mouvement on decremente pui on verifie si le timer est inferieur ou egale a 0 si oui on reinitialise la valeur a 10
+    g->timer_mouvement--;
+
+    if (g->timer_mouvement <= 0) {
+        int chance = rand() % 100;
+
+        if (chance < 80) { // 80% de chance de s'arrêter pour brouter
+            g->en_mouvement = 0;
+            // Elle restera immobile entre 30 et 120 frames (0.5s à 2s si le jeu tourne à 60 FPS)
+            g->speed = 0;
+            g->timer_mouvement = 30 + (rand() % 90);  //on genere un nombre aleatoire entre 0 et 120 apres l'arret pour brouter
+        } 
+        else { // 20% de chance de commencer à marcher
+            g->en_mouvement = 1;
+            g->speed=2;
+            g->timer_mouvement = 30 + (rand() % 90);
+            g->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;  //generation d'un nouvel angle lorsqu on commence a marcher a nouveau
+        }
+    }
+    //pourcentage de chances que le goat ne bouge pas 80 % de chances
+    if (g->en_mouvement==0) { 
         g->dir_x = g->x;
         g->dir_y = g->y;
         return g; 
     }
     // On génère un angle entre 0 et 2Pi
-    float angle = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
 
-    float dx = cos(angle) * g->speed;
-    float dy = sin(angle) * g->speed;
+    float dx = cos(g->angle_actuel) * g->speed;
+    float dy = sin(g->angle_actuel) * g->speed;
 
     float next_x = g->x + dx;
     float next_y = g->y + dy;
@@ -86,6 +105,7 @@ Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
         if (all_goats[i] != g) {
             if (check_collision(next_x, next_y, all_goats[i]->dir_x, all_goats[i]->dir_y)) {
                 collision = 1;
+                g->timer_mouvement = 0; // s'il ya collision la chevre arrete de marcher
             }
         }
     }

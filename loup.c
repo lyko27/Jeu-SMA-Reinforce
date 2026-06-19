@@ -30,7 +30,7 @@ Wolf *init_wolf(Wolf *l)
     l->dir_x = l->x;// Initialisation, pas encore de direction
     l->dir_y = l->y;// Initialisation, pas encore de direction
 
-    l->speed = 2;
+    l->speed = 0;
     l->direction_sprite = 1 + (rand() % 4);
     l->frame = 0;
     l->timer_mouvement=10;
@@ -43,35 +43,51 @@ Wolf *init_wolf(Wolf *l)
  * Entrée   : Pointeur vers la chèvre à mettre à jour, tableau de toutes les chèvres, nombre total de chèvres.
  * Sortie   : Pointeur vers la chèvre mise à jour.
  */
-Wolf* update_wolf(Wolf *g, Wolf **all_wolfs, int nb_wolfs) {
+Wolf* update_wolf(Wolf *l, Wolf **all_wolfs, int nb_wolfs) {
 
-    //pourcentage de chances que le goat ne bouge pas 80% de chances
-    if ((rand() % 100) < 80) { 
-        g->dir_x = g->x;
-        g->dir_y = g->y;
-        return g; 
+    l->timer_mouvement--;
+
+    if (l->timer_mouvement <= 0) {
+        int chance = rand() % 100;
+
+        if (chance < 80) { // 80% de chance de s'arrêter
+            l->en_mouvement = 0;
+            l->speed = 0;
+            l->timer_mouvement = 30 + (rand() % 90);  
+        } 
+        else { // 20% de chance de commencer à marcher
+            l->en_mouvement = 1;
+            // Vitesse du loup (tu peux l'augmenter si tu veux qu'il aille plus vite que les chèvres)
+            l->speed = 2; 
+            l->timer_mouvement = 30 + (rand() % 90);
+            l->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;  // On génère un angle entre 0 et 2Pi
+        }
     }
-    // On génère un angle entre 0 et 2Pi
-    float angle = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
+    if (l->en_mouvement == 0) { 
+        l->dir_x = l->x;
+        l->dir_y = l->y;
+        return l; 
+    }
+    
 
-    float dx = cos(angle) * g->speed;
-    float dy = sin(angle) * g->speed;
+    float dx = cos(l->angle_actuel) * l->speed;
+    float dy = sin(l->angle_actuel) * l->speed;
 
-    float next_x = g->x + dx;
-    float next_y = g->y + dy;
+    float next_x = l->x + dx;
+    float next_y = l->y + dy;
 
     // Choix du sprite le plus adapté
     if (fabs(dx) > fabs(dy)) {
         if (dx > 0) {
-            g->direction_sprite = 2; // Droite
+            l->direction_sprite = 2; // Droite
         } else {
-            g->direction_sprite = 4; // Gauche
+            l->direction_sprite = 4; // Gauche
         }
     } else {
         if (dy > 0) {
-            g->direction_sprite = 3; // Bas
+            l->direction_sprite = 3; // Bas
         } else {
-            g->direction_sprite = 1; // Haut
+            l->direction_sprite = 1; // Haut
         }
     }
 
@@ -83,7 +99,7 @@ Wolf* update_wolf(Wolf *g, Wolf **all_wolfs, int nb_wolfs) {
 
     int collision = 0;
     for (int i = 0; i < nb_wolfs; i++) {
-        if (all_wolfs[i] != g) {
+        if (all_wolfs[i] != l) {
             if (check_collision_wolf(next_x, next_y, all_wolfs[i]->dir_x, all_wolfs[i]->dir_y)) {
                 collision = 1;
             }
@@ -91,13 +107,13 @@ Wolf* update_wolf(Wolf *g, Wolf **all_wolfs, int nb_wolfs) {
     }
 
     if (!collision) {
-        g->dir_x = next_x;
-        g->dir_y = next_y;
+        l->dir_x = next_x;
+        l->dir_y = next_y;
     }else {
         // Si collision, la chèvre reste sur place
-        g->dir_x = g->x;
-        g->dir_y = g->y;
+        l->dir_x = l->x;
+        l->dir_y = l->y;
     }
 
-    return g;
+    return l;
 }

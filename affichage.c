@@ -39,10 +39,10 @@ int init_affichage() {
 }
 
 int gestion_direction_chevre(int direction){
-    if (direction==1) return 2;
+    if (direction==1) return 3;
     else if (direction==2) return 1;
     else if (direction==3) return 0;
-    else if (direction==4) return 3;
+    else if (direction==4) return 2;
     return -1;
 }
 
@@ -69,7 +69,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
     if (type_entite == 1) {
         texture_actuelle = texture_chevre;
         nb_image=4;
-        nb_ligne=5;
+        nb_ligne=6;
         direction=gestion_direction_chevre(direction);
         } 
     else if (type_entite == 2) { 

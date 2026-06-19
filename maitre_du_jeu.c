@@ -118,28 +118,20 @@ monde *generer_un_monde(monde *monde_courant)
     Synopsis : prend le monde et pour chaque entité, demande à la SDL d'annimer 4 frame de l'entité pour qu'elle se déplacent sur l'écran*/
 void afficher_monde(monde *monde_courant)
 {
-    int pas_goat = monde_courant->goats_tab[0]->speed / 4;
-    for (int j = 0; j < 4; j++)
+    
+    
+    dessiner_monde();
+    for (int w = 0; w < monde_courant->nb_goat; w++)
     {
-        dessiner_monde();
-        for (int w = 0; w < monde_courant->nb_goat; w++)
-        {
-            Goat *current_goat = monde_courant->goats_tab[w];
-            dessiner_entite(1, current_goat->dir_x - pas_goat * 4 - j, current_goat->dir_y - pas_goat * 4 - j, current_goat->frame, current_goat->direction_sprite);
-            if (current_goat->frame == 4)
-                current_goat->frame = 0;
-            else
-                current_goat->frame++;
-        }
-        dessiner_entite(2, monde_courant->fermiers->x - pas_goat * 4 - j, monde_courant->fermiers->y - pas_goat * 4 - j, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
-        if (monde_courant->fermiers->frame == 9)
-            monde_courant->fermiers->frame = 0;
-        else
-            monde_courant->fermiers->frame++;
-        actualiser_ecran();
-        SDL_Delay(200);
+        Goat *current_goat = monde_courant->goats_tab[w];
+        dessiner_entite(1, current_goat->dir_x , current_goat->dir_y , current_goat->frame, current_goat->direction_sprite);
         
     }
+    dessiner_entite(2, monde_courant->fermiers->x  , monde_courant->fermiers->y , monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
+    
+    actualiser_ecran();
+        
+    
 }
 
 /* Entrée : le monde actuel
@@ -153,8 +145,10 @@ monde *mis_à_jour_monde(monde *monde_courant)
         current_goat = update_goat(current_goat, monde_courant->goats_tab, monde_courant->nb_goat);
         current_goat->x = current_goat->dir_x;
         current_goat->y = current_goat->dir_y;
+        current_goat->frame = (current_goat->frame + 1) % 4;
     }
     monde_courant->fermiers = update_fermier(monde_courant->fermiers, monde_courant->fermiers->x, monde_courant->fermiers->y);
+    monde_courant->fermiers->frame = (monde_courant->fermiers->frame + 1) % 9;
     return monde_courant;
 }
 

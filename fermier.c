@@ -18,23 +18,19 @@ Fermier * init_fermier(Fermier *fermier) {
  * Sortie   : Pointeur vers le fermier mis à jour.
  */
 Fermier * update_fermier(Fermier *fermier, int x, int y) {
-    if (x==0){
-        if(y==1){
-            fermier->y-=VITESSE_FERMIER;
-            fermier->direction_sprite=1;
-        }
-        if(y==-1){fermier->y+=VITESSE_FERMIER;
-            fermier->direction_sprite=3;
-        }
+    if(y==1){
+        fermier->y-=VITESSE_FERMIER;
+        fermier->direction_sprite=1;
     }
-    if (y==0){
-        if(x==1){fermier->x-=VITESSE_FERMIER;
-            fermier->direction_sprite=4;
-        }
-        if(x==-1){fermier->x+=VITESSE_FERMIER;
-            fermier->direction_sprite=2;
-        }
-    }  
+    if(y==-1){fermier->y+=VITESSE_FERMIER;
+        fermier->direction_sprite=3;
+    }
+    if(x==1){fermier->x-=VITESSE_FERMIER;
+        fermier->direction_sprite=4;
+    }
+    if(x==-1){fermier->x+=VITESSE_FERMIER;
+        fermier->direction_sprite=2;
+    }
     if(x==0 && y==0) {
         fermier->frame=5;
         return fermier; 

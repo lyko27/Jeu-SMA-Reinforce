@@ -21,31 +21,25 @@ Fermier *update_fermier(Fermier *fermier, int x, int y)
 {
     float next_x = fermier->x;
     float next_y = fermier->y;
-    if (x == 0)
+    if (y == 1)
     {
-        if (y == 1)
-        {
-            next_y -= VITESSE_FERMIER;
-            fermier->direction_sprite = 1;
-        }
-        if (y == -1)
-        {
-            next_y += VITESSE_FERMIER;
-            fermier->direction_sprite = 3;
-        }
+        next_y -= VITESSE_FERMIER;
+        fermier->direction_sprite = 1;
     }
-    if (y == 0)
+    if (y == -1)
     {
-        if (x == 1)
-        {
-            next_x -= VITESSE_FERMIER;
-            fermier->direction_sprite = 4;
-        }
-        if (x == -1)
-        {
-            next_x += VITESSE_FERMIER;
-            fermier->direction_sprite = 2;
-        }
+        next_y += VITESSE_FERMIER;
+        fermier->direction_sprite = 3;
+    }
+    if (x == 1)
+    {
+        next_x -= VITESSE_FERMIER;
+        fermier->direction_sprite = 4;
+    }
+    if (x == -1)
+    {
+        next_x += VITESSE_FERMIER;
+        fermier->direction_sprite = 2;
     }
     if (x == 0 && y == 0)
     {

@@ -192,7 +192,7 @@ int main(int argc, char **argv)
             free(utilisateur);
         }
         monde_courrant = mis_à_jour_monde(monde_courrant);
-        SDL_Delay(200);
+        SDL_Delay(100);
     }
     quitter_affichage();
     free_goat(monde_courrant->goats_tab, monde_courrant->nb_goat);

@@ -30,7 +30,7 @@ Goat *init_goat(Goat *g)
     g->dir_x = g->x;// Initialisation, pas encore de direction
     g->dir_y = g->y;// Initialisation, pas encore de direction
 
-    g->speed = 10;
+    g->speed = 20;
     g->direction_sprite = 1 + (rand() % 4);
     g->frame = 0;
 

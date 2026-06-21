@@ -284,9 +284,9 @@ monde *generer_un_monde(monde *monde_courant)
     Synopsis : Met à jour la position de chaque entité après déplacement dans notre jeu */
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y)
 {
-    // ==========================================
-    // PHASE 1 : Perception et Décision
-    // ==========================================
+    // =========
+    // Décision
+    // =========
     ActionGoat actions_chevres[monde_courant->nb_goat];
     ActionWolf actions_wolfs[monde_courant->nb_wolf];
     ActionFermier action_fermier;
@@ -320,11 +320,11 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         actions_wolfs[i] = current_wolf->action_choisi;
     }
 
-    // ==========================================
-    // PHASE 2 & 3 : Exécution et Résolution
-    // ==========================================
+    // ========
+    // Action
+    // ========
 
-    // ----- FERMIER -----
+    // Fermier
     Fermier *fermier_actuel = monde_courant->fermiers;
     float next_fermier_x = fermier_actuel->x;
     float next_fermier_y = fermier_actuel->y;
@@ -381,7 +381,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         }
     }
 
-    // ----- CHEVRES -----
+    // Goats
     for (int i = 0; i < monde_courant->nb_goat; i++) {
         Goat *current_goat = monde_courant->goats_tab[i];
         ActionGoat action = actions_chevres[i];
@@ -440,7 +440,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             }
         }
     }
-    // ----- WOLFS -----
+    // Wolfs
     for (int i = 0; i < monde_courant->nb_wolf; i++) {
         Wolf *current_wolf = monde_courant->wolfs_tab[i];
         ActionWolf action = actions_wolfs[i];

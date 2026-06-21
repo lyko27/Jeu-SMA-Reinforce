@@ -4,7 +4,6 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <time.h>
 
 #include "goat.h"
 #include "loup.h"
@@ -48,33 +47,8 @@ int main(int argc, char **argv)
             if (!en_pause)
             {
                 tick_animation++;
-                monde_courrant = mis_à_jour_monde(monde_courrant, tick_animation);
-
-                float old_f_x = monde_courrant->fermiers->x;
-                float old_f_y = monde_courrant->fermiers->y;
-
-                monde_courrant->fermiers = update_fermier(monde_courrant->fermiers, utilisateur->x_deplacement, utilisateur->y_deplacement);
-                
-                int collision_fermier = 0;
-                for (int i = 0; i < monde_courrant->nb_goat; i++) {
-                    if (check_collision_rect(monde_courrant->fermiers->x, monde_courrant->fermiers->y, WIDTH_FERMIER, HEIGHT_FERMIER, monde_courrant->goats_tab[i]->x, monde_courrant->goats_tab[i]->y, WIDTH_GOAT, HEIGHT_GOAT)) {
-                        collision_fermier = 1;
-                        break;
-                    }
-                }
-                
-                if (collision_fermier) {
-                    monde_courrant->fermiers->x = old_f_x;
-                    monde_courrant->fermiers->y = old_f_y;
-                }
-
-                if (tick_animation % 6 == 0)
-                {
-                    if (utilisateur->x_deplacement != 0 || utilisateur->y_deplacement != 0)
-                    {
-                        monde_courrant->fermiers->frame = (monde_courrant->fermiers->frame + 1) % 9;
-                    }
-                }
+                // Toute la logique de mise à jour (Fermier, Loup, Chèvre) est maintenant gérée par le monde
+                monde_courrant = mis_à_jour_monde(monde_courrant, tick_animation, utilisateur->x_deplacement, utilisateur->y_deplacement);
             }
             afficher_monde(monde_courrant);
             free(utilisateur);

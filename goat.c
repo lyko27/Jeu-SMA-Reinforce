@@ -2,6 +2,8 @@
 #include <time.h>
 #include <math.h>
 #include "goat.h"
+#include "monde.h"
+#include "loup.h"
 
  /**
  * Synopsis : Décide de la prochaine action de la chèvre en fonction de sa perception.
@@ -37,23 +39,24 @@ ActionGoat decider_action(Goat *g, PerceptionGoat p) {
     return g->action_choisi;
 }
 
-void evaluer_interets(Goat *g, PerceptionGoat p) 
+Goat * evaluer_interets(Goat *current_goat, PerceptionGoat perception) 
 {
     // intérêts par défaut
-    g->table_interets[ACTION_ERRER] = 0.0;
-    g->table_interets[ACTION_FUIR_LOUP] = 0.0;
+    current_goat->table_interets[ACTION_ERRER] = 0.0;
+    current_goat->table_interets[ACTION_FUIR_LOUP] = 0.0;
 
     // modif selon la Perception
-    if (p.dist_loup_proche < 150.0) 
+    if (perception.dist_loup_proche < 150.0) 
     {
         // on fuit si le loup est très proche
-        g->table_interets[ACTION_FUIR_LOUP] = 10.0 - (p.dist_loup_proche / 15.0);
-        g->table_interets[ACTION_ERRER] = -10.0f;
+        current_goat->table_interets[ACTION_FUIR_LOUP] = 10.0 - (perception.dist_loup_proche / 15.0);
+        current_goat->table_interets[ACTION_ERRER] = -10.0f;
     }
     else
     {
         // sinon la chèvre chill
-        g->table_interets[ACTION_FUIR_LOUP] = -10.0;
-        g->table_interets[ACTION_ERRER] = 10.0;
+        current_goat->table_interets[ACTION_FUIR_LOUP] = -10.0;
+        current_goat->table_interets[ACTION_ERRER] = 10.0;
     }
+    return current_goat;
 }

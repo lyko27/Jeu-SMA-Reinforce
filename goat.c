@@ -124,17 +124,17 @@ Goat* update_goat(Goat *g, Goat **all_goats, int nb_goats) {
     return g;
 }
 
-void evaluer_interets(Goat *current_goat, Perception perception) 
+void evaluer_interets(Goat *current_goat, Perception * perception) 
 {
     // intérêts par défaut
     current_goat->table_interets[ACTION_ERRER] = 0.0;
     current_goat->table_interets[ACTION_FUIR_LOUP] = 0.0;
 
     // modif selon la Perception
-    if (perception.dist_loup_proche < 150.0) 
+    if (perception->dist_loup_proche < 150.0) 
     {
         // on fuit si le loup est très proche
-        current_goat->table_interets[ACTION_FUIR_LOUP] = 10.0 - (perception.dist_loup_proche / 15.0);
+        current_goat->table_interets[ACTION_FUIR_LOUP] = 10.0 - (perception->dist_loup_proche / 15.0);
         current_goat->table_interets[ACTION_ERRER] = -10.0;
     }
     else

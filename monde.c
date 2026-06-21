@@ -294,20 +294,27 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     Fermier *fermier_actuel = monde_courant->fermiers;
     float next_fermier_x = fermier_actuel->x;
     float next_fermier_y = fermier_actuel->y;
+    
+    // Normalisation de la vitesse en diagonale pour conserver une vitesse constante
+    float vitesse_actuelle = fermier_actuel->speed;
+    if (action_fermier.dx != 0 && action_fermier.dy != 0) {
+        vitesse_actuelle /= sqrt(2);
+    }
+
     if (action_fermier.dy == 1) {
-        next_fermier_y -= fermier_actuel->speed;
+        next_fermier_y -= vitesse_actuelle;
         fermier_actuel->direction_sprite = 1;
     }
     if (action_fermier.dy == -1) {
-        next_fermier_y += fermier_actuel->speed;
+        next_fermier_y += vitesse_actuelle;
         fermier_actuel->direction_sprite = 3;
     }
     if (action_fermier.dx == 1) {
-        next_fermier_x -= fermier_actuel->speed;
+        next_fermier_x -= vitesse_actuelle;
         fermier_actuel->direction_sprite = 4;
     }
     if (action_fermier.dx == -1) {
-        next_fermier_x += fermier_actuel->speed;
+        next_fermier_x += vitesse_actuelle;
         fermier_actuel->direction_sprite = 2;
     }
 

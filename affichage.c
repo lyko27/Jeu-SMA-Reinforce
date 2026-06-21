@@ -8,7 +8,7 @@ SDL_Texture *texture_fond = NULL;
 SDL_Texture *texture_chevre = NULL;
 SDL_Texture *texture_chevreau = NULL;
 SDL_Texture *texture_fermier = NULL;
-SDL_Texture *texture_loup = NULL;
+SDL_Texture *texture_wolf = NULL;
 
 int init_affichage() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -29,7 +29,7 @@ int init_affichage() {
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");
     texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
-    texture_loup = IMG_LoadTexture(renderer, "./images/loup.png");
+    texture_wolf = IMG_LoadTexture(renderer, "./images/loup.png");
 
     if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier) {
         printf("Erreur chargement image : %s\n", IMG_GetError());
@@ -55,7 +55,7 @@ int gestion_direction_fermier(int direction){
 }
 
 
-int gestion_direction_loup(int direction){
+int gestion_direction_wolf(int direction){
     if (direction==1) return 2;
     else if (direction==2) return 1;
     else if (direction==3) return 0;
@@ -95,7 +95,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
     }
     else if (type_entite == 4) { 
         zoom=0.5;
-        texture_actuelle = texture_loup;
+        texture_actuelle = texture_wolf;
         nb_image=4;
         nb_ligne=5;
     }
@@ -138,7 +138,7 @@ void quitter_affichage() {
     SDL_DestroyTexture(texture_fond);
     SDL_DestroyTexture(texture_chevre);
     SDL_DestroyTexture(texture_fermier);
-    SDL_DestroyTexture(texture_loup);
+    SDL_DestroyTexture(texture_wolf);
     SDL_DestroyTexture(texture_chevreau);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

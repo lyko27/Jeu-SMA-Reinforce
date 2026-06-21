@@ -2,7 +2,7 @@
 #define goat_h
 
 typedef enum {
-    ACTION_FUIR_LOUP,      // Fuit dans la direction opposée au loup
+    ACTION_FUIR_WOLF,      // Fuit dans la direction opposée au wolf
     ACTION_ERRER,          // Marche aléatoirement
     ACTION_BROUTER,
     NB_ACTIONS
@@ -28,9 +28,9 @@ typedef struct
 } Goat;
 
 typedef struct {
-    float dist_loup_proche;
-    int pos_x_loup;
-    int pos_y_loup;
+    float dist_wolf_proche;
+    int pos_x_wolf;
+    int pos_y_wolf;
     Goat ** goats_tab;
     int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
     int nb_goat ;      // Nombre actuel de chèvres
@@ -38,7 +38,7 @@ typedef struct {
     int pos_y_fermier;
 } PerceptionGoat;
 
-ActionGoat decider_action_goat(Goat *g, PerceptionGoat p);
-void evaluer_interets_goat(Goat *g, PerceptionGoat p);
+ActionGoat decider_action_goat(Goat *goat, PerceptionGoat perception_goat);
+void evaluer_interets_goat(Goat *goat, PerceptionGoat perception_goat);
 
 #endif

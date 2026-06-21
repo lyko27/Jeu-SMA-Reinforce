@@ -47,7 +47,7 @@ int main(int argc, char **argv)
             if (!en_pause)
             {
                 tick_animation++;
-                // Toute la logique de mise à jour (Fermier, Loup, Chèvre) est maintenant gérée par le monde
+                // Toute la logique de mise à jour (Fermier, Wolf, Chèvre) est maintenant gérée par le monde
                 monde_courrant = mis_à_jour_monde(monde_courrant, tick_animation, utilisateur->x_deplacement, utilisateur->y_deplacement);
             }
             afficher_monde(monde_courrant);

@@ -1,13 +1,9 @@
 #ifndef fermier_h
 #define fermier_h
 
-typedef enum {
-    ACTION_FERMIER_BOUGER_HAUT,
-    ACTION_FERMIER_BOUGER_BAS,
-    ACTION_FERMIER_BOUGER_GAUCHE,
-    ACTION_FERMIER_BOUGER_DROITE,
-    ACTION_FERMIER_IMMOBILE,
-    NB_ACTIONS_FERMIER
+typedef struct {
+    int dx;
+    int dy;
 } ActionFermier;
 
 typedef struct {
@@ -28,6 +24,6 @@ typedef struct
     ActionFermier action_choisi;
 } Fermier;
 
-ActionFermier decider_action_fermier(Fermier *f, PerceptionFermier p);
+ActionFermier decider_action_fermier(Fermier *fermier, PerceptionFermier perception_fermier);
 
 #endif

@@ -13,19 +13,18 @@
 #define HEIGHT_FERMIER 60
 #define VITESSE_FERMIER 5
 
-// Le Monde 
-typedef struct {
+// Le Monde
+typedef struct
+{
     int largeur;
     int hauteur;
-    Fermier * fermiers;
-    Goat ** goats_tab;
-    int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
-    int nb_goat ;      // Nombre actuel de chèvres
-    Wolf ** wolfs_tab;
+    Fermier *fermiers;
+    Goat **goats_tab;
+    int capacite_max_goat; // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
+    int nb_goat;           // Nombre actuel de chèvres
+    Wolf **wolfs_tab;
     int capacite_max_wolf;
-    int nb_wolf ; 
-
-                            // L'économie du joueur...
+    int nb_wolf;
 } monde;
 
 void free_goats(Goat **goats_tab, int nb_goat);

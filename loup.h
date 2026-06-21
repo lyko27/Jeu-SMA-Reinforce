@@ -1,21 +1,21 @@
-#ifndef loup_h
-#define loup_h
+#ifndef wolf_h
+#define wolf_h
 
 #include "goat.h"
 
 typedef enum {
-    ACTION_LOUP_ERRER,
-    ACTION_LOUP_CHASSER,
-    ACTION_LOUP_ARRET,
-    NB_ACTIONS_LOUP
-} ActionLoup;
+    ACTION_WOLF_ERRER,
+    ACTION_WOLF_CHASSER,
+    ACTION_WOLF_ARRET,
+    NB_ACTIONS_WOLF
+} ActionWolf;
 
 typedef struct {
     Goat **goats_tab;
     int nb_goat;
     int pos_x_fermier;
     int pos_y_fermier;
-} PerceptionLoup;
+} PerceptionWolf;
 
 typedef struct
 {
@@ -30,12 +30,12 @@ typedef struct
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
     
-    float table_interets[NB_ACTIONS_LOUP];
+    float table_interets[NB_ACTIONS_WOLF];
     int decision_cooldown;
-    ActionLoup action_choisi;
+    ActionWolf action_choisi;
 } Wolf;
 
-ActionLoup decider_action_wolf(Wolf *l, PerceptionLoup p);
-void evaluer_interets_wolf(Wolf *l, PerceptionLoup p);
+ActionWolf decider_action_wolf(Wolf *wolf, PerceptionWolf perception_wolf);
+void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf);
 
 #endif

@@ -17,4 +17,11 @@ typedef struct {
                             // L'économie du joueur...
 } monde;
 
-#endif 
+void free_goats(Goat **goats_tab, int nb_goat);
+void free_wolf(Wolf **wolf_tab, int nombre_wolf);
+monde *creer_monde(int largeur, int hauteur);
+monde *generer_un_monde(monde *monde_courant);
+void afficher_monde(monde *monde_courant);
+monde *mis_à_jour_monde(monde *monde_courant, int tick_animation);
+
+#endif

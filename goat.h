@@ -11,16 +11,6 @@ typedef enum {
     NB_ACTIONS
 } Action;
 
-typedef struct {
-    float dist_loup_proche;
-    int pos_x_loup;
-    int pos_y_loup;
-    Goat ** goats_tab;
-    int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
-    int nb_goat ;      // Nombre actuel de chèvres
-    int pos_x_fermier;
-    int pos_y_fermier;
-} Perception;
 
 typedef struct
 {
@@ -37,8 +27,19 @@ typedef struct
 
     float table_interets[NB_ACTIONS];
     int decision_cooldown ;
-    Action action_choisi
+    Action action_choisi;
 } Goat;
+
+typedef struct {
+    float dist_loup_proche;
+    int pos_x_loup;
+    int pos_y_loup;
+    Goat ** goats_tab;
+    int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
+    int nb_goat ;      // Nombre actuel de chèvres
+    int pos_x_fermier;
+    int pos_y_fermier;
+} Perception;
 
 Goat *init_goat(Goat *g);
 Goat *update_goat(Goat *g, Goat **all_goats, int nb_goats);

@@ -39,7 +39,7 @@ ActionGoat decider_action(Goat *g, PerceptionGoat p) {
     return g->action_choisi;
 }
 
-Goat * evaluer_interets(Goat *current_goat, PerceptionGoat perception) 
+void evaluer_interets(Goat *current_goat, PerceptionGoat perception) 
 {
     // intérêts par défaut
     current_goat->table_interets[ACTION_ERRER] = 0.0;
@@ -58,5 +58,4 @@ Goat * evaluer_interets(Goat *current_goat, PerceptionGoat perception)
         current_goat->table_interets[ACTION_FUIR_LOUP] = -10.0;
         current_goat->table_interets[ACTION_ERRER] = 10.0;
     }
-    return current_goat;
 }

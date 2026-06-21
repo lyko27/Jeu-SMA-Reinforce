@@ -36,5 +36,6 @@ monde *creer_monde(int largeur, int hauteur);
 monde *generer_un_monde(monde *monde_courant);
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y);
 int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2);
+void afficher_monde(monde *monde_courant);
 
 #endif

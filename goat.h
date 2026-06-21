@@ -1,15 +1,12 @@
 #ifndef goat_h
 #define goat_h
 
-#define WIDTH_GOAT 50
-#define HEIGHT_GOAT 30
-#define TAILLE_MAP 1024
-
 typedef enum {
     ACTION_FUIR_LOUP,      // Fuit dans la direction opposée au loup
     ACTION_ERRER,          // Marche aléatoirement
+    ACTION_BROUTER,
     NB_ACTIONS
-} Action;
+} ActionGoat;
 
 
 typedef struct
@@ -27,7 +24,7 @@ typedef struct
 
     float table_interets[NB_ACTIONS];
     int decision_cooldown ;
-    Action action_choisi;
+    ActionGoat action_choisi;
 } Goat;
 
 typedef struct {
@@ -39,10 +36,9 @@ typedef struct {
     int nb_goat ;      // Nombre actuel de chèvres
     int pos_x_fermier;
     int pos_y_fermier;
-} Perception;
+} PerceptionGoat;
 
-Goat *init_goat(Goat *g);
-Goat *update_goat(Goat *g, Goat **all_goats, int nb_goats);
-int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2);
+ActionGoat decider_action(Goat *g, PerceptionGoat p);
+void evaluer_interets(Goat *g, PerceptionGoat p);
 
 #endif

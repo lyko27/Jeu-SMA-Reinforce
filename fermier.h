@@ -1,23 +1,33 @@
 #ifndef fermier_h
 #define fermier_h
 
-#include "utilisateur.h"
-
-#define VITESSE_FERMIER 5.0f
-#define WIDTH_FERMIER 50
-#define HEIGHT_FERMIER 30
-#define TAILLE_MAP 1024
+typedef enum {
+    ACTION_FERMIER_BOUGER_HAUT,
+    ACTION_FERMIER_BOUGER_BAS,
+    ACTION_FERMIER_BOUGER_GAUCHE,
+    ACTION_FERMIER_BOUGER_DROITE,
+    ACTION_FERMIER_IMMOBILE,
+    NB_ACTIONS_FERMIER
+} ActionFermier;
 
 typedef struct {
+    int input_x; // -1, 0, 1
+    int input_y; // -1, 0, 1
+} PerceptionFermier;
+
+typedef struct
+{
     float x;
     float y;
     float speed;
-    int frame; 
+    float dir_x;
+    float dir_y;
+    int frame;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
+    
+    ActionFermier action_choisi;
 } Fermier;
 
-Fermier * init_fermier(Fermier *fermier);
-
-Fermier * update_fermier(Fermier *fermier, int x, int y);
+ActionFermier decider_action_fermier(Fermier *f, PerceptionFermier p);
 
 #endif

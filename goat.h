@@ -9,12 +9,17 @@ typedef enum {
     ACTION_FUIR_LOUP,      // Fuit dans la direction opposée au loup
     ACTION_ERRER,          // Marche aléatoirement
     NB_ACTIONS
-} ActionPossible;
+} Action;
 
 typedef struct {
     float dist_loup_proche;
     int pos_x_loup;
     int pos_y_loup;
+    Goat ** goats_tab;
+    int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
+    int nb_goat ;      // Nombre actuel de chèvres
+    int pos_x_fermier;
+    int pos_y_fermier;
 } Perception;
 
 typedef struct
@@ -29,10 +34,10 @@ typedef struct
     int en_mouvement;
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
-    
+
     float table_interets[NB_ACTIONS];
     int decision_cooldown ;
-    ActionPossible action_choisi
+    Action action_choisi
 } Goat;
 
 Goat *init_goat(Goat *g);

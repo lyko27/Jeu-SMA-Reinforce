@@ -31,6 +31,7 @@ typedef struct
     float angle_actuel;
     
     float table_interets[NB_ACTIONS_LOUP];
+    int decision_cooldown;
     ActionLoup action_choisi;
 } Wolf;
 

@@ -38,7 +38,7 @@ typedef struct {
     int pos_y_fermier;
 } PerceptionGoat;
 
-ActionGoat decider_action(Goat *g, PerceptionGoat p);
-void evaluer_interets(Goat *g, PerceptionGoat p);
+ActionGoat decider_action_goat(Goat *g, PerceptionGoat p);
+void evaluer_interets_goat(Goat *g, PerceptionGoat p);
 
 #endif

@@ -10,8 +10,8 @@
  * Entrée   : Pointeur vers la chèvre, Perception de la chèvre.
  * Sortie   : Action choisie par la chèvre.
  */
-ActionGoat decider_action(Goat *g, PerceptionGoat p) {
-    evaluer_interets(g, p);
+ActionGoat decider_action_goat(Goat *g, PerceptionGoat p) {
+    evaluer_interets_goat(g, p);
 
     // Si l'intérêt de fuir le loup est plus fort que l'errance, on fuit
     if (g->table_interets[ACTION_FUIR_LOUP] > g->table_interets[ACTION_ERRER] &&
@@ -39,7 +39,8 @@ ActionGoat decider_action(Goat *g, PerceptionGoat p) {
     return g->action_choisi;
 }
 
-void evaluer_interets(Goat *current_goat, PerceptionGoat perception) 
+
+void evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception) 
 {
     // intérêts par défaut
     current_goat->table_interets[ACTION_ERRER] = 0.0;

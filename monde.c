@@ -256,22 +256,33 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     // Chèvres
     for (int i = 0; i < monde_courant->nb_goat; i++) {
         Goat *current_goat = monde_courant->goats_tab[i];
-        PerceptionGoat p;
-        p.dist_loup_proche = 200.0f; 
-        p.goats_tab = monde_courant->goats_tab;
-        p.nb_goat = monde_courant->nb_goat;
-        actions_chevres[i] = decider_action(current_goat, p);
+        current_goat->decision_cooldown--;
+        if (current_goat->decision_cooldown <= 0) {
+            PerceptionGoat p;
+            p.dist_loup_proche = 200.0f; 
+            p.goats_tab = monde_courant->goats_tab;
+            p.nb_goat = monde_courant->nb_goat;
+            current_goat->action_choisi = decider_action_goat(current_goat, p);
+            current_goat->decision_cooldown = 30 + (rand() % 90);
+        }
+        actions_chevres[i] = current_goat->action_choisi;
     }
 
     // Loups
     for (int i = 0; i < monde_courant->nb_wolf; i++) {
         Wolf *current_wolf = monde_courant->wolfs_tab[i];
-        PerceptionLoup pw;
-        pw.goats_tab = monde_courant->goats_tab;
-        pw.nb_goat = monde_courant->nb_goat;
-        pw.pos_x_fermier = monde_courant->fermiers->x;
-        pw.pos_y_fermier = monde_courant->fermiers->y;
-        actions_loups[i] = decider_action_wolf(current_wolf, pw);
+        
+        current_wolf->decision_cooldown--;
+        if (current_wolf->decision_cooldown <= 0) {
+            PerceptionLoup pw;
+            pw.goats_tab = monde_courant->goats_tab;
+            pw.nb_goat = monde_courant->nb_goat;
+            pw.pos_x_fermier = monde_courant->fermiers->x;
+            pw.pos_y_fermier = monde_courant->fermiers->y;
+            current_wolf->action_choisi = decider_action_wolf(current_wolf, pw);
+            current_wolf->decision_cooldown = 30 + (rand() % 90);
+        }
+        actions_loups[i] = current_wolf->action_choisi;
     }
 
     // ==========================================
@@ -384,7 +395,6 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             }
         }
     }
-
     // ----- LOUPS -----
     for (int i = 0; i < monde_courant->nb_wolf; i++) {
         Wolf *current_wolf = monde_courant->wolfs_tab[i];

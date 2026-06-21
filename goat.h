@@ -5,6 +5,18 @@
 #define HEIGHT_GOAT 30
 #define TAILLE_MAP 1024
 
+typedef enum {
+    ACTION_FUIR_LOUP,      // Fuit dans la direction opposée au loup
+    ACTION_ERRER,          // Marche aléatoirement
+    NB_ACTIONS
+} ActionPossible;
+
+typedef struct {
+    float dist_loup_proche;
+    int pos_x_loup;
+    int pos_y_loup;
+} Perception;
+
 typedef struct
 {
     float x;
@@ -17,6 +29,10 @@ typedef struct
     int en_mouvement;
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
+    
+    float table_interets[NB_ACTIONS];
+    int decision_cooldown ;
+    ActionPossible action_choisi
 } Goat;
 
 Goat *init_goat(Goat *g);

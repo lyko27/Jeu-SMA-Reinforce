@@ -7,6 +7,9 @@
 #include "affichage.h"
 #include "monde.h"
 
+
+/* ============== PARTIE 1 : Chèvres ============== */
+
 /* ENtrées : le tableau de chèvre, nombre de chèvre
     Sotie : aucune
     Synopsis : libère toute les goats du tableau*/
@@ -20,24 +23,6 @@ void free_goats(Goat **goats_tab, int nb_goat)
             {
                 free(goats_tab[i]);
                 goats_tab[i] = NULL;
-            }
-        }
-    }
-}
-
-/* ENtrées : le tableau de loup, nombre de loup
-    Sotie : aucune
-    Synopsis : libère toute les wolfs du tableau*/
-void free_wolf(Wolf **wolf_tab, int nombre_wolf)
-{
-    if (wolf_tab != NULL)
-    {
-        for (int i = 0; i < nombre_wolf; i++)
-        {
-            if (wolf_tab[i] != NULL)
-            {
-                free(wolf_tab[i]);
-                wolf_tab[i] = NULL;
             }
         }
     }
@@ -58,6 +43,27 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
     return monde_courant;
 }
 
+/* ============== PARTIE 1 : Loup ============== */
+
+/* ENtrées : le tableau de loup, nombre de loup
+    Sotie : aucune
+    Synopsis : libère toute les wolfs du tableau*/
+void free_wolf(Wolf **wolf_tab, int nombre_wolf)
+{
+    if (wolf_tab != NULL)
+    {
+        for (int i = 0; i < nombre_wolf; i++)
+        {
+            if (wolf_tab[i] != NULL)
+            {
+                free(wolf_tab[i]);
+                wolf_tab[i] = NULL;
+            }
+        }
+    }
+}
+
+
 /* ENtrées : le monde actuel dans sa structure et un loup
     Sotie : Le monde mis a jour avec le nouveau loup en plus
     Synopsis : prend un loup et l'ajoute au monde*/
@@ -72,6 +78,8 @@ monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
     monde_courant->nb_wolf++;
     return monde_courant;
 }
+
+/* ============== PARTIE 1 : Monde ============== */
 
 /* Entrée : deux entier la largeur et la hauteur du monde
    Sortie : le monde vide
@@ -160,27 +168,6 @@ monde *generer_un_monde(monde *monde_courant)
 }
 
 /* Entrée : le monde actuel
-    Sortie : aucune
-    Synopsis : prend le monde et pour chaque entité, demande à la SDL d'annimer 4 frame de l'entité pour qu'elle se déplacent sur l'écran*/
-void afficher_monde(monde *monde_courant)
-{
-    dessiner_monde();
-    for (int w = 0; w < monde_courant->nb_goat; w++)
-    {
-        Goat *current_goat = monde_courant->goats_tab[w];
-        dessiner_entite(1, current_goat->dir_x, current_goat->dir_y, current_goat->frame, current_goat->direction_sprite);
-    }
-
-    for (int w = 0; w < monde_courant->nb_wolf; w++)
-    {
-        Wolf *current_wolf = monde_courant->wolfs_tab[w];
-        dessiner_entite(4, current_wolf->dir_x, current_wolf->dir_y, current_wolf->frame, current_wolf->direction_sprite);
-    }
-    dessiner_entite(2, monde_courant->fermiers->x, monde_courant->fermiers->y, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
-    actualiser_ecran();
-}
-
-/* Entrée : le monde actuel
     Sortie : le monde mis à jour
     Synopsis : Met à jour la position de chaque entité après déplacement dans notre jeu */
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
@@ -228,4 +215,27 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
     }
 
     return monde_courant;
+}
+
+/* ============== PARTIE 1 : Affichage ============== */
+
+/* Entrée : le monde actuel
+    Sortie : aucune
+    Synopsis : prend le monde et pour chaque entité, demande à la SDL d'annimer 4 frame de l'entité pour qu'elle se déplacent sur l'écran*/
+void afficher_monde(monde *monde_courant)
+{
+    dessiner_monde();
+    for (int w = 0; w < monde_courant->nb_goat; w++)
+    {
+        Goat *current_goat = monde_courant->goats_tab[w];
+        dessiner_entite(1, current_goat->dir_x, current_goat->dir_y, current_goat->frame, current_goat->direction_sprite);
+    }
+
+    for (int w = 0; w < monde_courant->nb_wolf; w++)
+    {
+        Wolf *current_wolf = monde_courant->wolfs_tab[w];
+        dessiner_entite(4, current_wolf->dir_x, current_wolf->dir_y, current_wolf->frame, current_wolf->direction_sprite);
+    }
+    dessiner_entite(2, monde_courant->fermiers->x, monde_courant->fermiers->y, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
+    actualiser_ecran();
 }

@@ -209,9 +209,16 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {
         Goat *current_goat = monde_courant->goats_tab[i];
-        current_goat = update_goat(current_goat, monde_courant->goats_tab, monde_courant->nb_goat);
-        current_goat->x = current_goat->dir_x;
-        current_goat->y = current_goat->dir_y;
+        current_goat->decision_cooldown--;
+        {
+            if (current_goat->decision_cooldown <= 0)
+            {
+                PerceptionGoat * perception = malloc(sizeof(PerceptionGoat));
+                perception = calculer_perception_goat(monde_courant, current_goat);
+                current_goat->action_choisi = decider_action_goat(current_goat, *perception); // à remplacer par softmax
+                current_goat->decision_cooldown = 30 + (rand() % 90); // Cooldown aléatoire entre 30 et 120 ticks
+            }
+        }
         
         if (tick_animation % 6 == 0)
         {
@@ -225,18 +232,23 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
             }
         }
     }
-
-    // Mise à jour des loups (mouvement et animation)
-    for (int i = 0; i < monde_courant->nb_wolf; i++)
+        for (int i = 0; i < monde_courant->nb_wolf; i++)
     {
         Wolf *current_wolf = monde_courant->wolfs_tab[i];
-        current_wolf = update_wolf(current_wolf, monde_courant->wolfs_tab, monde_courant->nb_wolf);
-        current_wolf->x = current_wolf->dir_x;
-        current_wolf->y = current_wolf->dir_y;
+        current_wolf->decision_cooldown--;
+        {
+            if (current_wolf->decision_cooldown <= 0)
+            {
+                PerceptionLoup * perception = malloc(sizeof(PerceptionLoup));
+                perception = calculer_perception_wolf(monde_courant, current_wolf);
+                current_wolf->action_choisi = decider_action_loup(current_wolf, *perception); // à remplacer par softmax
+                current_wolf->decision_cooldown = 30 + (rand() % 90); // Cooldown aléatoire entre 30 et 120 ticks
+            }
+        }
         
         if (tick_animation % 6 == 0)
         {
-            if (current_wolf->x != current_wolf->dir_x || current_wolf->y != current_wolf->dir_y)
+            if (current_wolf->en_mouvement)
             {
                 current_wolf->frame = (current_wolf->frame + 1) % 4;
             }
@@ -246,8 +258,6 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
             }
         }
     }
-
-    return monde_courant;
 }
 
 /* ============== PARTIE 4 : Affichage ============== */

@@ -213,9 +213,8 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
         {
             if (current_goat->decision_cooldown <= 0)
             {
-                PerceptionGoat * perception = malloc(sizeof(PerceptionGoat));
-                perception = calculer_perception_goat(monde_courant, current_goat);
-                current_goat->action_choisi = decider_action_goat(current_goat, *perception); // à remplacer par softmax
+                PerceptionGoat perception = calculer_perception_goat(monde_courant, current_goat);
+                current_goat->action_choisi = decider_action_goat(current_goat, perception); // à remplacer par softmax
                 current_goat->decision_cooldown = 30 + (rand() % 90); // Cooldown aléatoire entre 30 et 120 ticks
             }
         }
@@ -239,9 +238,8 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
         {
             if (current_wolf->decision_cooldown <= 0)
             {
-                PerceptionLoup * perception = malloc(sizeof(PerceptionLoup));
-                perception = calculer_perception_wolf(monde_courant, current_wolf);
-                current_wolf->action_choisi = decider_action_loup(current_wolf, *perception); // à remplacer par softmax
+                PerceptionLoup perception = calculer_perception_loup(monde_courant, current_wolf);
+                current_wolf->action_choisi = decider_action_loup(current_wolf, perception); // à remplacer par softmax
                 current_wolf->decision_cooldown = 30 + (rand() % 90); // Cooldown aléatoire entre 30 et 120 ticks
             }
         }

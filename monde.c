@@ -12,6 +12,40 @@
 #define LARGEUR 1600
 #define HAUTEUR 1600
 
+
+/**
+ * Synopsis : calcul la proba de chaque action et calcul un nombre aleatoire et en fonction de ce nombre et des proba renvoie une action.
+ * Entrée   : le tableau d interet qui contient l interet de chaque action et le nombre d actions possible.
+ * Sortie   : le numero de l'action retenue.
+ */
+int choisir_action_softmax(float * tab_interet,int nb_actions){
+    float max_interet= tab_interet[0];
+    for (int i=1;i<nb_actions;i++){ //ici on l'action avec le meilleur interet
+        if (tab_interet[i]>max_interet){
+            max_interet = tab_interet[i];
+        }
+    }
+
+    // on calcule exp(interet de chaque action) et on met ca dans le tableau de probabilite
+    float somme_exp = 0.0f;
+    float probabilites [nb_actions];
+
+    for (int i=0; i<nb_actions;i++){
+        probabilites[i]=exp(tab_interet[i]-max_interet);
+        somme_exp+=probabilites[i];// on calcul la somme des probabilites en meme temps
+    }
+
+    float tirage = (float)rand()/(float)RAND_MAX; // le tirage simule le de dont on a parle pour le cas d un environnement stochastique
+    float somme_cumulee=0.0f;
+    for (int i=0; i<nb_actions;i++){
+        somme_cumulee+=(probabilites[i]/somme_exp); //on normalise la proba pour que proba soit comprise entre 0 et 1
+        if (tirage<=somme_cumulee){
+            return i;
+        }
+    }
+    return 0; //securite
+}
+   
 /**
  * Synopsis : Vérifie la collision entre deux objets rectangulaires.
  * Entrée   : Coordonnées (x1, y1) du premier objet, coordonnées (x2, y2) du deuxième objet.

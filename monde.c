@@ -156,6 +156,10 @@ Goat * update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick
                 goat->angle_actuel = atan2(goat->y - perception_goat.pos_y_wolf, goat->x - perception_goat.pos_x_wolf);
             }
         }
+        else
+        { //aléatoire
+            goat->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
+        }
         next_x += cos(goat->angle_actuel) * goat->speed;
         next_y += sin(goat->angle_actuel) * goat->speed;
         
@@ -220,6 +224,10 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
                 // Aller vers la chèvre
                 wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
             }
+        }
+        else
+        {
+            wolf->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
         }
 
         next_x += cos(wolf->angle_actuel) * wolf->speed;

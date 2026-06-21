@@ -12,8 +12,8 @@
 #include "fermier.h"
 #include "monde.h"
 
-#define LARGEUR 1024
-#define HAUTEUR 1024
+#define LARGEUR 1600
+#define HAUTEUR 1600
 
 int main(int argc, char **argv)
 {

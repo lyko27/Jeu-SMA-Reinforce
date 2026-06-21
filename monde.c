@@ -9,8 +9,8 @@
 #include "monde.h"
 #include "affichage.h"
 
-#define LARGEUR 1024
-#define HAUTEUR 1024
+#define LARGEUR 1600
+#define HAUTEUR 1600
 
 /**
  * Synopsis : Vérifie la collision entre deux objets rectangulaires.

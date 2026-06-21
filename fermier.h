@@ -6,6 +6,19 @@ typedef struct {
     int dy;
 } ActionFermier;
 
+typedef enum {
+    ACTION_FERMIER_ERRER,
+    ACTION_FERMIER_AVANCER,
+    ACTION_FERMIER_RECULER,
+    ACTION_FERMIER_DROITE,
+    ACTION_FERMIER_GAUCHE,
+    ACTION_FERMIER_HAUT_GAUCHE,
+    ACTION_FERMIER_HAUT_DROITE,
+    ACTION_FERMIER_BAS_GAUCHE,
+    ACTION_FERMIER_BAS_DROITE,
+    NB_ACTIONS_FERMIER
+} ActionFermierType;
+
 typedef struct {
     int input_x; // -1, 0, 1
     int input_y; // -1, 0, 1
@@ -20,7 +33,8 @@ typedef struct
     float dir_y;
     int frame;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
-    
+    float table_interets[NB_ACTIONS_FERMIER];
+    int decision_cooldown;
     ActionFermier action_choisi;
 } Fermier;
 

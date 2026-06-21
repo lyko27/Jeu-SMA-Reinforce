@@ -67,6 +67,9 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
     return monde_courant;
 }
 
+/* ENtrées : le monde actuel dans sa structure et un loup
+    Sotie : Le monde mis a jour avec le nouveau loup en plus
+    Synopsis : prend un loup et l'ajoute au monde*/
 monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
 {
     if (monde_courant->nb_wolf + 1 > monde_courant->capacite_max_wolf)

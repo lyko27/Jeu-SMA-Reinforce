@@ -122,6 +122,8 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
 PerceptionGoat calculer_perception_goat(Goat *goat, monde *monde_courant) {
     PerceptionGoat perception;
     perception.dist_wolf_proche = 200.0f; // Valeur par défaut
+    perception.pos_x_wolf = -1;           // Valeur par défaut si aucun loup n'est proche
+    perception.pos_y_wolf = -1;
     perception.goats_tab = monde_courant->goats_tab;
     perception.nb_goat = monde_courant->nb_goat;
     perception.pos_x_fermier = monde_courant->fermiers->x;
@@ -157,10 +159,7 @@ Goat * update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick
                 goat->angle_actuel = atan2(goat->y - perception_goat.pos_y_wolf, goat->x - perception_goat.pos_x_wolf);
             }
         }
-        else if (goat->decision_cooldown <= 0)
-        { //aléatoire
-            goat->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
-        }
+        
         next_x += cos(goat->angle_actuel) * goat->speed;
         next_y += sin(goat->angle_actuel) * goat->speed;
         
@@ -279,6 +278,8 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
 {
     PerceptionWolf perception;
     perception.dist_goat_proche = 300.0f; // Valeur par défaut
+    perception.pos_x_goat = -1;           // Valeur par défaut si aucune chèvre n'est proche
+    perception.pos_y_goat = -1;
     perception.goats_tab = monde_courant->goats_tab;
     perception.nb_goat = monde_courant->nb_goat;
     perception.pos_x_fermier = monde_courant->fermiers->x;
@@ -312,10 +313,6 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
                 // Aller vers la chèvre
                 wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
             }
-        }
-        else if (wolf->decision_cooldown <= 0)
-        {
-            wolf->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
         }
 
         next_x += cos(wolf->angle_actuel) * wolf->speed;
@@ -503,7 +500,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             
             // choix action softmax
             goat->action_choisi = choisir_action_softmax(goat->table_interets, NB_ACTIONS);
-            
+            // maj angle
+            if (goat->action_choisi == ACTION_ERRER) goat->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
+
             // réinitialisation du cooldown
             goat->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
         }
@@ -526,7 +525,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             
             // choix action softmax
             wolf->action_choisi = choisir_action_softmax(wolf->table_interets, NB_ACTIONS_WOLF);
-            
+            if (wolf->action_choisi == ACTION_WOLF_ERRER) wolf->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
             // réinitialisation du cooldown
             wolf->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
         }

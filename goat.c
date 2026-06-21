@@ -45,6 +45,7 @@ void evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception_goat)
     // intérêts par défaut
     current_goat->table_interets[ACTION_ERRER] = 0.0;
     current_goat->table_interets[ACTION_FUIR_WOLF] = 0.0;
+    current_goat->table_interets[ACTION_FUIR_WOLF] = 0.0;
 
     // modif selon la Perception
     if (perception_goat.dist_wolf_proche < 150.0) 
@@ -57,6 +58,7 @@ void evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception_goat)
     {
         // sinon la chèvre chill
         current_goat->table_interets[ACTION_FUIR_WOLF] = -10.0;
-        current_goat->table_interets[ACTION_ERRER] = 10.0;
+        current_goat->table_interets[ACTION_ERRER] = 8.0;
+        current_goat->table_interets[ACTION_BROUTER] = 10.0;
     }
 }

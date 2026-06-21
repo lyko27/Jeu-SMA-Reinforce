@@ -43,7 +43,7 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
     return monde_courant;
 }
 
-/* ============== PARTIE 1 : Loup ============== */
+/* ============== PARTIE 2 : Loup ============== */
 
 /* ENtrées : le tableau de loup, nombre de loup
     Sotie : aucune
@@ -79,7 +79,7 @@ monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
     return monde_courant;
 }
 
-/* ============== PARTIE 1 : Monde ============== */
+/* ============== PARTIE 3 : Monde ============== */
 
 /* Entrée : deux entier la largeur et la hauteur du monde
    Sortie : le monde vide
@@ -217,7 +217,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation)
     return monde_courant;
 }
 
-/* ============== PARTIE 1 : Affichage ============== */
+/* ============== PARTIE 4 : Affichage ============== */
 
 /* Entrée : le monde actuel
     Sortie : aucune

@@ -7,6 +7,7 @@ typedef enum {
     ACTION_WOLF_ERRER,
     ACTION_WOLF_CHASSER,
     ACTION_WOLF_ARRET,
+    ACTION_WOLF_FUIR_FERMIER,
     NB_ACTIONS_WOLF
 } ActionWolf;
 

@@ -27,6 +27,15 @@ typedef struct
     int nb_wolf;
 } monde;
 
+typedef struct {
+    float x;
+    float y;
+    float w;
+    float h;
+} Hitbox;
+
+
+Hitbox creer_hitbox(float x, float y, float w, float h, float marge_x, float marge_y);
 void free_goats(Goat **goats_tab, int nb_goat);
 void free_wolf(Wolf **wolf_tab, int nombre_wolf);
 monde *ajouter_goat(monde *monde_courant, Goat *goat);

@@ -80,6 +80,26 @@ int check_collision_rect(float x1, float y1, float w1, float h1, float x2,
     }
     return 1; // Collision
 }
+
+/**
+ * Synopsis : Crée et retourne la Hitbox à partir d'un rectangle de base.
+ * Permet de réduire la taille de la zone sensible du sprite d'une entité en appliquant
+ * des marges horizontales et verticales, afin d'ignorer les zones transparentes de l'image.
+ * Entrée   : - x, y : Coordonnées du coin supérieur gauche du sprite d'origine.
+ * - w, h : Largeur et hauteur totales du sprite d'origine.
+ * - marge_x : Nombre de pixels à retirer à gauche et à droite.
+ * - marge_y : Nombre de pixels à retirer en haut et en bas.
+ * Sortie   : Une structure Hitbox contenant les nouvelles coordonnées (x, y) et dimensions (w, h) 
+ * ajustées pour la logique de collision.
+ */
+Hitbox creer_hitbox(float x, float y, float w, float h, float marge_x, float marge_y) {
+    Hitbox hb;
+    hb.x = x + marge_x;
+    hb.y = y + marge_y;
+    hb.w = w - (2 * marge_x);
+    hb.h = h - (2 * marge_y);
+    return hb;
+}
 /* ========== Fermier ========== */
 
 /**
@@ -212,45 +232,40 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
 
     int collision = 0;
 
+    // 1. Création de la hitbox future de la chèvre (Ajuste les marges 15.0f et 10.0f selon ton sprite)
+    Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_GOAT, HEIGHT_GOAT, 15.0f, 10.0f);
+    
+    // 2. Hitbox du lac (pas de marge, il garde sa vraie taille)
+    Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f);
+
     // Collision avec le lac
-    if (check_collision_rect(next_x, next_y, WIDTH_GOAT, HEIGHT_GOAT,
-                             LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT))
-    {
+
+    if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
+                             hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
         collision = 1;
         goat->timer_mouvement = 0;
     }
-    for (int j = 0; j < monde_courant->nb_goat; j++)
-    {
-        if (monde_courant->goats_tab[j] != goat)
-        {
-            if (check_collision_rect(next_x, next_y, WIDTH_GOAT, HEIGHT_GOAT,
-                                     monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y,
-                                     WIDTH_GOAT, HEIGHT_GOAT))
-            {
-                collision = 1;
-                goat->timer_mouvement = 0;
-                break;
+
+    // Collision avec les autres chèvres
+    if (!collision) {
+        for (int j = 0; j < monde_courant->nb_goat; j++) {
+            if (monde_courant->goats_tab[j] != goat) {
+                // Hitbox de l'autre chèvre déjà en place
+                Hitbox hb_autre = creer_hitbox(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y, 
+                                               WIDTH_GOAT, HEIGHT_GOAT, 15.0f, 10.0f);
+
+                if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
+                                         hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h)) {
+                    collision = 1;
+                    goat->timer_mouvement = 0;
+                    break;
+                }
             }
         }
     }
-
-    if (!collision)
-    {
-        goat->x = next_x;
-        goat->y = next_y;
-        goat->dir_x = next_x;
-        goat->dir_y = next_y;
-    }
-    else
-    {
-        goat->dir_x = goat->x;
-        goat->dir_y = goat->y;
-    }
-
-    if (tick_animation % 6 == 0)
-    {
-        if (goat->speed > 0 && !collision)
-        {
+    
+    if (tick_animation % 6 == 0) {
+        if (goat->speed > 0 && !collision) {
             goat->frame = (goat->frame + 1) % 4;
         }
         else
@@ -259,6 +274,78 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
         }
     }
     return goat;
+}
+
+
+Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
+{
+    float next_x = wolf->x;
+    float next_y = wolf->y;
+    
+    if (action == ACTION_WOLF_ERRER || action == ACTION_WOLF_CHASSER) {
+        wolf->speed = 2;
+
+        if (action == ACTION_WOLF_CHASSER) {
+            if (perception_wolf.pos_x_goat != -1) {
+                // Aller vers la chèvre
+                wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
+            }
+        }
+
+        next_x += cos(wolf->angle_actuel) * wolf->speed;
+        next_y += sin(wolf->angle_actuel) * wolf->speed;
+        
+        if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y)) {
+            wolf->direction_sprite = (next_x > wolf->x) ? 2 : 4;
+        } else {
+            wolf->direction_sprite = (next_y > wolf->y) ? 3 : 1;
+        }
+    } 
+    else if (action == ACTION_WOLF_ARRET) {
+        wolf->speed = 0;
+    }
+
+    if (next_x < MARGE) next_x = MARGE;
+    if (next_y < MARGE) next_y = MARGE;
+    if (next_x > LARGEUR - MARGE - WIDTH_WOLF) next_x = LARGEUR - MARGE - WIDTH_WOLF;
+    if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF) next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
+
+    int collision = 0;
+
+    // Hitbox future du loup (Marges à ajuster, ex: 20px et 15px)
+    Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 15.0f);
+    Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f);
+
+    if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
+                             hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
+        collision = 1;
+        wolf->timer_mouvement = 0;
+    }
+
+    if (!collision) {
+        for (int j = 0; j < monde_courant->nb_wolf; j++) {
+            if (monde_courant->wolfs_tab[j] != wolf) {
+                Hitbox hb_autre = creer_hitbox(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y, 
+                                               WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 15.0f);
+
+                if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
+                                         hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h)) {
+                    collision = 1;
+                    wolf->timer_mouvement = 0;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (tick_animation % 6 == 0) {
+        if (wolf->speed > 0 && !collision) {
+            wolf->frame = (wolf->frame + 1) % 4;
+        } else {
+            wolf->frame = 0;
+        }
+    }
+    return wolf;
 }
 
 /* ENtrées : le tableau de chèvre, nombre de chèvre
@@ -500,6 +587,7 @@ monde *creer_monde(int largeur, int hauteur)
     }
 }
 
+
 /* Entrée : le monde actuel, normalement complètement vide
     Sortie : le monde avec le fermier et 10 chèvre qui apparaisse aléatoirement
     Synopsis : remplie le monde de 10 chèvre à des endroits aléatoire et le
@@ -656,23 +744,28 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
 
         int collision_fermier = 0;
 
+        // Hitbox future du fermier (Marges à ajuster, le fermier est souvent fin)
+        Hitbox hb_future_fermier = creer_hitbox(next_fermier_x, next_fermier_y, WIDTH_FERMIER, HEIGHT_FERMIER, 10.0f, 10.0f);
+        Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f);
+
         // Collision avec le lac
-        if (check_collision_rect(next_fermier_x, next_fermier_y, WIDTH_FERMIER,
-                                 HEIGHT_FERMIER, LAC_X, LAC_Y, LAC_WIDTH,
-                                 LAC_HEIGHT))
-        {
+
+        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
+                                 hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
             collision_fermier = 1;
         }
 
-        for (int j = 0; j < monde_courant->nb_goat; j++)
-        {
-            if (check_collision_rect(next_fermier_x, next_fermier_y, WIDTH_FERMIER,
-                                     HEIGHT_FERMIER, monde_courant->goats_tab[j]->x,
-                                     monde_courant->goats_tab[j]->y, WIDTH_GOAT,
-                                     HEIGHT_GOAT))
-            {
-                collision_fermier = 1;
-                break;
+        // Collision avec les chèvres
+        if (!collision_fermier) {
+            for (int j = 0; j < monde_courant->nb_goat; j++) {
+                Hitbox hb_goat = creer_hitbox(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y, 
+                                              WIDTH_GOAT, HEIGHT_GOAT, 15.0f, 10.0f);
+
+                if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
+                                         hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h)) {
+                    collision_fermier = 1;
+                    break;
+                }
             }
         }
 

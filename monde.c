@@ -14,10 +14,10 @@
 #define MARGE 90
 
 // Zone du lac (obstacle)
-#define LAC_X 716
-#define LAC_Y 512
-#define LAC_WIDTH 128
-#define LAC_HEIGHT 128
+#define LAC_X 713
+#define LAC_Y 515
+#define LAC_WIDTH 120
+#define LAC_HEIGHT 110
 
 /**
  * Synopsis : calcul la proba de chaque action et calcul un nombre aleatoire et
@@ -72,7 +72,7 @@ int check_collision_rect(float x1, float y1, float w1, float h1, float x2,
   }
   return 1; // Collision
 }
-// Fermier
+/* ========== Fermier ========== */
 
 /**
  * Synopsis : Initialise le fermier devant sa maison.
@@ -86,7 +86,7 @@ Fermier *init_fermier(Fermier *fermier) {
     return fermier;
 }
 
-// Goats
+/* ========== Chèvres ========== */
 
 /**
  * Synopsis : Initialise une chèvre avec des coordonnées aléatoires et une direction par défaut.
@@ -107,7 +107,6 @@ Goat *init_goat(Goat *goat)
     goat->timer_mouvement = 10;
     goat->en_mouvement = 0;
     goat->angle_actuel = 0.0f;
-    goat->decision_cooldown = 0; // Initialisation du cooldown de décision
 
     // Initialisation de la table des intérêts
     for (int i = 0; i < NB_ACTIONS; i++) {
@@ -135,8 +134,6 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
 PerceptionGoat calculer_perception_goat(Goat *goat, monde *monde_courant) {
     PerceptionGoat perception;
     perception.dist_wolf_proche = 200.0f; // Valeur par défaut
-    perception.pos_x_wolf = -1;           // Valeur par défaut si aucun loup n'est proche
-    perception.pos_y_wolf = -1;
     perception.goats_tab = monde_courant->goats_tab;
     perception.nb_goat = monde_courant->nb_goat;
     perception.pos_x_fermier = monde_courant->fermiers->x;
@@ -172,22 +169,13 @@ Goat * update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick
                 goat->angle_actuel = atan2(goat->y - perception_goat.pos_y_wolf, goat->x - perception_goat.pos_x_wolf);
             }
         }
-        
         next_x += cos(goat->angle_actuel) * goat->speed;
         next_y += sin(goat->angle_actuel) * goat->speed;
         
         if (fabs(next_x - goat->x) > fabs(next_y - goat->y)) {
-            if (next_x > goat->x) {
-                goat->direction_sprite = 2;
-            } else {
-                goat->direction_sprite = 4;
-            }
+            goat->direction_sprite = (next_x > goat->x) ? 2 : 4;
         } else {
-            if (next_y > goat->y) {
-                goat->direction_sprite = 3;
-            } else {
-                goat->direction_sprite = 1;
-            }
+            goat->direction_sprite = (next_y > goat->y) ? 3 : 1;
         }
     } 
     else if (action == ACTION_BROUTER) {
@@ -239,95 +227,6 @@ Goat * update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick
     return goat;
 }
 
-/* ENtrées : le tableau de chèvre, nombre de chèvre
-    Sotie : aucune
-    Synopsis : libère toute les goats du tableau*/
-void free_goats(Goat **goats_tab, int nb_goat)
-{
-    if (goats_tab != NULL)
-    {
-        for (int i = 0; i < nb_goat; i++)
-        {
-            if (goats_tab[i] != NULL)
-            {
-                free(goats_tab[i]);
-                goats_tab[i] = NULL;
-            }
-        }
-    }
-}
-
-/* ========== Loups ========== */
-
-/**
- * Synopsis : Initialise un loup avec des coordonnées aléatoires et une direction par défaut.
- * Entrée   : Pointeur vers la structure Wolf à initialiser.
- * Sortie   : Pointeur vers la structure Wolf initialisée.
- */
-Wolf *init_wolf(Wolf * wolf)
-{
-    wolf->x = rand() % (LARGEUR - WIDTH_WOLF);
-    wolf->y = rand() % (HAUTEUR - HEIGHT_WOLF);
-
-    wolf->dir_x = wolf->x;
-    wolf->dir_y = wolf->y;
-
-    wolf->speed = 0;
-    wolf->direction_sprite = 1 + (rand() % 4);
-    wolf->frame = 0;
-    wolf->timer_mouvement = 10;
-    wolf->en_mouvement = 0;
-    wolf->angle_actuel = 0.0f;
-    wolf->decision_cooldown = 0; // Initialisation du cooldown de décision
-
-    for (int i = 0; i < NB_ACTIONS_WOLF; i++) {
-        wolf->table_interets[i] = 0.0f;
-    }
-
-    return wolf;
-}
-
-/* ENtrées : le monde actuel dans sa structure et un wolf
-    Sotie : Le monde mis a jour avec le nouveau wolf en plus
-    Synopsis : prend un wolf et l'ajoute au monde*/
-monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
-{
-    if (monde_courant->nb_wolf + 1 > monde_courant->capacite_max_wolf)
-    {
-        monde_courant->wolfs_tab = realloc(monde_courant->wolfs_tab, monde_courant->capacite_max_wolf * 2 * sizeof(Wolf));
-        monde_courant->capacite_max_wolf *= 2;
-    }
-    monde_courant->wolfs_tab[monde_courant->nb_wolf] = wolf;
-    monde_courant->nb_wolf++;
-    return monde_courant;
-}
-
-PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
-{
-    PerceptionWolf perception;
-    perception.dist_goat_proche = 300.0f; // Valeur par défaut
-    perception.pos_x_goat = -1;           // Valeur par défaut si aucune chèvre n'est proche
-    perception.pos_y_goat = -1;
-    perception.goats_tab = monde_courant->goats_tab;
-    perception.nb_goat = monde_courant->nb_goat;
-    perception.pos_x_fermier = monde_courant->fermiers->x;
-    perception.pos_y_fermier = monde_courant->fermiers->y;
-
-    for (int i = 0; i < monde_courant->nb_goat; i++) {
-        Goat *current_goat = monde_courant->goats_tab[i];
-        float dist_x = current_goat->x - wolf->x;
-        float dist_y = current_goat->y - wolf->y;
-        float distance = sqrt(dist_x * dist_x + dist_y * dist_y);
-
-        if (distance < perception.dist_goat_proche) {
-            perception.dist_goat_proche = distance;
-            perception.pos_x_goat = current_goat->x;
-            perception.pos_y_goat = current_goat->y;
-        }
-    }
-    return perception;
-}
-
 Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
 {
     float next_x = wolf->x;
@@ -347,17 +246,9 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
         next_y += sin(wolf->angle_actuel) * wolf->speed;
         
         if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y)) {
-            if (next_x > wolf->x) {
-                wolf->direction_sprite = 2;
-            } else {
-                wolf->direction_sprite = 4;
-            }
+            wolf->direction_sprite = (next_x > wolf->x) ? 2 : 4;
         } else {
-            if (next_y > wolf->y) {
-                wolf->direction_sprite = 3;
-            } else {
-                wolf->direction_sprite = 1;
-            }
+            wolf->direction_sprite = (next_y > wolf->y) ? 3 : 1;
         }
     } 
     else if (action == ACTION_WOLF_ARRET) {
@@ -409,6 +300,87 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
     return wolf;
 }
 
+/* ENtrées : le tableau de chèvre, nombre de chèvre
+    Sotie : aucune
+    Synopsis : libère toute les goats du tableau*/
+void free_goats(Goat **goats_tab, int nb_goat) {
+  if (goats_tab != NULL) {
+    for (int i = 0; i < nb_goat; i++) {
+      if (goats_tab[i] != NULL) {
+        free(goats_tab[i]);
+        goats_tab[i] = NULL;
+      }
+    }
+  }
+}
+
+/* ========== Loups ========== */
+
+/**
+ * Synopsis : Initialise un loup avec des coordonnées aléatoires et une direction par défaut.
+ * Entrée   : Pointeur vers la structure Wolf à initialiser.
+ * Sortie   : Pointeur vers la structure Wolf initialisée.
+ */
+Wolf *init_wolf(Wolf * wolf)
+{
+    wolf->x = rand() % (LARGEUR - WIDTH_WOLF);
+    wolf->y = rand() % (HAUTEUR - HEIGHT_WOLF);
+
+    wolf->dir_x = wolf->x;
+    wolf->dir_y = wolf->y;
+
+    wolf->speed = 0;
+    wolf->direction_sprite = 1 + (rand() % 4);
+    wolf->frame = 0;
+    wolf->timer_mouvement = 10;
+    wolf->en_mouvement = 0;
+    wolf->angle_actuel = 0.0f;
+
+    for (int i = 0; i < NB_ACTIONS_WOLF; i++) {
+        wolf->table_interets[i] = 0.0f;
+    }
+
+    return wolf;
+}
+
+/* ENtrées : le monde actuel dans sa structure et un wolf
+    Sotie : Le monde mis a jour avec le nouveau wolf en plus
+    Synopsis : prend un wolf et l'ajoute au monde*/
+monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
+{
+    if (monde_courant->nb_wolf + 1 > monde_courant->capacite_max_wolf)
+    {
+        monde_courant->wolfs_tab = realloc(monde_courant->wolfs_tab, monde_courant->capacite_max_wolf * 2 * sizeof(Wolf));
+        monde_courant->capacite_max_wolf *= 2;
+    }
+    monde_courant->wolfs_tab[monde_courant->nb_wolf] = wolf;
+    monde_courant->nb_wolf++;
+    return monde_courant;
+}
+
+PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
+{
+    PerceptionWolf perception;
+    perception.dist_goat_proche = 300.0f; // Valeur par défaut
+    perception.goats_tab = monde_courant->goats_tab;
+    perception.nb_goat = monde_courant->nb_goat;
+    perception.pos_x_fermier = monde_courant->fermiers->x;
+    perception.pos_y_fermier = monde_courant->fermiers->y;
+
+    for (int i = 0; i < monde_courant->nb_goat; i++) {
+        Goat *current_goat = monde_courant->goats_tab[i];
+        float dist_x = current_goat->x - wolf->x;
+        float dist_y = current_goat->y - wolf->y;
+        float distance = sqrt(dist_x * dist_x + dist_y * dist_y);
+
+        if (distance < perception.dist_goat_proche) {
+            perception.dist_goat_proche = distance;
+            perception.pos_x_goat = current_goat->x;
+            perception.pos_y_goat = current_goat->y;
+        }
+    }
+    return perception;
+}
 
 /* ENtrées : le tableau de wolf, nombre de wolf
     Sotie : aucune
@@ -424,6 +396,7 @@ void free_wolf(Wolf **wolf_tab, int nombre_wolf) {
   }
 }
 
+/* ========= Monde ========= */
 
 /* Entrée : deux entier la largeur et la hauteur du monde
    Sortie : le monde vide
@@ -520,10 +493,6 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             PerceptionGoat perception_goat = calculer_perception_goat(goat, monde_courant);
             evaluer_interets_goat(goat, perception_goat);
             goat->action_choisi = choisir_action_softmax(goat->table_interets, NB_ACTIONS);
-            // maj angle
-            if (goat->action_choisi == ACTION_ERRER) goat->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
-
-            // réinitialisation du cooldown
             goat->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
         }
         update_goat(monde_courant, goat, goat->action_choisi, tick_animation, calculer_perception_goat(goat, monde_courant));
@@ -538,8 +507,6 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             PerceptionWolf perception_wolf = calculer_perception_wolf(wolf, monde_courant);
             evaluer_interets_wolf(wolf, perception_wolf);
             wolf->action_choisi = choisir_action_softmax(wolf->table_interets, NB_ACTIONS_WOLF);
-            if (wolf->action_choisi == ACTION_WOLF_ERRER) wolf->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
-            // réinitialisation du cooldown
             wolf->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
         }
         update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));
@@ -619,7 +586,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     return monde_courant;
 }
 
-
+/* ========= Affichage ========= */
 
 /**
  * Synopsis : Affiche le monde courant, incluant le terrain, le fermier, les

@@ -278,7 +278,7 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
         goat->dir_x = goat->x;
         goat->dir_y = goat->y;
     }
-    
+
     if (tick_animation % 6 == 0) {
         if (goat->speed > 0 && !collision) {
             goat->frame = (goat->frame + 1) % 4;
@@ -440,6 +440,15 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
                 }
             }
         }
+    }
+    if (!collision) {
+        wolf->x = next_x;
+        wolf->y = next_y;
+        wolf->dir_x = next_x;
+        wolf->dir_y = next_y;
+    } else {
+        wolf->dir_x = wolf->x;
+        wolf->dir_y = wolf->y;
     }
     
     if (tick_animation % 6 == 0) {

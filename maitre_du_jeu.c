@@ -232,7 +232,7 @@ int main(int argc, char **argv)
 {
     srand(time(NULL));
 
-    if (argc > 1 && strcmp(argv[1], "manuel") == 0)
+    if (argc > 1 && strcmp(argv[1], "train") == 0)
     {
         entrainer_agents();
         return 0;
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
     monde *monde_courrant = creer_monde(LARGEUR, HAUTEUR);
     monde_courrant = generer_un_monde(monde_courrant);
 
-    if (argc > 1 && strcmp(argv[1], "auto") == 0)
+    if (argc > 1 && strcmp(argv[1], "test") == 0)
     {
         monde_courrant->mode = 1;
     }

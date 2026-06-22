@@ -57,11 +57,10 @@ int gestion_direction_fermier(int direction){
 
 
 int gestion_direction_wolf(int direction){
-    if (direction==1) return 2;
+    if (direction==1) return 3;
     else if (direction==2) return 1;
     else if (direction==3) return 0;
-    else if (direction==4) return 3;
-    else if (direction==0) return 2;
+    else if (direction==4) return 2;
     return 0;
 }
 
@@ -98,7 +97,8 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
         zoom=0.5;
         texture_actuelle = texture_wolf;
         nb_image=4;
-        nb_ligne=6;
+        nb_ligne=4;
+        direction=gestion_direction_wolf(direction);
     }
     
     SDL_QueryTexture(texture_actuelle, NULL, NULL, &source.w, &source.h);

@@ -257,7 +257,7 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
             if (monde_courant->goats_tab[j] != goat) {
                 // Hitbox de l'autre chèvre déjà en place
                 Hitbox hb_autre = creer_hitbox(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y, 
-                                               WIDTH_GOAT, HEIGHT_GOAT, 2.0f, 28.0f, 10.0f, 10.0f);
+                                               WIDTH_GOAT, HEIGHT_GOAT, 40.0f, 28.0f, 10.0f, 10.0f);
 
                 if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
                                          hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h)) {
@@ -725,12 +725,7 @@ void afficher_monde(monde *monde_courant)
     if (!monde_courant)
         return;
     dessiner_monde();
-    if (monde_courant->fermiers)
-    {
-        dessiner_entite(2, monde_courant->fermiers->x, monde_courant->fermiers->y,
-                        monde_courant->fermiers->frame,
-                        monde_courant->fermiers->direction_sprite);
-    }
+    
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {
         Goat *g = monde_courant->goats_tab[i];
@@ -742,6 +737,12 @@ void afficher_monde(monde *monde_courant)
         Wolf *w = monde_courant->wolfs_tab[i];
         if (w)
             dessiner_entite(4, w->x, w->y, w->frame, w->direction_sprite);
+    }
+    if (monde_courant->fermiers)
+    {
+        dessiner_entite(2, monde_courant->fermiers->x, monde_courant->fermiers->y,
+                        monde_courant->fermiers->frame,
+                        monde_courant->fermiers->direction_sprite);
     }
     actualiser_ecran();
 }

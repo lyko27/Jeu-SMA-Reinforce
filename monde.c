@@ -109,15 +109,15 @@ Hitbox creer_hitbox(float x, float y, float w, float h, float marge_gauche, floa
 
 
 Hitbox get_hitbox_fermier(float x, float y) {
-    return creer_hitbox(x, y, WIDTH_FERMIER, HEIGHT_FERMIER, 10.0f, 10.0f, 10.0f, 10.0f);
+    return creer_hitbox(x, y, WIDTH_FERMIER, HEIGHT_FERMIER, 10.0f, 1.0f, 10.0f, 10.0f);
 }
 
 Hitbox get_hitbox_goat(float x, float y) {
-    return creer_hitbox(x, y, WIDTH_GOAT, HEIGHT_GOAT, 0.0f, 28.0f, 10.0f, 10.0f);
+    return creer_hitbox(x, y, WIDTH_GOAT, HEIGHT_GOAT, 0.5f, 28.0f, 10.0f, 10.0f);
 }
 
 Hitbox get_hitbox_wolf(float x, float y) {
-    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
+    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 28.0f, 10.0f, 10.0f);
 }
 
 /* ========== Fermier ========== */

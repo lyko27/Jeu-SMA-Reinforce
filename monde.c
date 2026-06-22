@@ -396,6 +396,8 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
     perception.nb_goat = monde_courant->nb_goat;
     perception.pos_x_fermier = monde_courant->fermiers->x;
     perception.pos_y_fermier = monde_courant->fermiers->y;
+    perception.pos_x_goat = -1; 
+    perception.pos_y_goat = -1;
 
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {

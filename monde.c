@@ -81,6 +81,7 @@ int check_collision_rect(float x1, float y1, float w1, float h1, float x2,
     return 1; // Collision
 }
 
+
 /**
  * Synopsis : Crée et retourne la Hitbox à partir d'un rectangle de base.
  * Permet de réduire la taille de la zone sensible du sprite d'une entité en appliquant
@@ -104,6 +105,19 @@ Hitbox creer_hitbox(float x, float y, float w, float h, float marge_gauche, floa
     if (hb.h <= 0.0f) hb.h = 1.0f;
     
     return hb;
+}
+
+
+Hitbox get_hitbox_fermier(float x, float y) {
+    return creer_hitbox(x, y, WIDTH_FERMIER, HEIGHT_FERMIER, 10.0f, 10.0f, 10.0f, 10.0f);
+}
+
+Hitbox get_hitbox_goat(float x, float y) {
+    return creer_hitbox(x, y, WIDTH_GOAT, HEIGHT_GOAT, 0.0f, 28.0f, 10.0f, 10.0f);
+}
+
+Hitbox get_hitbox_wolf(float x, float y) {
+    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
 }
 
 /* ========== Fermier ========== */
@@ -238,26 +252,19 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
 
     int collision = 0;
 
-    // Hitbox asymétrique pour la chèvre (ex: 2px à gauche, 28px à droite, 10px haut/bas)
-    Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_GOAT, HEIGHT_GOAT, 2.0f, 28.0f, 10.0f, 10.0f);
-    
-    // Hitbox du lac (pas de marge, il garde sa vraie taille)
+    Hitbox hb_future = get_hitbox_goat(next_x, next_y);
     Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
 
-    // Collision avec le lac
     if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
                              hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
         collision = 1;
         goat->timer_mouvement = 0;
     }
 
-    // Collision avec les autres chèvres
     if (!collision) {
         for (int j = 0; j < monde_courant->nb_goat; j++) {
             if (monde_courant->goats_tab[j] != goat) {
-                // Hitbox de l'autre chèvre déjà en place
-                Hitbox hb_autre = creer_hitbox(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y, 
-                                               WIDTH_GOAT, HEIGHT_GOAT, 40.0f, 28.0f, 10.0f, 10.0f);
+                Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
 
                 if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
                                          hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h)) {
@@ -673,22 +680,17 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
 
         int collision_fermier = 0;
 
-        // Hitbox future du fermier
-        Hitbox hb_future_fermier = creer_hitbox(next_fermier_x, next_fermier_y, WIDTH_FERMIER, HEIGHT_FERMIER, 10.0f, 10.0f, 10.0f, 10.0f);
+        Hitbox hb_future_fermier = get_hitbox_fermier(next_fermier_x, next_fermier_y);
         Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
-
-        // Collision avec le lac
 
         if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
                                  hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
             collision_fermier = 1;
         }
-
-        // Collision avec les chèvres
+        // collision avec chevres
         if (!collision_fermier) {
             for (int j = 0; j < monde_courant->nb_goat; j++) {
-                Hitbox hb_goat = creer_hitbox(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y, 
-                                              WIDTH_GOAT, HEIGHT_GOAT, 2.0f, 28.0f, 10.0f, 10.0f);
+                Hitbox hb_goat = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
 
                 if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
                                          hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h)) {

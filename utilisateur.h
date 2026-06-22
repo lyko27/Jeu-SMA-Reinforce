@@ -12,6 +12,7 @@ typedef struct evenement
     int y_deplacement;
     int pause;
     int quitter;
+    int toggle_autonome;
 } interaction_utilisateur;
 
 interaction_utilisateur *recuperer_mouvement(interaction_utilisateur *resultat);

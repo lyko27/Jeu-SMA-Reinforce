@@ -17,6 +17,10 @@ interaction_utilisateur * recuperer_mouvement(interaction_utilisateur *resultat)
             {
                 resultat->pause = 1;
             }
+            if (event.key.keysym.sym == SDLK_m)
+            {
+                resultat->switch_mode = 1;
+            }
         default:
             break;
         }

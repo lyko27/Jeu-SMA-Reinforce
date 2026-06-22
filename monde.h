@@ -14,7 +14,7 @@
 #define VITESSE_FERMIER 5
 
 // Le Monde
-typedef struct
+typedef struct monde_t
 {
     int largeur;
     int hauteur;
@@ -25,6 +25,7 @@ typedef struct
     Wolf **wolfs_tab;
     int capacite_max_wolf;
     int nb_wolf;
+    int mode; // 0 = clavier pour le fermier, 1 = politique apprise
 } monde;
 
 typedef struct {
@@ -40,6 +41,8 @@ void free_goats(Goat **goats_tab, int nb_goat);
 void free_wolf(Wolf **wolf_tab, int nombre_wolf);
 monde *ajouter_goat(monde *monde_courant, Goat *goat);
 monde *ajouter_wolf(monde *monde_courant, Wolf *wolf);
+Fermier *init_fermier(Fermier *fermier);
+Wolf *init_wolf(Wolf *wolf);
 monde *creer_monde(int largeur, int hauteur);
 monde *generer_un_monde(monde *monde_courant);
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y);

@@ -2,7 +2,7 @@
 #define wolf_h
 
 #include "goat.h"
-
+#define DIMENSION_PHI_WOLF 7
 typedef enum {
     ACTION_WOLF_ERRER,
     ACTION_WOLF_CHASSER,
@@ -33,12 +33,14 @@ typedef struct
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
-    
     float table_interets[NB_ACTIONS_WOLF];
+    float weights[NB_ACTIONS_WOLF][DIMENSION_PHI_WOLF];
     int decision_cooldown;
     ActionWolf action_choisi;
 } Wolf;
 
+
+ActionWolf decider_action_wolf(Wolf *wolf, PerceptionWolf perception_wolf);
 void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf);
 
 #endif

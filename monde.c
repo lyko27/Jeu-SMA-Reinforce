@@ -177,9 +177,17 @@ Goat * update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick
         next_y += sin(goat->angle_actuel) * goat->speed;
         
         if (fabs(next_x - goat->x) > fabs(next_y - goat->y)) {
-            goat->direction_sprite = (next_x > goat->x) ? 2 : 4;
+            if (next_x > goat->x) {
+                goat->direction_sprite = 2;
+            } else {
+                goat->direction_sprite = 4;
+            }
         } else {
-            goat->direction_sprite = (next_y > goat->y) ? 3 : 1;
+            if (next_y > goat->y) {
+                goat->direction_sprite = 3;
+            } else {
+                goat->direction_sprite = 1;
+            }
         }
     } 
     else if (action == ACTION_BROUTER) {
@@ -339,9 +347,17 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
         next_y += sin(wolf->angle_actuel) * wolf->speed;
         
         if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y)) {
-            wolf->direction_sprite = (next_x > wolf->x) ? 2 : 4;
+            if (next_x > wolf->x) {
+                wolf->direction_sprite = 2;
+            } else {
+                wolf->direction_sprite = 4;
+            }
         } else {
-            wolf->direction_sprite = (next_y > wolf->y) ? 3 : 1;
+            if (next_y > wolf->y) {
+                wolf->direction_sprite = 3;
+            } else {
+                wolf->direction_sprite = 1;
+            }
         }
     } 
     else if (action == ACTION_WOLF_ARRET) {

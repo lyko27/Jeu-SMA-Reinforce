@@ -493,6 +493,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             PerceptionGoat perception_goat = calculer_perception_goat(goat, monde_courant);
             evaluer_interets_goat(goat, perception_goat);
             goat->action_choisi = choisir_action_softmax(goat->table_interets, NB_ACTIONS);
+            if (goat->action_choisi == ACTION_ERRER) goat->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
             goat->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
         }
         update_goat(monde_courant, goat, goat->action_choisi, tick_animation, calculer_perception_goat(goat, monde_courant));
@@ -507,6 +508,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
             PerceptionWolf perception_wolf = calculer_perception_wolf(wolf, monde_courant);
             evaluer_interets_wolf(wolf, perception_wolf);
             wolf->action_choisi = choisir_action_softmax(wolf->table_interets, NB_ACTIONS_WOLF);
+            if (wolf->action_choisi == ACTION_WOLF_ERRER) wolf->angle_actuel = ((float)rand()/(float)RAND_MAX) * 2.0 * 3.14;
             wolf->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
         }
         update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));

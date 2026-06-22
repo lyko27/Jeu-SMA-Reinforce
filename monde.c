@@ -81,7 +81,6 @@ int check_collision_rect(float x1, float y1, float w1, float h1, float x2,
     return 1; // Collision
 }
 
-
 /**
  * Synopsis : Crée et retourne la Hitbox à partir d'un rectangle de base.
  * Permet de réduire la taille de la zone sensible du sprite d'une entité en appliquant
@@ -90,33 +89,38 @@ int check_collision_rect(float x1, float y1, float w1, float h1, float x2,
  * - w, h : Largeur et hauteur totales du sprite d'origine.
  * - marge_x : Nombre de pixels à retirer à gauche et à droite.
  * - marge_y : Nombre de pixels à retirer en haut et en bas.
- * Sortie   : Une structure Hitbox contenant les nouvelles coordonnées (x, y) et dimensions (w, h) 
+ * Sortie   : Une structure Hitbox contenant les nouvelles coordonnées (x, y) et dimensions (w, h)
  * ajustées pour la logique de collision.
  */
-Hitbox creer_hitbox(float x, float y, float w, float h, float marge_gauche, float marge_droite, float marge_haut, float marge_bas) {
+Hitbox creer_hitbox(float x, float y, float w, float h, float marge_gauche, float marge_droite, float marge_haut, float marge_bas)
+{
     Hitbox hb;
     hb.x = x + marge_gauche;
     hb.y = y + marge_haut;
     hb.w = w - (marge_gauche + marge_droite);
     hb.h = h - (marge_haut + marge_bas);
-    
+
     // Sécurité : éviter d'avoir une largeur ou hauteur négative ou nulle
-    if (hb.w <= 0.0f) hb.w = 1.0f;
-    if (hb.h <= 0.0f) hb.h = 1.0f;
-    
+    if (hb.w <= 0.0f)
+        hb.w = 1.0f;
+    if (hb.h <= 0.0f)
+        hb.h = 1.0f;
+
     return hb;
 }
 
-
-Hitbox get_hitbox_fermier(float x, float y) {
+Hitbox get_hitbox_fermier(float x, float y)
+{
     return creer_hitbox(x, y, WIDTH_FERMIER, HEIGHT_FERMIER, 10.0f, 1.0f, 10.0f, 10.0f);
 }
 
-Hitbox get_hitbox_goat(float x, float y) {
+Hitbox get_hitbox_goat(float x, float y)
+{
     return creer_hitbox(x, y, WIDTH_GOAT, HEIGHT_GOAT, 0.5f, 28.0f, 10.0f, 10.0f);
 }
 
-Hitbox get_hitbox_wolf(float x, float y) {
+Hitbox get_hitbox_wolf(float x, float y)
+{
     return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 5.0f, 10.0f, 10.0f);
 }
 
@@ -228,11 +232,25 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
 
         if (fabs(next_x - goat->x) > fabs(next_y - goat->y))
         {
-            goat->direction_sprite = (next_x > goat->x) ? 2 : 4;
+            if (next_x > goat->x) 
+            {
+                goat->direction_sprite = 2;
+            }
+            else
+            {
+                goat->direction_sprite = 4;
+            }
         }
         else
         {
-            goat->direction_sprite = (next_y > goat->y) ? 3 : 1;
+            if (next_y > goat->y)
+            {
+                goat->direction_sprite = 3;
+            }
+            else
+            {
+                goat->direction_sprite = 1;
+            }
         }
     }
     else if (action == ACTION_BROUTER)
@@ -254,19 +272,24 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     Hitbox hb_future = get_hitbox_goat(next_x, next_y);
     Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
 
-    if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
-                             hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
+    if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h,
+                             hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
+    {
         collision = 1;
         goat->timer_mouvement = 0;
     }
 
-    if (!collision) {
-        for (int j = 0; j < monde_courant->nb_goat; j++) {
-            if (monde_courant->goats_tab[j] != goat) {
+    if (!collision)
+    {
+        for (int j = 0; j < monde_courant->nb_goat; j++)
+        {
+            if (monde_courant->goats_tab[j] != goat)
+            {
                 Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
 
-                if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
-                                         hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h)) {
+                if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h,
+                                         hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+                {
                     collision = 1;
                     goat->timer_mouvement = 0;
                     break;
@@ -274,19 +297,24 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
             }
         }
     }
-    
-    if (!collision) {
+
+    if (!collision)
+    {
         goat->x = next_x;
         goat->y = next_y;
         goat->dir_x = next_x;
         goat->dir_y = next_y;
-    } else {
+    }
+    else
+    {
         goat->dir_x = goat->x;
         goat->dir_y = goat->y;
     }
 
-    if (tick_animation % 6 == 0) {
-        if (goat->speed > 0 && !collision) {
+    if (tick_animation % 6 == 0)
+    {
+        if (goat->speed > 0 && !collision)
+        {
             goat->frame = (goat->frame + 1) % 4;
         }
         else
@@ -296,7 +324,6 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     }
     return goat;
 }
-
 
 /* ENtrées : le tableau de chèvre, nombre de chèvre
     Sotie : aucune
@@ -387,38 +414,68 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
     return perception;
 }
 
-Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
+Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
 {
     float next_x = wolf->x;
     float next_y = wolf->y;
-    
-    if (action == ACTION_WOLF_ERRER || action == ACTION_WOLF_CHASSER) {
+
+    if (action == ACTION_WOLF_ERRER || action == ACTION_WOLF_CHASSER)
+    {
         wolf->speed = 2;
 
-        if (action == ACTION_WOLF_CHASSER) {
-            if (perception_wolf.pos_x_goat != -1) {
+        if (action == ACTION_WOLF_CHASSER)
+        {
+            if (perception_wolf.pos_x_goat != -1)
+            {
                 // Aller vers la chèvre
                 wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
             }
         }
-
-        next_x += cos(wolf->angle_actuel) * wolf->speed;
-        next_y += sin(wolf->angle_actuel) * wolf->speed;
-        
-        if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y)) {
-            wolf->direction_sprite = (next_x > wolf->x) ? 2 : 4;
-        } else {
-            wolf->direction_sprite = (next_y > wolf->y) ? 3 : 1;
+    if(action == ACTION_WOLF_FUIR_FERMIER)
+        {
+            wolf->speed = 3;
+            // Fuir le fermier
+            wolf->angle_actuel = atan2(wolf->y - perception_wolf.pos_y_fermier, wolf->x - perception_wolf.pos_x_fermier);
         }
-    } 
-    else if (action == ACTION_WOLF_ARRET) {
+    }
+    if (action == ACTION_WOLF_ARRET)
+    {
         wolf->speed = 0;
     }
 
-    if (next_x < MARGE) next_x = MARGE;
-    if (next_y < MARGE) next_y = MARGE;
-    if (next_x > LARGEUR - MARGE - WIDTH_WOLF) next_x = LARGEUR - MARGE - WIDTH_WOLF;
-    if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF) next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
+    next_x += cos(wolf->angle_actuel) * wolf->speed;
+    next_y += sin(wolf->angle_actuel) * wolf->speed;
+
+    if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y))
+    {
+        if (next_x > wolf->x)  // on va a droite
+        {
+            wolf->direction_sprite = 2;
+        }
+        else
+        {
+            wolf->direction_sprite = 4;
+        }
+    }
+    else
+    {
+        if (next_y > wolf->y)
+        {
+            wolf->direction_sprite = 1;
+        }
+        else 
+        {
+            wolf->direction_sprite = 3;
+        }
+    }
+    if (next_x < MARGE)
+        next_x = MARGE;
+    if (next_y < MARGE)
+        next_y = MARGE;
+    if (next_x > LARGEUR - MARGE - WIDTH_WOLF)
+        next_x = LARGEUR - MARGE - WIDTH_WOLF;
+    if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF)
+        next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
 
     int collision = 0;
 
@@ -426,20 +483,25 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
     Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
     Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
 
-    if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
-                             hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
+    if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h,
+                            hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
+    {
         collision = 1;
         wolf->timer_mouvement = 0;
     }
 
-    if (!collision) {
-        for (int j = 0; j < monde_courant->nb_wolf; j++) {
-            if (monde_courant->wolfs_tab[j] != wolf) {
-                Hitbox hb_autre = creer_hitbox(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y, 
-                                               WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
+    if (!collision)
+    {
+        for (int j = 0; j < monde_courant->nb_wolf; j++)
+        {
+            if (monde_courant->wolfs_tab[j] != wolf)
+            {
+                Hitbox hb_autre = creer_hitbox(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y,
+                                            WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
 
-                if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, 
-                                         hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h)) {
+                if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h,
+                                        hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+                {
                     collision = 1;
                     wolf->timer_mouvement = 0;
                     break;
@@ -447,25 +509,33 @@ Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick
             }
         }
     }
-    if (!collision) {
+    if (!collision)
+    {
         wolf->x = next_x;
         wolf->y = next_y;
         wolf->dir_x = next_x;
         wolf->dir_y = next_y;
-    } else {
+    }
+    else
+    {
         wolf->dir_x = wolf->x;
         wolf->dir_y = wolf->y;
     }
-    
-    if (tick_animation % 6 == 0) {
-        if (wolf->speed > 0 && !collision) {
+
+    if (tick_animation % 6 == 0)
+    {
+        if (wolf->speed > 0 && !collision)
+        {
             wolf->frame = (wolf->frame + 1) % 4;
-        } else {
+        }
+        else
+        {
             wolf->frame = 0;
         }
     }
     return wolf;
 }
+
 
 /* ENtrées : le tableau de wolf, nombre de wolf
     Sotie : aucune
@@ -521,7 +591,6 @@ monde *creer_monde(int largeur, int hauteur)
         return NULL;
     }
 }
-
 
 /* Entrée : le monde actuel, normalement complètement vide
     Sortie : le monde avec le fermier et 10 chèvre qui apparaisse aléatoirement
@@ -682,29 +751,36 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         Hitbox hb_future_fermier = get_hitbox_fermier(next_fermier_x, next_fermier_y);
         Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
 
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
-                                 hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h)) {
+        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h,
+                                 hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
+        {
             collision_fermier = 1;
         }
         // collision avec chevres
-        if (!collision_fermier) {
-            for (int j = 0; j < monde_courant->nb_goat; j++) {
+        if (!collision_fermier)
+        {
+            for (int j = 0; j < monde_courant->nb_goat; j++)
+            {
                 Hitbox hb_goat = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
 
-                if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
-                                         hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h)) {
+                if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h,
+                                         hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
+                {
                     collision_fermier = 1;
                     break;
                 }
             }
         }
         // collision avec chevres
-        if (!collision_fermier) {
-            for (int j = 0; j < monde_courant->nb_wolf; j++) {
+        if (!collision_fermier)
+        {
+            for (int j = 0; j < monde_courant->nb_wolf; j++)
+            {
                 Hitbox hb_wolf = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
 
-                if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
-                                         hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h)) {
+                if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h,
+                                         hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
+                {
                     collision_fermier = 1; // Le fermier se cogne contre un loup
                     break;
                 }
@@ -738,7 +814,7 @@ void afficher_monde(monde *monde_courant)
     if (!monde_courant)
         return;
     dessiner_monde();
-    
+
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {
         Goat *g = monde_courant->goats_tab[i];

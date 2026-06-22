@@ -1,0 +1,839 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Projet ZZ1 - Groupe 8 - SMA: Référence du fichier monde.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Projet ZZ1 - Groupe 8 - SMA
+   </div>
+   <div id="projectbrief">Simulation d&#39;un Système Multi-Agents réactifs (Chèvres, Loups et Fermier) avec apprentissage automatique en SDL2.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('monde_8c.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier monde.c</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;math.h&gt;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="affichage_8h_source.html">affichage.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fermier_8h_source.html">fermier.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="goat_8h_source.html">goat.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="loup_8h_source.html">loup.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="monde_8h_source.html">monde.h</a>&quot;</code><br />
+</div>
+<p><a href="monde_8c_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a3d3bf5a2f88b1dba6c6bc13bf889c3cc" id="r_a3d3bf5a2f88b1dba6c6bc13bf889c3cc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a3d3bf5a2f88b1dba6c6bc13bf889c3cc">LARGEUR</a>&#160;&#160;&#160;1024</td></tr>
+<tr class="separator:a3d3bf5a2f88b1dba6c6bc13bf889c3cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad629b1db4ee230dc5de47de843476e72" id="r_ad629b1db4ee230dc5de47de843476e72"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#ad629b1db4ee230dc5de47de843476e72">HAUTEUR</a>&#160;&#160;&#160;1024</td></tr>
+<tr class="separator:ad629b1db4ee230dc5de47de843476e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f9453a8525900cad8359390f48bfb21" id="r_a7f9453a8525900cad8359390f48bfb21"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a7f9453a8525900cad8359390f48bfb21">MARGE</a>&#160;&#160;&#160;90</td></tr>
+<tr class="separator:a7f9453a8525900cad8359390f48bfb21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab94244c4e32a515feb8ad3da1c6276b" id="r_aab94244c4e32a515feb8ad3da1c6276b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#aab94244c4e32a515feb8ad3da1c6276b">LAC_X</a>&#160;&#160;&#160;713</td></tr>
+<tr class="separator:aab94244c4e32a515feb8ad3da1c6276b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a009385c7b610e0bae4449d5f9a8aef82" id="r_a009385c7b610e0bae4449d5f9a8aef82"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a009385c7b610e0bae4449d5f9a8aef82">LAC_Y</a>&#160;&#160;&#160;515</td></tr>
+<tr class="separator:a009385c7b610e0bae4449d5f9a8aef82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa31d75bb221810c33429de2423c1f84" id="r_afa31d75bb221810c33429de2423c1f84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#afa31d75bb221810c33429de2423c1f84">LAC_WIDTH</a>&#160;&#160;&#160;120</td></tr>
+<tr class="separator:afa31d75bb221810c33429de2423c1f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f16fc378f60c5af4183624c38b249b7" id="r_a5f16fc378f60c5af4183624c38b249b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a5f16fc378f60c5af4183624c38b249b7">LAC_HEIGHT</a>&#160;&#160;&#160;110</td></tr>
+<tr class="separator:a5f16fc378f60c5af4183624c38b249b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:ae31dc2e7730c6d9c764c8d3219f2e422" id="r_ae31dc2e7730c6d9c764c8d3219f2e422"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#ae31dc2e7730c6d9c764c8d3219f2e422">choisir_action_softmax</a> (float *tab_interet, int nb_actions)</td></tr>
+<tr class="separator:ae31dc2e7730c6d9c764c8d3219f2e422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00fc539b2a1b734f276a0603d276e0d8" id="r_a00fc539b2a1b734f276a0603d276e0d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a00fc539b2a1b734f276a0603d276e0d8">check_collision_rect</a> (float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)</td></tr>
+<tr class="separator:a00fc539b2a1b734f276a0603d276e0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a143c51c2ff9bd695f93213e9ff6258" id="r_a0a143c51c2ff9bd695f93213e9ff6258"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFermier.html">Fermier</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a0a143c51c2ff9bd695f93213e9ff6258">init_fermier</a> (<a class="el" href="structFermier.html">Fermier</a> *fermier)</td></tr>
+<tr class="separator:a0a143c51c2ff9bd695f93213e9ff6258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9900f5ebd64a945afbd2b9807d497bec" id="r_a9900f5ebd64a945afbd2b9807d497bec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGoat.html">Goat</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a9900f5ebd64a945afbd2b9807d497bec">init_goat</a> (<a class="el" href="structGoat.html">Goat</a> *goat)</td></tr>
+<tr class="separator:a9900f5ebd64a945afbd2b9807d497bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3b3d28fbb9dea3b5811998b6d6182c6" id="r_ab3b3d28fbb9dea3b5811998b6d6182c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmonde.html">monde</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#ab3b3d28fbb9dea3b5811998b6d6182c6">ajouter_goat</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant, <a class="el" href="structGoat.html">Goat</a> *goat)</td></tr>
+<tr class="separator:ab3b3d28fbb9dea3b5811998b6d6182c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f462d88566e8d5a4a826808087dcff9" id="r_a4f462d88566e8d5a4a826808087dcff9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPerceptionGoat.html">PerceptionGoat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a4f462d88566e8d5a4a826808087dcff9">calculer_perception_goat</a> (<a class="el" href="structGoat.html">Goat</a> *goat, <a class="el" href="structmonde.html">monde</a> *monde_courant)</td></tr>
+<tr class="separator:a4f462d88566e8d5a4a826808087dcff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51ccb6ce9ad6f9c72f0ede06edb6692d" id="r_a51ccb6ce9ad6f9c72f0ede06edb6692d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGoat.html">Goat</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a51ccb6ce9ad6f9c72f0ede06edb6692d">update_goat</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant, <a class="el" href="structGoat.html">Goat</a> *goat, <a class="el" href="goat_8h.html#a9bbb68361b13d2c3f467ecb9a7342218">ActionGoat</a> action, int tick_animation, <a class="el" href="structPerceptionGoat.html">PerceptionGoat</a> perception_goat)</td></tr>
+<tr class="separator:a51ccb6ce9ad6f9c72f0ede06edb6692d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad079154429057f94ea9a2a2cafb07654" id="r_ad079154429057f94ea9a2a2cafb07654"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#ad079154429057f94ea9a2a2cafb07654">free_goats</a> (<a class="el" href="structGoat.html">Goat</a> **goats_tab, int nb_goat)</td></tr>
+<tr class="separator:ad079154429057f94ea9a2a2cafb07654"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8941c7df47d07a0822beb7b09603e96e" id="r_a8941c7df47d07a0822beb7b09603e96e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWolf.html">Wolf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a8941c7df47d07a0822beb7b09603e96e">init_wolf</a> (<a class="el" href="structWolf.html">Wolf</a> *wolf)</td></tr>
+<tr class="separator:a8941c7df47d07a0822beb7b09603e96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a820a20a97c743d1d8f4fa278f58376ab" id="r_a820a20a97c743d1d8f4fa278f58376ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmonde.html">monde</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a820a20a97c743d1d8f4fa278f58376ab">ajouter_wolf</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant, <a class="el" href="structWolf.html">Wolf</a> *wolf)</td></tr>
+<tr class="separator:a820a20a97c743d1d8f4fa278f58376ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbfb9a6fc48c3c8d8a529d96019c20af" id="r_afbfb9a6fc48c3c8d8a529d96019c20af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPerceptionWolf.html">PerceptionWolf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#afbfb9a6fc48c3c8d8a529d96019c20af">calculer_perception_wolf</a> (<a class="el" href="structWolf.html">Wolf</a> *wolf, <a class="el" href="structmonde.html">monde</a> *monde_courant)</td></tr>
+<tr class="separator:afbfb9a6fc48c3c8d8a529d96019c20af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83578959da23212697c41724a51c7264" id="r_a83578959da23212697c41724a51c7264"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWolf.html">Wolf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a83578959da23212697c41724a51c7264">update_wolf</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant, <a class="el" href="structWolf.html">Wolf</a> *wolf, <a class="el" href="loup_8h.html#a0ff3b785fa8bd8a8bf016e51a36c4e76">ActionWolf</a> action, int tick_animation, <a class="el" href="structPerceptionWolf.html">PerceptionWolf</a> perception_wolf)</td></tr>
+<tr class="separator:a83578959da23212697c41724a51c7264"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46aeeedcb7ad73875132cf004b25991a" id="r_a46aeeedcb7ad73875132cf004b25991a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a46aeeedcb7ad73875132cf004b25991a">free_wolf</a> (<a class="el" href="structWolf.html">Wolf</a> **wolf_tab, int nombre_wolf)</td></tr>
+<tr class="separator:a46aeeedcb7ad73875132cf004b25991a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a27160bacb6dd2edb25b2deea3781a" id="r_a88a27160bacb6dd2edb25b2deea3781a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmonde.html">monde</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a88a27160bacb6dd2edb25b2deea3781a">creer_monde</a> (int largeur, int hauteur)</td></tr>
+<tr class="separator:a88a27160bacb6dd2edb25b2deea3781a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69154c852190474d843553885010e6f" id="r_ae69154c852190474d843553885010e6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmonde.html">monde</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#ae69154c852190474d843553885010e6f">generer_un_monde</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant)</td></tr>
+<tr class="separator:ae69154c852190474d843553885010e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e1d72c588ec59dc1f7673336b6852a1" id="r_a4e1d72c588ec59dc1f7673336b6852a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmonde.html">monde</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a4e1d72c588ec59dc1f7673336b6852a1">mis_à_jour_monde</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant, int tick_animation, int input_x, int input_y)</td></tr>
+<tr class="separator:a4e1d72c588ec59dc1f7673336b6852a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f93ae261592526f17bc3446b57444f2" id="r_a6f93ae261592526f17bc3446b57444f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="monde_8c.html#a6f93ae261592526f17bc3446b57444f2">afficher_monde</a> (<a class="el" href="structmonde.html">monde</a> *monde_courant)</td></tr>
+<tr class="separator:a6f93ae261592526f17bc3446b57444f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentation des macros</h2>
+<a id="ad629b1db4ee230dc5de47de843476e72" name="ad629b1db4ee230dc5de47de843476e72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad629b1db4ee230dc5de47de843476e72">&#9670;&#160;</a></span>HAUTEUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define HAUTEUR&#160;&#160;&#160;1024</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00013">13</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a5f16fc378f60c5af4183624c38b249b7" name="a5f16fc378f60c5af4183624c38b249b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f16fc378f60c5af4183624c38b249b7">&#9670;&#160;</a></span>LAC_HEIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LAC_HEIGHT&#160;&#160;&#160;110</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00020">20</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="afa31d75bb221810c33429de2423c1f84" name="afa31d75bb221810c33429de2423c1f84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa31d75bb221810c33429de2423c1f84">&#9670;&#160;</a></span>LAC_WIDTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LAC_WIDTH&#160;&#160;&#160;120</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00019">19</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="aab94244c4e32a515feb8ad3da1c6276b" name="aab94244c4e32a515feb8ad3da1c6276b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab94244c4e32a515feb8ad3da1c6276b">&#9670;&#160;</a></span>LAC_X</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LAC_X&#160;&#160;&#160;713</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00017">17</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a009385c7b610e0bae4449d5f9a8aef82" name="a009385c7b610e0bae4449d5f9a8aef82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a009385c7b610e0bae4449d5f9a8aef82">&#9670;&#160;</a></span>LAC_Y</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LAC_Y&#160;&#160;&#160;515</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00018">18</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a3d3bf5a2f88b1dba6c6bc13bf889c3cc" name="a3d3bf5a2f88b1dba6c6bc13bf889c3cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d3bf5a2f88b1dba6c6bc13bf889c3cc">&#9670;&#160;</a></span>LARGEUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LARGEUR&#160;&#160;&#160;1024</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00012">12</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a7f9453a8525900cad8359390f48bfb21" name="a7f9453a8525900cad8359390f48bfb21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f9453a8525900cad8359390f48bfb21">&#9670;&#160;</a></span>MARGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MARGE&#160;&#160;&#160;90</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00014">14</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a6f93ae261592526f17bc3446b57444f2" name="a6f93ae261592526f17bc3446b57444f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f93ae261592526f17bc3446b57444f2">&#9670;&#160;</a></span>afficher_monde()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void afficher_monde </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : Affiche le monde courant, incluant le terrain, le fermier, les chèvres et les loups. Entrée : Pointeur vers le monde à afficher. Sortie : Aucune. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00709">709</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="ab3b3d28fbb9dea3b5811998b6d6182c6" name="ab3b3d28fbb9dea3b5811998b6d6182c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3b3d28fbb9dea3b5811998b6d6182c6">&#9670;&#160;</a></span>ajouter_goat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmonde.html">monde</a> * ajouter_goat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> *&#160;</td>
+          <td class="paramname"><em>goat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00132">132</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a820a20a97c743d1d8f4fa278f58376ab" name="a820a20a97c743d1d8f4fa278f58376ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a820a20a97c743d1d8f4fa278f58376ab">&#9670;&#160;</a></span>ajouter_wolf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmonde.html">monde</a> * ajouter_wolf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structWolf.html">Wolf</a> *&#160;</td>
+          <td class="paramname"><em>wolf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00315">315</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a4f462d88566e8d5a4a826808087dcff9" name="a4f462d88566e8d5a4a826808087dcff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f462d88566e8d5a4a826808087dcff9">&#9670;&#160;</a></span>calculer_perception_goat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structPerceptionGoat.html">PerceptionGoat</a> calculer_perception_goat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> *&#160;</td>
+          <td class="paramname"><em>goat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00144">144</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="afbfb9a6fc48c3c8d8a529d96019c20af" name="afbfb9a6fc48c3c8d8a529d96019c20af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbfb9a6fc48c3c8d8a529d96019c20af">&#9670;&#160;</a></span>calculer_perception_wolf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structPerceptionWolf.html">PerceptionWolf</a> calculer_perception_wolf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structWolf.html">Wolf</a> *&#160;</td>
+          <td class="paramname"><em>wolf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00327">327</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a00fc539b2a1b734f276a0603d276e0d8" name="a00fc539b2a1b734f276a0603d276e0d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00fc539b2a1b734f276a0603d276e0d8">&#9670;&#160;</a></span>check_collision_rect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int check_collision_rect </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>h1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>h2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : Vérifie la collision entre deux objets rectangulaires. Entrée : Coordonnées (x1, y1) du premier objet, coordonnées (x2, y2) du deuxième objet. Sortie : 1 si collision, 0 sinon. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00074">74</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="ae31dc2e7730c6d9c764c8d3219f2e422" name="ae31dc2e7730c6d9c764c8d3219f2e422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae31dc2e7730c6d9c764c8d3219f2e422">&#9670;&#160;</a></span>choisir_action_softmax()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int choisir_action_softmax </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>tab_interet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nb_actions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : calcul la proba de chaque action et calcul un nombre aleatoire et en fonction de ce nombre et des proba renvoie une action. Entrée : le tableau d interet qui contient l interet de chaque action et le nombre d actions possible. Sortie : le numero de l'action retenue. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00028">28</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a88a27160bacb6dd2edb25b2deea3781a" name="a88a27160bacb6dd2edb25b2deea3781a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88a27160bacb6dd2edb25b2deea3781a">&#9670;&#160;</a></span>creer_monde()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmonde.html">monde</a> * creer_monde </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>largeur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hauteur</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00479">479</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="ad079154429057f94ea9a2a2cafb07654" name="ad079154429057f94ea9a2a2cafb07654"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad079154429057f94ea9a2a2cafb07654">&#9670;&#160;</a></span>free_goats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void free_goats </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> **&#160;</td>
+          <td class="paramname"><em>goats_tab</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nb_goat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00267">267</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a46aeeedcb7ad73875132cf004b25991a" name="a46aeeedcb7ad73875132cf004b25991a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46aeeedcb7ad73875132cf004b25991a">&#9670;&#160;</a></span>free_wolf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void free_wolf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structWolf.html">Wolf</a> **&#160;</td>
+          <td class="paramname"><em>wolf_tab</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_wolf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00459">459</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="ae69154c852190474d843553885010e6f" name="ae69154c852190474d843553885010e6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae69154c852190474d843553885010e6f">&#9670;&#160;</a></span>generer_un_monde()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmonde.html">monde</a> * generer_un_monde </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00515">515</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a0a143c51c2ff9bd695f93213e9ff6258" name="a0a143c51c2ff9bd695f93213e9ff6258"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a143c51c2ff9bd695f93213e9ff6258">&#9670;&#160;</a></span>init_fermier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFermier.html">Fermier</a> * init_fermier </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFermier.html">Fermier</a> *&#160;</td>
+          <td class="paramname"><em>fermier</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : Initialise le fermier devant sa maison. Entrée : Pointeur vers la structure <a class="el" href="structFermier.html">Fermier</a> à initialiser. Sortie : Pointeur vers la structure <a class="el" href="structFermier.html">Fermier</a> initialisée. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00090">90</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a9900f5ebd64a945afbd2b9807d497bec" name="a9900f5ebd64a945afbd2b9807d497bec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9900f5ebd64a945afbd2b9807d497bec">&#9670;&#160;</a></span>init_goat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGoat.html">Goat</a> * init_goat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> *&#160;</td>
+          <td class="paramname"><em>goat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : Initialise une chèvre avec des coordonnées aléatoires et une direction par défaut. Entrée : Pointeur vers la structure <a class="el" href="structGoat.html">Goat</a> à initialiser. Sortie : Pointeur vers la structure <a class="el" href="structGoat.html">Goat</a> initialisée. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00105">105</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a8941c7df47d07a0822beb7b09603e96e" name="a8941c7df47d07a0822beb7b09603e96e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8941c7df47d07a0822beb7b09603e96e">&#9670;&#160;</a></span>init_wolf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structWolf.html">Wolf</a> * init_wolf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structWolf.html">Wolf</a> *&#160;</td>
+          <td class="paramname"><em>wolf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : Initialise un loup avec des coordonnées aléatoires et une direction par défaut. Entrée : Pointeur vers la structure <a class="el" href="structWolf.html">Wolf</a> à initialiser. Sortie : Pointeur vers la structure <a class="el" href="structWolf.html">Wolf</a> initialisée. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00289">289</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a4e1d72c588ec59dc1f7673336b6852a1" name="a4e1d72c588ec59dc1f7673336b6852a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e1d72c588ec59dc1f7673336b6852a1">&#9670;&#160;</a></span>mis_à_jour_monde()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmonde.html">monde</a> * mis_à_jour_monde </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tick_animation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>input_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>input_y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00568">568</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a51ccb6ce9ad6f9c72f0ede06edb6692d" name="a51ccb6ce9ad6f9c72f0ede06edb6692d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51ccb6ce9ad6f9c72f0ede06edb6692d">&#9670;&#160;</a></span>update_goat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGoat.html">Goat</a> * update_goat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> *&#160;</td>
+          <td class="paramname"><em>goat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="goat_8h.html#a9bbb68361b13d2c3f467ecb9a7342218">ActionGoat</a>&#160;</td>
+          <td class="paramname"><em>action</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tick_animation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPerceptionGoat.html">PerceptionGoat</a>&#160;</td>
+          <td class="paramname"><em>perception_goat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00170">170</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+<a id="a83578959da23212697c41724a51c7264" name="a83578959da23212697c41724a51c7264"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83578959da23212697c41724a51c7264">&#9670;&#160;</a></span>update_wolf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structWolf.html">Wolf</a> * update_wolf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmonde.html">monde</a> *&#160;</td>
+          <td class="paramname"><em>monde_courant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structWolf.html">Wolf</a> *&#160;</td>
+          <td class="paramname"><em>wolf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="loup_8h.html#a0ff3b785fa8bd8a8bf016e51a36c4e76">ActionWolf</a>&#160;</td>
+          <td class="paramname"><em>action</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tick_animation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPerceptionWolf.html">PerceptionWolf</a>&#160;</td>
+          <td class="paramname"><em>perception_wolf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="monde_8c_source.html#l00353">353</a> du fichier <a class="el" href="monde_8c_source.html">monde.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="monde_8c.html">monde.c</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

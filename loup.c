@@ -23,7 +23,7 @@ void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf) {
         // on chasse si la chèvre est proche
         wolf->table_interets[ACTION_WOLF_CHASSER] = -10.0;
         wolf->table_interets[ACTION_WOLF_ERRER] = -10.0f;
-        wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = +10.0f;
+        wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = 10.0f;
     }
     else
     {

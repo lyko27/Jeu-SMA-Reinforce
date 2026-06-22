@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Projet ZZ1 - Groupe 8 - SMA: Référence du fichier goat.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Projet ZZ1 - Groupe 8 - SMA
+   </div>
+   <div id="projectbrief">Simulation d&#39;un Système Multi-Agents réactifs (Chèvres, Loups et Fermier) avec apprentissage automatique en SDL2.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('goat_8c.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier goat.c</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="goat_8h_source.html">goat.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="monde_8h_source.html">monde.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="loup_8h_source.html">loup.h</a>&quot;</code><br />
+</div>
+<p><a href="goat_8c_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a307c5851c35ceeadc1521d0e6dc581f9" id="r_a307c5851c35ceeadc1521d0e6dc581f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="goat_8h.html#a9bbb68361b13d2c3f467ecb9a7342218">ActionGoat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="goat_8c.html#a307c5851c35ceeadc1521d0e6dc581f9">decider_action_goat</a> (<a class="el" href="structGoat.html">Goat</a> *goat, <a class="el" href="structPerceptionGoat.html">PerceptionGoat</a> perception_goat)</td></tr>
+<tr class="separator:a307c5851c35ceeadc1521d0e6dc581f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaf9da1ea58be0e0d7631f171075d44e" id="r_aeaf9da1ea58be0e0d7631f171075d44e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="goat_8c.html#aeaf9da1ea58be0e0d7631f171075d44e">evaluer_interets_goat</a> (<a class="el" href="structGoat.html">Goat</a> *current_goat, <a class="el" href="structPerceptionGoat.html">PerceptionGoat</a> perception_goat)</td></tr>
+<tr class="separator:aeaf9da1ea58be0e0d7631f171075d44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a307c5851c35ceeadc1521d0e6dc581f9" name="a307c5851c35ceeadc1521d0e6dc581f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a307c5851c35ceeadc1521d0e6dc581f9">&#9670;&#160;</a></span>decider_action_goat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="goat_8h.html#a9bbb68361b13d2c3f467ecb9a7342218">ActionGoat</a> decider_action_goat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> *&#160;</td>
+          <td class="paramname"><em>goat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPerceptionGoat.html">PerceptionGoat</a>&#160;</td>
+          <td class="paramname"><em>perception_goat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Synopsis : Décide de la prochaine action de la chèvre en fonction de sa perception_goat. Entrée : Pointeur vers la chèvre, Perception de la chèvre. Sortie : Action choisie par la chèvre. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="goat_8c_source.html#l00013">13</a> du fichier <a class="el" href="goat_8c_source.html">goat.c</a>.</p>
+
+</div>
+</div>
+<a id="aeaf9da1ea58be0e0d7631f171075d44e" name="aeaf9da1ea58be0e0d7631f171075d44e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaf9da1ea58be0e0d7631f171075d44e">&#9670;&#160;</a></span>evaluer_interets_goat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void evaluer_interets_goat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGoat.html">Goat</a> *&#160;</td>
+          <td class="paramname"><em>current_goat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPerceptionGoat.html">PerceptionGoat</a>&#160;</td>
+          <td class="paramname"><em>perception_goat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="goat_8c_source.html#l00043">43</a> du fichier <a class="el" href="goat_8c_source.html">goat.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="goat_8c.html">goat.c</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

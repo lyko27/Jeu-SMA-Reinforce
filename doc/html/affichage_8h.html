@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Projet ZZ1 - Groupe 8 - SMA: Référence du fichier affichage.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Projet ZZ1 - Groupe 8 - SMA
+   </div>
+   <div id="projectbrief">Simulation d&#39;un Système Multi-Agents réactifs (Chèvres, Loups et Fermier) avec apprentissage automatique en SDL2.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('affichage_8h.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier affichage.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;SDL2/SDL.h&gt;</code><br />
+</div>
+<p><a href="affichage_8h_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aa88bc41c045cf4e15865c7f47b01eea6" id="r_aa88bc41c045cf4e15865c7f47b01eea6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#aa88bc41c045cf4e15865c7f47b01eea6">TAILLE_CELLULE</a>&#160;&#160;&#160;10.0f</td></tr>
+<tr class="separator:aa88bc41c045cf4e15865c7f47b01eea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ff690d01c19bb84fb96773f9ff42fe3" id="r_a8ff690d01c19bb84fb96773f9ff42fe3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#a8ff690d01c19bb84fb96773f9ff42fe3">LARGEUR_MONDE</a>&#160;&#160;&#160;200</td></tr>
+<tr class="separator:a8ff690d01c19bb84fb96773f9ff42fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a410dba63e2ed90f42fe998d36b791e70" id="r_a410dba63e2ed90f42fe998d36b791e70"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#a410dba63e2ed90f42fe998d36b791e70">HAUTEUR_MONDE</a>&#160;&#160;&#160;200</td></tr>
+<tr class="separator:a410dba63e2ed90f42fe998d36b791e70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a9997b9c0deff4119dd1a312e048dd0b5" id="r_a9997b9c0deff4119dd1a312e048dd0b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#a9997b9c0deff4119dd1a312e048dd0b5">quitter_affichage</a> ()</td></tr>
+<tr class="separator:a9997b9c0deff4119dd1a312e048dd0b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cef2e962cdd32b5989a5ff436b49def" id="r_a6cef2e962cdd32b5989a5ff436b49def"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#a6cef2e962cdd32b5989a5ff436b49def">dessiner_monde</a> ()</td></tr>
+<tr class="separator:a6cef2e962cdd32b5989a5ff436b49def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71620e79a84a47cb9ec317dd51912695" id="r_a71620e79a84a47cb9ec317dd51912695"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#a71620e79a84a47cb9ec317dd51912695">actualiser_ecran</a> ()</td></tr>
+<tr class="separator:a71620e79a84a47cb9ec317dd51912695"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbbd0144f79f9d521c6da1ea88dcea6f" id="r_adbbd0144f79f9d521c6da1ea88dcea6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#adbbd0144f79f9d521c6da1ea88dcea6f">dessiner_entite</a> (int type_entite, int position_x, int position_y, int frame, int direction)</td></tr>
+<tr class="separator:adbbd0144f79f9d521c6da1ea88dcea6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacfe02e582314b41fe1733d121487b58" id="r_aacfe02e582314b41fe1733d121487b58"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#aacfe02e582314b41fe1733d121487b58">init_affichage</a> ()</td></tr>
+<tr class="separator:aacfe02e582314b41fe1733d121487b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aaa8e409e04dcf575ef63fd5fb3db06f9" id="r_aaa8e409e04dcf575ef63fd5fb3db06f9"><td class="memItemLeft" align="right" valign="top">SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#aaa8e409e04dcf575ef63fd5fb3db06f9">window</a></td></tr>
+<tr class="separator:aaa8e409e04dcf575ef63fd5fb3db06f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a966da7a60c4ea3ba301e26ccc5efe452" id="r_a966da7a60c4ea3ba301e26ccc5efe452"><td class="memItemLeft" align="right" valign="top">SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="affichage_8h.html#a966da7a60c4ea3ba301e26ccc5efe452">renderer</a></td></tr>
+<tr class="separator:a966da7a60c4ea3ba301e26ccc5efe452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentation des macros</h2>
+<a id="a410dba63e2ed90f42fe998d36b791e70" name="a410dba63e2ed90f42fe998d36b791e70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a410dba63e2ed90f42fe998d36b791e70">&#9670;&#160;</a></span>HAUTEUR_MONDE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define HAUTEUR_MONDE&#160;&#160;&#160;200</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8h_source.html#l00008">8</a> du fichier <a class="el" href="affichage_8h_source.html">affichage.h</a>.</p>
+
+</div>
+</div>
+<a id="a8ff690d01c19bb84fb96773f9ff42fe3" name="a8ff690d01c19bb84fb96773f9ff42fe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ff690d01c19bb84fb96773f9ff42fe3">&#9670;&#160;</a></span>LARGEUR_MONDE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LARGEUR_MONDE&#160;&#160;&#160;200</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8h_source.html#l00007">7</a> du fichier <a class="el" href="affichage_8h_source.html">affichage.h</a>.</p>
+
+</div>
+</div>
+<a id="aa88bc41c045cf4e15865c7f47b01eea6" name="aa88bc41c045cf4e15865c7f47b01eea6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa88bc41c045cf4e15865c7f47b01eea6">&#9670;&#160;</a></span>TAILLE_CELLULE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TAILLE_CELLULE&#160;&#160;&#160;10.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8h_source.html#l00006">6</a> du fichier <a class="el" href="affichage_8h_source.html">affichage.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a71620e79a84a47cb9ec317dd51912695" name="a71620e79a84a47cb9ec317dd51912695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71620e79a84a47cb9ec317dd51912695">&#9670;&#160;</a></span>actualiser_ecran()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void actualiser_ecran </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00206">206</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+<a id="adbbd0144f79f9d521c6da1ea88dcea6f" name="adbbd0144f79f9d521c6da1ea88dcea6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbbd0144f79f9d521c6da1ea88dcea6f">&#9670;&#160;</a></span>dessiner_entite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dessiner_entite </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type_entite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>direction</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00069">69</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+<a id="a6cef2e962cdd32b5989a5ff436b49def" name="a6cef2e962cdd32b5989a5ff436b49def"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cef2e962cdd32b5989a5ff436b49def">&#9670;&#160;</a></span>dessiner_monde()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dessiner_monde </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00199">199</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+<a id="aacfe02e582314b41fe1733d121487b58" name="aacfe02e582314b41fe1733d121487b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacfe02e582314b41fe1733d121487b58">&#9670;&#160;</a></span>init_affichage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int init_affichage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00013">13</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+<a id="a9997b9c0deff4119dd1a312e048dd0b5" name="a9997b9c0deff4119dd1a312e048dd0b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9997b9c0deff4119dd1a312e048dd0b5">&#9670;&#160;</a></span>quitter_affichage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void quitter_affichage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00210">210</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a966da7a60c4ea3ba301e26ccc5efe452" name="a966da7a60c4ea3ba301e26ccc5efe452"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a966da7a60c4ea3ba301e26ccc5efe452">&#9670;&#160;</a></span>renderer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL_Renderer* renderer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00006">6</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+<a id="aaa8e409e04dcf575ef63fd5fb3db06f9" name="aaa8e409e04dcf575ef63fd5fb3db06f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa8e409e04dcf575ef63fd5fb3db06f9">&#9670;&#160;</a></span>window</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL_Window* window</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="affichage_8c_source.html#l00005">5</a> du fichier <a class="el" href="affichage_8c_source.html">affichage.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="affichage_8h.html">affichage.h</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

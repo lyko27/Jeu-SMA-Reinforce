@@ -227,79 +227,6 @@ Goat * update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick
     return goat;
 }
 
-Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
-{
-    float next_x = wolf->x;
-    float next_y = wolf->y;
-    
-    if (action == ACTION_WOLF_ERRER || action == ACTION_WOLF_CHASSER) {
-        wolf->speed = 2;
-
-        if (action == ACTION_WOLF_CHASSER) {
-            if (perception_wolf.pos_x_goat != -1) {
-                // Aller vers la chèvre
-                wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
-            }
-        }
-
-        next_x += cos(wolf->angle_actuel) * wolf->speed;
-        next_y += sin(wolf->angle_actuel) * wolf->speed;
-        
-        if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y)) {
-            wolf->direction_sprite = (next_x > wolf->x) ? 2 : 4;
-        } else {
-            wolf->direction_sprite = (next_y > wolf->y) ? 3 : 1;
-        }
-    } 
-    else if (action == ACTION_WOLF_ARRET) {
-        wolf->speed = 0;
-    }
-
-    if (next_x < MARGE) next_x = MARGE;
-    if (next_y < MARGE) next_y = MARGE;
-    if (next_x > LARGEUR - MARGE - WIDTH_WOLF) next_x = LARGEUR - MARGE - WIDTH_WOLF;
-    if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF) next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
-
-    int collision = 0;
-
-    // Collision avec le lac
-    if (check_collision_rect(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 
-                             LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT)) {
-        collision = 1;
-        wolf->timer_mouvement = 0;
-    }
-    for (int j = 0; j < monde_courant->nb_wolf; j++) {
-        if (monde_courant->wolfs_tab[j] != wolf) {
-            if (check_collision_rect(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 
-                                     monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y, 
-                                     WIDTH_WOLF, HEIGHT_WOLF)) {
-                collision = 1;
-                wolf->timer_mouvement = 0;
-                break;
-            }
-        }
-    }
-    
-    if (!collision) {
-        wolf->x = next_x;
-        wolf->y = next_y;
-        wolf->dir_x = next_x;
-        wolf->dir_y = next_y;
-    } else {
-        wolf->dir_x = wolf->x;
-        wolf->dir_y = wolf->y;
-    }
-    
-    if (tick_animation % 6 == 0) {
-        if (wolf->speed > 0 && !collision) {
-            wolf->frame = (wolf->frame + 1) % 4;
-        } else {
-            wolf->frame = 0;
-        }
-    }
-    return wolf;
-}
-
 /* ENtrées : le tableau de chèvre, nombre de chèvre
     Sotie : aucune
     Synopsis : libère toute les goats du tableau*/
@@ -380,6 +307,79 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
         }
     }
     return perception;
+}
+
+Wolf * update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
+{
+    float next_x = wolf->x;
+    float next_y = wolf->y;
+    
+    if (action == ACTION_WOLF_ERRER || action == ACTION_WOLF_CHASSER) {
+        wolf->speed = 2;
+
+        if (action == ACTION_WOLF_CHASSER) {
+            if (perception_wolf.pos_x_goat != -1) {
+                // Aller vers la chèvre
+                wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
+            }
+        }
+
+        next_x += cos(wolf->angle_actuel) * wolf->speed;
+        next_y += sin(wolf->angle_actuel) * wolf->speed;
+        
+        if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y)) {
+            wolf->direction_sprite = (next_x > wolf->x) ? 2 : 4;
+        } else {
+            wolf->direction_sprite = (next_y > wolf->y) ? 3 : 1;
+        }
+    } 
+    else if (action == ACTION_WOLF_ARRET) {
+        wolf->speed = 0;
+    }
+
+    if (next_x < MARGE) next_x = MARGE;
+    if (next_y < MARGE) next_y = MARGE;
+    if (next_x > LARGEUR - MARGE - WIDTH_WOLF) next_x = LARGEUR - MARGE - WIDTH_WOLF;
+    if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF) next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
+
+    int collision = 0;
+
+    // Collision avec le lac
+    if (check_collision_rect(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 
+                             LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT)) {
+        collision = 1;
+        wolf->timer_mouvement = 0;
+    }
+    for (int j = 0; j < monde_courant->nb_wolf; j++) {
+        if (monde_courant->wolfs_tab[j] != wolf) {
+            if (check_collision_rect(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 
+                                     monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y, 
+                                     WIDTH_WOLF, HEIGHT_WOLF)) {
+                collision = 1;
+                wolf->timer_mouvement = 0;
+                break;
+            }
+        }
+    }
+    
+    if (!collision) {
+        wolf->x = next_x;
+        wolf->y = next_y;
+        wolf->dir_x = next_x;
+        wolf->dir_y = next_y;
+    } else {
+        wolf->dir_x = wolf->x;
+        wolf->dir_y = wolf->y;
+    }
+    
+    if (tick_animation % 6 == 0) {
+        if (wolf->speed > 0 && !collision) {
+            wolf->frame = (wolf->frame + 1) % 4;
+        } else {
+            wolf->frame = 0;
+        }
+    }
+    return wolf;
 }
 
 /* ENtrées : le tableau de wolf, nombre de wolf

@@ -117,7 +117,7 @@ Hitbox get_hitbox_goat(float x, float y) {
 }
 
 Hitbox get_hitbox_wolf(float x, float y) {
-    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 28.0f, 10.0f, 10.0f);
+    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 5.0f, 10.0f, 10.0f);
 }
 
 /* ========== Fermier ========== */
@@ -215,7 +215,6 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     if (action == ACTION_ERRER || action == ACTION_FUIR_WOLF)
     {
         goat->speed = 2;
-
         if (action == ACTION_FUIR_WOLF)
         {
             if (perception_goat.pos_x_wolf != -1)
@@ -695,6 +694,18 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
                 if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
                                          hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h)) {
                     collision_fermier = 1;
+                    break;
+                }
+            }
+        }
+        // collision avec chevres
+        if (!collision_fermier) {
+            for (int j = 0; j < monde_courant->nb_wolf; j++) {
+                Hitbox hb_wolf = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
+
+                if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, 
+                                         hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h)) {
+                    collision_fermier = 1; // Le fermier se cogne contre un loup
                     break;
                 }
             }

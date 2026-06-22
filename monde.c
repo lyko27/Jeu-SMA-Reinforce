@@ -433,12 +433,12 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
                 wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
             }
         }
+    }
     if(action == ACTION_WOLF_FUIR_FERMIER)
-        {
-            wolf->speed = 3;
-            // Fuir le fermier
-            wolf->angle_actuel = atan2(wolf->y - perception_wolf.pos_y_fermier, wolf->x - perception_wolf.pos_x_fermier);
-        }
+    {
+        wolf->speed = 4;
+        // Fuir le fermier
+        wolf->angle_actuel = atan2(wolf->y - perception_wolf.pos_y_fermier, wolf->x - perception_wolf.pos_x_fermier);
     }
     if (action == ACTION_WOLF_ARRET)
     {

@@ -4,33 +4,33 @@
 #include "loup.h"
 
 void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf) {
-    
-    // Par défaut, un wolf erre.
-    wolf->table_interets[ACTION_WOLF_ERRER] = 5.0f;
-    wolf->table_interets[ACTION_WOLF_CHASSER] = 0.0f;
-    wolf->table_interets[ACTION_WOLF_ARRET] = 0.0f;
-    wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = 0.0f;
+    // Calcul de la distance avec le fermier
+    float dx_fermier = perception_wolf.pos_x_fermier - wolf->x;
+    float dy_fermier = perception_wolf.pos_y_fermier - wolf->y;
+    float dist_fermier = sqrt(dx_fermier * dx_fermier + dy_fermier * dy_fermier);
 
-    // modif selon la Perception
-    if (perception_wolf.dist_goat_proche < 200.0) 
+    // Fuir le fermier s'il est proche
+    if (dist_fermier < 200.0f) 
     {
-        // on chasse si la chèvre est proche
-        wolf->table_interets[ACTION_WOLF_CHASSER] = 10.0 - (perception_wolf.dist_goat_proche / 20.0);
+        wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = 15.0f;
+        wolf->table_interets[ACTION_WOLF_CHASSER] = -10.0f;
         wolf->table_interets[ACTION_WOLF_ERRER] = -10.0f;
+        wolf->table_interets[ACTION_WOLF_ARRET] = -10.0f;
     }
-    if (sqrt((perception_wolf.pos_x_fermier - wolf->x) * (perception_wolf.pos_x_fermier - wolf->x) + (perception_wolf.pos_y_fermier - wolf->y) * (perception_wolf.pos_y_fermier - wolf->y)) < 200.0) 
+    // Chasser la chèvre si elle est proche
+    else if (perception_wolf.pos_x_goat != -1 && perception_wolf.dist_goat_proche < 300.0f) 
     {
-        // on chasse si la chèvre est proche
-        wolf->table_interets[ACTION_WOLF_CHASSER] = -10.0;
-        wolf->table_interets[ACTION_WOLF_ERRER] = -10.0f;
-        wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = 10.0f;
-    }
-    else
-    {
-        // sinon loup chill
-        wolf->table_interets[ACTION_WOLF_CHASSER] = -10.0;
-        wolf->table_interets[ACTION_WOLF_ERRER] = 8.0;
-        wolf->table_interets[ACTION_WOLF_ARRET] = 10.0;
         wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = -10.0f;
+        wolf->table_interets[ACTION_WOLF_CHASSER] = 15.0f - (perception_wolf.dist_goat_proche / 20.0f);
+        wolf->table_interets[ACTION_WOLF_ERRER] = -2.0f;
+        wolf->table_interets[ACTION_WOLF_ARRET] = -5.0f;
+    }
+    // par défaut
+    else 
+    {
+        wolf->table_interets[ACTION_WOLF_FUIR_FERMIER] = -10.0f;
+        wolf->table_interets[ACTION_WOLF_CHASSER] = -10.0f;
+        wolf->table_interets[ACTION_WOLF_ERRER] = 8.0f;
+        wolf->table_interets[ACTION_WOLF_ARRET] = 5.0f;
     }
 }

@@ -98,7 +98,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
         zoom=0.5;
         texture_actuelle = texture_wolf;
         nb_image=4;
-        nb_ligne=5;
+        nb_ligne=6;
     }
     
     SDL_QueryTexture(texture_actuelle, NULL, NULL, &source.w, &source.h);

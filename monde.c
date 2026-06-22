@@ -437,6 +437,7 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
     return perception;
 }
 
+
 Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
 {
     float next_x = wolf->x;
@@ -511,6 +512,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
         wolf->y = next_y;
         wolf->dir_x = next_x;
         wolf->dir_y = next_y;
+
     }
     else
     {

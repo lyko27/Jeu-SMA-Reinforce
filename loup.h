@@ -13,6 +13,9 @@ typedef enum {
 typedef struct {
     Goat **goats_tab;
     int nb_goat;
+    float dist_goat_proche;
+    int pos_x_goat;
+    int pos_y_goat;
     int pos_x_fermier;
     int pos_y_fermier;
 } PerceptionWolf;

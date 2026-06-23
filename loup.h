@@ -23,16 +23,22 @@ typedef struct {
 
 typedef struct
 {
+    // var de position et de mouvement
     float x;
     float y;
     float speed;
     float dir_x;
     float dir_y;
+    float angle_actuel;
+
+    // var d'animation
     int frame;
     int en_mouvement;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
     int timer_mouvement; // Le temps restant à marcher dans la même direction
-    float angle_actuel;
+
+    int hp;
+
     float table_interets[NB_ACTIONS_WOLF];
     float weights[NB_ACTIONS_WOLF][DIMENSION_PHI_WOLF];
     int decision_cooldown;

@@ -21,6 +21,7 @@ typedef struct
     int en_mouvement;
     int timer_mouvement; // Le temps restant à marcher dans la même direction
     float angle_actuel;
+    int hp;
 
     float table_interets[NB_ACTIONS];
     int decision_cooldown ;

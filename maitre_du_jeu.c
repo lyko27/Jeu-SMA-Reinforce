@@ -117,7 +117,7 @@ void nettoyer_monde(monde *m)
 // Boucle d'entraînement hors-ligne
 void entrainer_agents()
 {
-    int nb_cycles = 100;
+    int nb_cycles = 10000;
     int nb_episodes = 10;
     int max_steps = 1000;
     float alpha = 0.001f;

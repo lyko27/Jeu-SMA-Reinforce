@@ -397,9 +397,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));
   }
 
-  // ========
-  // Action physique du Fermier
-  // ========
+  // Action du Fermier
   Fermier *fermier_actuel = monde_courant->fermiers;
   float next_fermier_x = fermier_actuel->x;
   float next_fermier_y = fermier_actuel->y;
@@ -515,6 +513,21 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
           }
       }
   }
+  for (int i = 0; i < monde_courant->nb_wolf; i++)
+  {
+      Wolf *wolf = monde_courant->wolfs_tab[i];
+      Hitbox hb_wolf = get_hitbox_wolf(wolf->x, wolf->y);
+      Hitbox hb_fermier = get_hitbox_fermier(fermier_actuel->x, fermier_actuel->y);
+      
+      if (check_collision_rect(hb_fermier.x, hb_fermier.y, hb_fermier.w, hb_fermier.h,
+                              hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
+      {
+          // Le fermier élimine le loup
+          mourrir_wolf(monde_courant, i);
+          i--; 
+      }
+  }
+
 
   return monde_courant;
 }

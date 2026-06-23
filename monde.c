@@ -358,6 +358,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
                   mourrir_goat(monde_courant, j);
                   j--;
               }
+              monde_courant->goats_tab[j]->cooldown_dinvisibilite = 180; // 3 secondes d'invisibilité après avoir été attaquée
           }
         }
       }
@@ -381,6 +382,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
               mourrir_wolf(monde_courant, i);
               i--;
           }
+          monde_courant->wolfs_tab[i]->cooldown_dinvisibilite = 180; // 3 secondes d'invisibilité après avoir été attaqué
       }
     }
   }

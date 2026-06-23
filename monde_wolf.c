@@ -99,6 +99,9 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
       if (perception_wolf.pos_x_goat != -1)
       {
         // Aller vers la chèvre
+        /* on calcul le vecteur qui va du loup vers la chèvre, et atan2 renvoie l'angle exact que le loup doit suivre pour aller sur la chèvre
+        atan2(x_direction_voulu - x_actuel, y_direction_voulu - y_actuel) => angle pour aller à direction voulu 
+        soit l'angle entre l'axe des abscisses et le vecteur de direction voulu*/
         wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y,
                                    perception_wolf.pos_x_goat - wolf->x);
       }

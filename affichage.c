@@ -29,7 +29,7 @@ int init_affichage() {
     if (TTF_Init() == -1) {
     printf("Attention Erreur TTF_Init : %s\n", TTF_GetError());
     } else {
-        police_compteur = TTF_OpenFont("./fonts/arial.ttf", 30); 
+        police_compteur = TTF_OpenFont("./fonts/PixeloidSans.ttf", 24);
         if (!police_compteur) {
             printf("Attention : Impossible de charger la police. Erreur : %s\n", TTF_GetError());
         }
@@ -97,19 +97,18 @@ void afficher_planche(int nb_chevres, int nb_loups) {
     SDL_RenderCopy(renderer, texture_planche, NULL, &position_planche);
 
     // Choisir la couleur du texte (ex: un marron foncé ou noir pour bien ressortir sur le bois)
-    SDL_Color couleur = {50, 30, 10, 255}; 
+    SDL_Color couleur = {0, 0, 0, 255}; 
 
     // 2. Afficher le compteur des chèvres
     char texte_chevres[64];
     snprintf(texte_chevres, sizeof(texte_chevres), "%d", nb_chevres);
-    SDL_Surface* surface_chevres = TTF_RenderText_Blended(police_compteur, texte_chevres, couleur);
-    
+    SDL_Surface* surface_chevres = TTF_RenderText_Solid(police_compteur, texte_chevres, couleur);    
     if (surface_chevres) {
         SDL_Texture* texture_texte_chevres = SDL_CreateTextureFromSurface(renderer, surface_chevres);
         SDL_Rect pos_texte_chevres;
         // Ajuste ces coordonnées (x, y) pour bien placer le texte à côté de la tête de chèvre sur l'image
-        pos_texte_chevres.x = position_planche.x + 80; 
-        pos_texte_chevres.y = position_planche.y + 25; 
+        pos_texte_chevres.x = position_planche.x + 550 ; 
+        pos_texte_chevres.y = position_planche.y + 50; 
         pos_texte_chevres.w = surface_chevres->w;
         pos_texte_chevres.h = surface_chevres->h;
 
@@ -127,8 +126,8 @@ void afficher_planche(int nb_chevres, int nb_loups) {
         SDL_Texture* texture_texte_loups = SDL_CreateTextureFromSurface(renderer, surface_loups);
         SDL_Rect pos_texte_loups;
         // Ajuste ces coordonnées pour bien placer le texte à côté de la tête du loup
-        pos_texte_loups.x = position_planche.x + 220; 
-        pos_texte_loups.y = position_planche.y + 25; 
+        pos_texte_loups.x = position_planche.x + 230; 
+        pos_texte_loups.y = position_planche.y + 50; 
         pos_texte_loups.w = surface_loups->w;
         pos_texte_loups.h = surface_loups->h;
 

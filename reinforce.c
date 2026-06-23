@@ -36,38 +36,16 @@ void liberer_trajectoire(Trajectoire *t)
   t->taille = 0;
   t->capacite = 0;
 }
-
 // Extraction de phi pour le Fermier
-void calcul_interets_fermier(Fermier *f, struct monde_t *m, float *phi)
+void generer_phi_fermier(PerceptionFermier perception, float *phi)
 {
   phi[0] = 1.0f; // Biais
 
-  // Trouver le loup le plus proche
-  float dist_wolf = 999999.0f;
-  float dx_wolf = 0.0f;
-  float dy_wolf = 0.0f;
-
-  for (int i = 0; i < m->nb_wolf; i++)
+  if (perception.dist_wolf > 0.001f && perception.dist_wolf < 99999.0f)
   {
-    Wolf *w = m->wolfs_tab[i];
-    if (w)
-    {
-      float dx = w->x - f->x;
-      float dy = w->y - f->y;
-      float d = sqrtf(dx * dx + dy * dy);
-      if (d < dist_wolf)
-      {
-        dist_wolf = d;
-        dx_wolf = dx;
-        dy_wolf = dy;
-      }
-    }
-  }
-  if (dist_wolf > 0.001f && dist_wolf < 99999.0f)
-  {
-    phi[1] = dist_wolf / 1024.0f; // distance normalisée du loup le plus proche
-    phi[2] = dx_wolf / dist_wolf; // direction x du loup le plus proche
-    phi[3] = dy_wolf / dist_wolf; // direction y du loup le plus proche
+    phi[1] = perception.dist_wolf / 1024.0f; // distance normalisée du loup le plus proche
+    phi[2] = perception.dx_wolf / perception.dist_wolf; // direction x du loup le plus proche
+    phi[3] = perception.dy_wolf / perception.dist_wolf; // direction y du loup le plus proche
   }
   else
   {
@@ -76,31 +54,11 @@ void calcul_interets_fermier(Fermier *f, struct monde_t *m, float *phi)
     phi[3] = 0.0f;
   }
 
-  // Trouver le goat la plus proche
-  float dist_goat = 999999.0f;
-  float dx_goat = 0.0f;
-  float dy_goat = 0.0f;
-  for (int i = 0; i < m->nb_goat; i++)
+  if (perception.dist_goat > 0.001f && perception.dist_goat < 99999.0f)
   {
-    Goat *g = m->goats_tab[i];
-    if (g)
-    {
-      float dx = g->x - f->x;
-      float dy = g->y - f->y;
-      float d = sqrtf(dx * dx + dy * dy);
-      if (d < dist_goat)
-      {
-        dist_goat = d;
-        dx_goat = dx;
-        dy_goat = dy;
-      }
-    }
-  }
-  if (dist_goat > 0.001f && dist_goat < 99999.0f)
-  {
-    phi[4] = dist_goat / 1024.0f; // distance normalisée du goat le plus proche
-    phi[5] = dx_goat / dist_goat; // direction x du goat le plus proche
-    phi[6] = dy_goat / dist_goat; // direction y du goat le plus proche
+    phi[4] = perception.dist_goat / 1024.0f; // distance normalisée du goat le plus proche
+    phi[5] = perception.dx_goat / perception.dist_goat; // direction x du goat le plus proche
+    phi[6] = perception.dy_goat / perception.dist_goat; // direction y du goat le plus proche
   }
   else
   {
@@ -111,34 +69,17 @@ void calcul_interets_fermier(Fermier *f, struct monde_t *m, float *phi)
 }
 
 // Extraction de caractéristiques pour le Loup
-void calcul_interets_wolf(Wolf *w, struct monde_t *m, float *phi)
+void generer_phi_wolf(Wolf *w, PerceptionWolf perception, float *phi)
 {
   phi[0] = 1.0f; // Biais
 
-  // Trouver la goat la plus proche
-  float dist_goat = 999999.0f;
-  float dx_goat = 0.0f;
-  float dy_goat = 0.0f;
-  for (int i = 0; i < m->nb_goat; i++)
+  if (perception.pos_x_goat != -1 && perception.dist_goat_proche > 0.001f && perception.dist_goat_proche < 99999.0f)
   {
-    Goat *g = m->goats_tab[i];
-    if (!g)
-      continue;
-    float dx = g->x - w->x;
-    float dy = g->y - w->y;
-    float d = sqrtf(dx * dx + dy * dy);
-    if (d < dist_goat)
-    {
-      dist_goat = d;
-      dx_goat = dx;
-      dy_goat = dy;
-    }
-  }
-  if (dist_goat > 0.001f && dist_goat < 99999.0f)
-  {
-    phi[1] = dist_goat / 1024.0f; // distance normalisée du goat le plus proche
-    phi[2] = dx_goat / dist_goat; // direction x du goat le plus proche
-    phi[3] = dy_goat / dist_goat; // direction y du goat le plus proche
+    phi[1] = perception.dist_goat_proche / 1024.0f; // distance normalisée du goat le plus proche
+    float dx_goat = perception.pos_x_goat - w->x;
+    float dy_goat = perception.pos_y_goat - w->y;
+    phi[2] = dx_goat / perception.dist_goat_proche; // direction x du goat le plus proche
+    phi[3] = dy_goat / perception.dist_goat_proche; // direction y du goat le plus proche
   }
   else
   {
@@ -148,32 +89,24 @@ void calcul_interets_wolf(Wolf *w, struct monde_t *m, float *phi)
   }
 
   // Distance au fermier
-  Fermier *f = m->fermiers;
-  if (f)
+  float dx_f = perception.pos_x_fermier - w->x;
+  float dy_f = perception.pos_y_fermier - w->y;
+  float d_f = sqrtf(dx_f * dx_f + dy_f * dy_f);
+  if (d_f > 0.001f)
   {
-    float dx_f = f->x - w->x;
-    float dy_f = f->y - w->y;
-    float d_f = sqrtf(dx_f * dx_f + dy_f * dy_f);
-    if (d_f > 0.001f)
-    {
-      phi[4] = d_f / 1024.0f; // distance normalisée au fermier
-      phi[5] = dx_f / d_f;    // direction x du fermier
-      phi[6] = dy_f / d_f;    // direction y du fermier
-    }
-    else
-    {
-      phi[4] = 0.0f;
-      phi[5] = 0.0f;
-      phi[6] = 0.0f;
-    }
+    phi[4] = d_f / 1024.0f; // distance normalisée au fermier
+    phi[5] = dx_f / d_f;    // direction x du fermier
+    phi[6] = dy_f / d_f;    // direction y du fermier
   }
   else
   {
-    phi[4] = 1.0f;
+    phi[4] = 0.0f;
     phi[5] = 0.0f;
     phi[6] = 0.0f;
   }
 }
+
+// Softmax
 
 // Softmax
 void calculer_softmax(const float *phi, float poids[][7], int nb_actions, int dim_phi, float *probabilites)

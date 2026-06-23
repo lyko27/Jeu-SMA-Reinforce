@@ -2,6 +2,7 @@
 #include <time.h>
 #include <math.h>
 #include "loup.h"
+#include "reinforce.h"
 
 void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf) {
     // Calcul de la distance avec le fermier
@@ -32,5 +33,16 @@ void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf) {
         wolf->table_interets[ACTION_WOLF_CHASSER] = -10.0f;
         wolf->table_interets[ACTION_WOLF_ERRER] = 8.0f;
         wolf->table_interets[ACTION_WOLF_ARRET] = 5.0f;
+    }
+}
+void evaluer_interets_wolf_rl(Wolf *wolf, PerceptionWolf perception_wolf) {
+    float phi[DIMENSION_PHI_WOLF];
+    generer_phi_wolf(wolf, perception_wolf, phi);
+    for (int a = 0; a < NB_ACTIONS_WOLF; a++) {
+        float val = 0.0f;
+        for (int k = 0; k < DIMENSION_PHI_WOLF; k++) {
+            val += wolf->weights[a][k] * phi[k];
+        }
+        wolf->table_interets[a] = val;
     }
 }

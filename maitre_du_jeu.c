@@ -1,6 +1,5 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +14,8 @@
 #include "reinforce.h"
 #include "utilisateur.h"
 
+#define LARGEUR 1024
+#define HAUTEUR 1024
 
 // Calcul de la récompense instantanée pour le fermier
 float calculer_recompense_fermier(monde *m)
@@ -47,7 +48,7 @@ float calculer_recompense_fermier(monde *m)
                     float dist_g = sqrtf(dgx * dgx + dgy * dgy);
                     if (dist_g < 50.0f)
                     {
-                        r -= 2.0f; // Pénalité
+                        r -= 15.0f; // Pénalité
                     }
                 }
             }
@@ -93,7 +94,7 @@ float calculer_recompense_loup(Wolf *w, monde *m)
         float dist_f = sqrtf(dfx * dfx + dfy * dfy);
         if (dist_f < 80.0f)
         {
-            r -= 5.0f; // Pénalité si le fermier est trop proche
+            r -= 25.0f; // Pénalité si le fermier est trop proche
         }
     }
     return r;
@@ -113,10 +114,10 @@ void nettoyer_monde(monde *m)
     }
 }
 
-// Boucle d'entraînement hors-ligne
+// Boucle d'entraînement
 void entrainer_agents()
 {
-    int nb_cycles = 10000;
+    int nb_cycles = 1000;
     int nb_episodes = 10;
     int max_steps = 1000;
     float alpha = 0.001f;
@@ -166,12 +167,14 @@ void entrainer_agents()
             {
                 // Extraire phi dans l'état courant
                 float phi_fermier[DIMENSION_PHI_FERMIER];
-                calcul_interets_fermier(m->fermiers, m, phi_fermier);
+                PerceptionFermier perc_fermier = calculer_perception_fermier(m->fermiers, m);
+                generer_phi_fermier(perc_fermier, phi_fermier);
 
                 float phi_loups[3][DIMENSION_PHI_WOLF];
                 for (int w = 0; w < m->nb_wolf && w < 3; w++)
                 {
-                    calcul_interets_wolf(m->wolfs_tab[w], m, phi_loups[w]);
+                    PerceptionWolf perc_wolf = calculer_perception_wolf(m->wolfs_tab[w], m);
+                    generer_phi_wolf(m->wolfs_tab[w], perc_wolf, phi_loups[w]);
                 }
 
                 m = mis_à_jour_monde(m, step, 0, 0);

@@ -335,24 +335,13 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
 
     if (wolf->decision_cooldown <= 0)
     {
+      PerceptionWolf perception_wolf = calculer_perception_wolf(wolf, monde_courant);
       if (monde_courant->mode)
       {
-        float phi[7];
-        calcul_interets_wolf(wolf, monde_courant, phi);
-        for (int a = 0; a < NB_ACTIONS_WOLF; a++)
-        {
-          float val = 0.0f;
-          for (int k = 0; k < DIMENSION_PHI_WOLF; k++)
-          {
-            val += wolf->weights[a][k] * phi[k];
-          }
-          wolf->table_interets[a] = val;
-        }
+        evaluer_interets_wolf_rl(wolf, perception_wolf);
       }
       else
       {
-        PerceptionWolf perception_wolf =
-            calculer_perception_wolf(wolf, monde_courant);
         evaluer_interets_wolf(wolf, perception_wolf);
       }
       wolf->action_choisi =

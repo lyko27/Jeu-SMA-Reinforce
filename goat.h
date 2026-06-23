@@ -40,5 +40,6 @@ typedef struct {
 } PerceptionGoat;
 
 void evaluer_interets_goat(Goat *goat, PerceptionGoat perception_goat);
+void evaluer_interets_wolf_rl(Wolf *wolf, PerceptionWolf perception_wolf);
 
 #endif

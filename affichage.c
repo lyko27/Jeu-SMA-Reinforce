@@ -12,6 +12,7 @@ SDL_Texture *texture_chevreau = NULL;
 SDL_Texture *texture_fermier = NULL;
 SDL_Texture *texture_wolf = NULL;
 TTF_Font *police_compteur = NULL;
+SDL_Texture *texture_planche = NULL;
 
 int init_affichage() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -43,13 +44,14 @@ int init_affichage() {
     texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
     texture_wolf = IMG_LoadTexture(renderer, "./images/loup2.png");
+    texture_planche = IMG_LoadTexture(renderer, "./images/ath.png"); 
 
-    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier) {
+    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche) {
         printf("Erreur chargement image : %s\n", IMG_GetError());
         return 0;
     }
     return 1;
-}
+    }
 
 int gestion_direction_chevre(int direction){
     if (direction==1) return 3;
@@ -76,33 +78,64 @@ int gestion_direction_wolf(int direction){
     return 0;
 }
 
-void afficher_compteur(int nb_chevres) {
-    // Si la police n'a pas pu être chargée, on annule l'affichage pour éviter un crash
-    if (!police_compteur) return;
+// Modification de la fonction pour prendre en compte les deux compteurs de nombre de chevres et de loups vivants
+void afficher_planche(int nb_chevres, int nb_loups) {
+    if (!police_compteur || !texture_planche) return;
 
-    // Préparer le texte à afficher avec le nombre de chèvres
-    char texte_compteur[64];
-    snprintf(texte_compteur, sizeof(texte_compteur), "Chevres vivantes : %d", nb_chevres);
-
-    // Choisir la couleur (Blanc pur et opaque)
-    SDL_Color couleur = {255, 255, 255, 255}; // R, G, B, Alpha
-
-    //Créer une surface (en RAM) puis une texture (en VRAM) à partir du texte
-    SDL_Surface* surface_texte = TTF_RenderText_Blended(police_compteur, texte_compteur, couleur);
-    if (!surface_texte) return; // Sécurité au cas où la création de la surface échoue
+    // Afficher la planche en bois en arrière-plan du HUD
+    SDL_Rect position_planche;
+    position_planche.x = 20; // Décalage depuis la gauche
+    position_planche.y = 20; // Décalage depuis le haut
+    // Tu peux forcer une taille (ex: position_hud.w = 300; position_hud.h = 100;) 
+    // ou récupérer la taille originale de l'image avec SDL_QueryTexture :
+    SDL_QueryTexture(texture_planche, NULL, NULL, &position_planche.w, &position_planche.h);
     
-    SDL_Texture* texture_texte = SDL_CreateTextureFromSurface(renderer, surface_texte);
+    // Zoomer un peu la planche si elle est trop petite (optionnel)
+    position_planche.w *= 1.5; 
+    position_planche.h *= 1.5;
 
-    // Définir la position et la taille à l'écran (En haut à gauche ici)
-    SDL_Rect position;
-    position.x = 20; // Décalage de 20 pixels par rapport au bord gauche
-    position.y = 20; // Décalage de 20 pixels par rapport au bord haut
-    position.w = surface_texte->w; // La largeur calculée automatiquement par SDL_ttf
-    position.h = surface_texte->h; // La hauteur calculée automatiquement par SDL_ttf
+    SDL_RenderCopy(renderer, texture_planche, NULL, &position_planche);
 
-    SDL_RenderCopy(renderer, texture_texte, NULL, &position);
-    SDL_FreeSurface(surface_texte);
-    SDL_DestroyTexture(texture_texte);
+    // Choisir la couleur du texte (ex: un marron foncé ou noir pour bien ressortir sur le bois)
+    SDL_Color couleur = {50, 30, 10, 255}; 
+
+    // 2. Afficher le compteur des chèvres
+    char texte_chevres[64];
+    snprintf(texte_chevres, sizeof(texte_chevres), "%d", nb_chevres);
+    SDL_Surface* surface_chevres = TTF_RenderText_Blended(police_compteur, texte_chevres, couleur);
+    
+    if (surface_chevres) {
+        SDL_Texture* texture_texte_chevres = SDL_CreateTextureFromSurface(renderer, surface_chevres);
+        SDL_Rect pos_texte_chevres;
+        // Ajuste ces coordonnées (x, y) pour bien placer le texte à côté de la tête de chèvre sur l'image
+        pos_texte_chevres.x = position_planche.x + 80; 
+        pos_texte_chevres.y = position_planche.y + 25; 
+        pos_texte_chevres.w = surface_chevres->w;
+        pos_texte_chevres.h = surface_chevres->h;
+
+        SDL_RenderCopy(renderer, texture_texte_chevres, NULL, &pos_texte_chevres);
+        SDL_FreeSurface(surface_chevres);
+        SDL_DestroyTexture(texture_texte_chevres);
+    }
+
+    // Afficher le compteur des loups
+    char texte_loups[64];
+    snprintf(texte_loups, sizeof(texte_loups), "%d", nb_loups);
+    SDL_Surface* surface_loups = TTF_RenderText_Blended(police_compteur, texte_loups, couleur);
+    
+    if (surface_loups) {
+        SDL_Texture* texture_texte_loups = SDL_CreateTextureFromSurface(renderer, surface_loups);
+        SDL_Rect pos_texte_loups;
+        // Ajuste ces coordonnées pour bien placer le texte à côté de la tête du loup
+        pos_texte_loups.x = position_planche.x + 220; 
+        pos_texte_loups.y = position_planche.y + 25; 
+        pos_texte_loups.w = surface_loups->w;
+        pos_texte_loups.h = surface_loups->h;
+
+        SDL_RenderCopy(renderer, texture_texte_loups, NULL, &pos_texte_loups);
+        SDL_FreeSurface(surface_loups);
+        SDL_DestroyTexture(texture_texte_loups);
+    }
 }
 
 void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
@@ -134,7 +167,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
         nb_ligne=5;
     }
     else if (type_entite == 4) { 
-        zoom=0.5;
+        zoom=0.7;
         texture_actuelle = texture_wolf;
         nb_image=4;
         nb_ligne=4;
@@ -187,6 +220,7 @@ void quitter_affichage() {
     SDL_DestroyTexture(texture_fermier);
     SDL_DestroyTexture(texture_wolf);
     SDL_DestroyTexture(texture_chevreau);
+    SDL_DestroyTexture(texture_planche);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();

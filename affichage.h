@@ -10,7 +10,7 @@
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 
-void afficher_compteur(int nb_chevres);
+void afficher_planche(int nb_chevres,int nb_loups);
 void quitter_affichage();
 void dessiner_monde();
 void actualiser_ecran();

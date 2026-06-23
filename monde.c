@@ -364,9 +364,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));
   }
 
-  // ========
-  // Action physique du Fermier
-  // ========
+  // Action du Fermier
   Fermier *fermier_actuel = monde_courant->fermiers;
   float next_fermier_x = fermier_actuel->x;
   float next_fermier_y = fermier_actuel->y;

@@ -93,15 +93,15 @@ void generer_phi_wolf(Wolf *w, PerceptionWolf perception, float *phi)
   float dx_f = perception.pos_x_fermier - w->x;
   float dy_f = perception.pos_y_fermier - w->y;
   float d_f = sqrtf(dx_f * dx_f + dy_f * dy_f);
-  if (d_f > 0.001f)
+  if (d_f > 0.001f && d_f < 300.0f)
   {
-    phi[4] = d_f / 1024.0f; // distance normalisée au fermier
-    phi[5] = dx_f / d_f;    // direction x du fermier
-    phi[6] = dy_f / d_f;    // direction y du fermier
+    phi[4] = d_f / 300.0f; // distance normalisée au fermier
+    phi[5] = dx_f / d_f; // direction x du fermier
+    phi[6] = dy_f / d_f; // direction y du fermier
   }
   else
   {
-    phi[4] = 0.0f;
+    phi[4] = 1.0f;
     phi[5] = 0.0f;
     phi[6] = 0.0f;
   }

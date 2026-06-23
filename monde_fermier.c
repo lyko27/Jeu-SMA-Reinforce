@@ -12,8 +12,8 @@
  */
 Fermier *init_fermier(Fermier *fermier)
 {
-  fermier->x = 347;
-  fermier->y = 185;
+  fermier->x = 842;
+  fermier->y = 242;
   fermier->speed = VITESSE_FERMIER;
   for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
   {

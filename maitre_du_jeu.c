@@ -19,6 +19,7 @@ float calculer_recompense_fermier(monde *m)
 {
     float r = -0.1f; // Pénalité de temps par tick pour forcer le mouvement
     Fermier *f = m->fermiers;
+    float min_dist_wolf = 9999.0f;
 
     int proche_loup = 0;
     for (int i = 0; i < m->nb_wolf; i++)
@@ -29,9 +30,9 @@ float calculer_recompense_fermier(monde *m)
             float dx = w->x - f->x;
             float dy = w->y - f->y;
             float dist = sqrtf(dx * dx + dy * dy);
-            if (dist < 60.0f)
+            if (dist < min_dist_wolf)
             {
-                proche_loup = 1;
+                min_dist_wolf = dist;
             }
 
             // Pénalité si le loup est trop proche d'une chèvre
@@ -45,15 +46,20 @@ float calculer_recompense_fermier(monde *m)
                     float dist_g = sqrtf(dgx * dgx + dgy * dgy);
                     if (dist_g < 50.0f)
                     {
-                        r -= 15.0f; // Pénalité
+                        r -= 5.0f; // Pénalité
                     }
                 }
             }
         }
     }
-    if (proche_loup)
+    if (min_dist_wolf < 9999.0f)
     {
-        r += 5.0f; // Récompense pour avoir chassé le loup
+        r += (400.0f - min_dist_wolf) / 50.0f; // Gradient d'approche plus fort et portée plus longue
+    }
+
+    if (min_dist_wolf < 80.0f)
+    {
+        r += 15.0f; // Récompense forte pour chasser le loup
     }
     return r;
 }
@@ -62,8 +68,8 @@ float calculer_recompense_fermier(monde *m)
 float calculer_recompense_loup(Wolf *w, monde *m)
 {
     float r = -0.1f; // Pénalité de temps par tick pour forcer le mouvement
+    float min_dist_chevre = 9999.0f;
 
-    int proche_chevre = 0;
     for (int j = 0; j < m->nb_goat; j++)
     {
         Goat *g = m->goats_tab[j];
@@ -72,15 +78,20 @@ float calculer_recompense_loup(Wolf *w, monde *m)
             float dx = g->x - w->x;
             float dy = g->y - w->y;
             float dist = sqrtf(dx * dx + dy * dy);
-            if (dist < 50.0f)
+            if (dist < min_dist_chevre)
             {
-                proche_chevre = 1;
+                min_dist_chevre = dist;
+            }
+            if (dist < 40.0f)
+            {
+                r += 20.0f; // Récompense pour avoir mangé/attrapé une chèvre
             }
         }
     }
-    if (proche_chevre)
+
+    if (min_dist_chevre < 9999.0f)
     {
-        r += 15.0f; // Récompense pour attraper une chèvre
+        r += (300.0f - min_dist_chevre) / 100.0f; // Récompense pour chasser la chèvre
     }
 
     Fermier *f = m->fermiers;
@@ -89,9 +100,13 @@ float calculer_recompense_loup(Wolf *w, monde *m)
         float dfx = f->x - w->x;
         float dfy = f->y - w->y;
         float dist_f = sqrtf(dfx * dfx + dfy * dfy);
+        if (dist_f < 250.0f)
+        {
+            r -= (250.0f - dist_f) / 10.0f; // Peur du fermier
+        }
         if (dist_f < 80.0f)
         {
-            r -= 25.0f; // Pénalité si le fermier est trop proche
+            r -= 30.0f; // Grosse pénalité s'il se fait presque attraper
         }
     }
     return r;

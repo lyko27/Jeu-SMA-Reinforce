@@ -156,7 +156,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
   int collision = 0;
 
   // Hitbox future du loup (Marges : gauche, droite, haut, bas)
-  Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
+  Hitbox hb_future = get_hitbox_wolf(next_x, next_y);
   Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
 
   if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))

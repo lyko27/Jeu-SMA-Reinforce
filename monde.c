@@ -107,7 +107,7 @@ Hitbox get_hitbox_goat(float x, float y)
 
 Hitbox get_hitbox_wolf(float x, float y)
 {
-    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 5.0f, 10.0f, 10.0f);
+    return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
 }
 
 /* ========= Monde ========= */

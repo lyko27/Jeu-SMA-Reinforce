@@ -128,8 +128,8 @@ void nettoyer_monde(monde *m)
 // Boucle d'entraînement
 void entrainer_agents()
 {
-    int nb_cycles = 1000;
-    int nb_episodes = 10;
+    int nb_cycles = 5000;
+    int nb_episodes = 25;
     int max_steps = 1000;
     float alpha = 0.001f;
     float gamma = 0.99f;

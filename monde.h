@@ -15,6 +15,12 @@
 #define LAC_WIDTH 195
 #define LAC_HEIGHT 195
 
+// Zone de la maison (obstacle)
+#define MAISON_X 738
+#define MAISON_Y 0
+#define MAISON_WIDTH 175
+#define MAISON_HEIGHT 195
+
 #define WIDTH_GOAT 50
 #define HEIGHT_GOAT 30
 #define WIDTH_WOLF 50
@@ -55,6 +61,7 @@ monde *creer_monde(int largeur, int hauteur);
 monde *generer_un_monde(monde *monde_courant);
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y);
 int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2);
+int check_collision_obstacles(Hitbox hb);
 void afficher_monde(monde *monde_courant);
 
 // Inclusion des modules spécifiques restructurés

@@ -110,6 +110,30 @@ Hitbox get_hitbox_wolf(float x, float y)
     return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
 }
 
+/**
+ * Synopsis : Vérifie si une hitbox entre en collision avec les obstacles du terrain (le lac ou la maison).
+ * Entrée   : La hitbox à tester.
+ * Sortie   : 1 si collision avec un obstacle, 0 sinon.
+ */
+int check_collision_obstacles(Hitbox hb)
+{
+    // Obstacle : Le Lac
+    Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
+    if (check_collision_rect(hb.x, hb.y, hb.w, hb.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
+    {
+        return 1;
+    }
+
+    // Obstacle : La Maison
+    Hitbox hb_maison = creer_hitbox(MAISON_X, MAISON_Y, MAISON_WIDTH, MAISON_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
+    if (check_collision_rect(hb.x, hb.y, hb.w, hb.h, hb_maison.x, hb_maison.y, hb_maison.w, hb_maison.h))
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 /* ========= Monde ========= */
 
 /* Entrée : deux entier la largeur et la hauteur du monde

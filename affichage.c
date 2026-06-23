@@ -75,6 +75,34 @@ int gestion_direction_wolf(int direction){
     return 0;
 }
 
+void afficher_compteur(int nb_chevres) {
+    // Si la police n'a pas pu être chargée, on annule l'affichage pour éviter un crash
+    if (!police_compteur) return;
+
+    // Préparer le texte à afficher avec le nombre de chèvres
+    char texte_compteur[64];
+    snprintf(texte_compteur, sizeof(texte_compteur), "Chevres vivantes : %d", nb_chevres);
+
+    // Choisir la couleur (Blanc pur et opaque)
+    SDL_Color couleur = {255, 255, 255, 255}; // R, G, B, Alpha
+
+    //Créer une surface (en RAM) puis une texture (en VRAM) à partir du texte
+    SDL_Surface* surface_texte = TTF_RenderText_Blended(police_compteur, texte_compteur, couleur);
+    if (!surface_texte) return; // Sécurité au cas où la création de la surface échoue
+    
+    SDL_Texture* texture_texte = SDL_CreateTextureFromSurface(renderer, surface_texte);
+
+    // Définir la position et la taille à l'écran (En haut à gauche ici)
+    SDL_Rect position;
+    position.x = 20; // Décalage de 20 pixels par rapport au bord gauche
+    position.y = 20; // Décalage de 20 pixels par rapport au bord haut
+    position.w = surface_texte->w; // La largeur calculée automatiquement par SDL_ttf
+    position.h = surface_texte->h; // La hauteur calculée automatiquement par SDL_ttf
+
+    SDL_RenderCopy(renderer, texture_texte, NULL, &position);
+    SDL_FreeSurface(surface_texte);
+    SDL_DestroyTexture(texture_texte);
+}
 
 void dessiner_entite(int type_entite, int position_x, int position_y,int frame,int direction) {
     int nb_image=0;
@@ -148,6 +176,11 @@ void actualiser_ecran() {
 }
 
 void quitter_affichage() {
+    if (police_compteur != NULL) {
+    TTF_CloseFont(police_compteur);
+    police_compteur = NULL;
+    }
+    TTF_Quit();
     SDL_DestroyTexture(texture_fond);
     SDL_DestroyTexture(texture_chevre);
     SDL_DestroyTexture(texture_fermier);

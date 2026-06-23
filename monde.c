@@ -514,5 +514,6 @@ void afficher_monde(monde *monde_courant)
   {
     dessiner_entite(2, monde_courant->fermiers->x, monde_courant->fermiers->y, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
   }
+  afficher_compteur(monde_courant->nb_goat);
   actualiser_ecran();
 }

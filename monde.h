@@ -10,10 +10,10 @@
 #define MARGE 90
 
 // Zone du lac (obstacle)
-#define LAC_X 713
-#define LAC_Y 515
-#define LAC_WIDTH 120
-#define LAC_HEIGHT 110
+#define LAC_X 1050
+#define LAC_Y 803
+#define LAC_WIDTH 195
+#define LAC_HEIGHT 195
 
 #define WIDTH_GOAT 50
 #define HEIGHT_GOAT 30

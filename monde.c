@@ -165,6 +165,11 @@ monde *generer_un_monde(monde *monde_courant)
         free(le_fermier);
         return NULL;
     }
+    int start_x = 1500;
+    int start_y = 300;
+    int écart_x = 120;
+    int écart_y = 100;
+    int nbre_collonne = 2;
     for (int i = 0; i < 10; i++)
     {
         Goat *une_goat = malloc(sizeof(Goat));
@@ -172,7 +177,14 @@ monde *generer_un_monde(monde *monde_courant)
         {
             une_goat->frame = 0;
             une_goat->direction_sprite = 2;
-            une_goat = init_goat(une_goat);
+            
+            // Calcul du placement en rectangle (grille de 2 colonnes par 5 lignes)
+            int col = i % nbre_collonne;
+            int row = i / nbre_collonne;
+            int spawn_x = start_x + col * écart_x;
+            int spawn_y = start_y + row * écart_y;
+            
+            une_goat = init_goat(une_goat, spawn_x, spawn_y);
             monde_courant = ajouter_goat(monde_courant, une_goat);
         }
         else

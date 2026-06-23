@@ -10,10 +10,10 @@
  * direction par défaut. Entrée   : Pointeur vers la structure Goat à
  * initialiser. Sortie   : Pointeur vers la structure Goat initialisée.
  */
-Goat *init_goat(Goat *goat)
+Goat *init_goat(Goat *goat, int x, int y)
 {
-  goat->x = rand() % (LARGEUR - WIDTH_GOAT);
-  goat->y = rand() % (HAUTEUR - HEIGHT_GOAT);
+  goat->x = x;
+  goat->y = y;
 
   goat->dir_x = goat->x;
   goat->dir_y = goat->y;

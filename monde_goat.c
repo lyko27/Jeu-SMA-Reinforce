@@ -196,6 +196,24 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action,
   return goat;
 }
 
+void mourrir_goat(monde *monde_courant, int index)
+{
+  if (index < 0 || index >= monde_courant->nb_goat)
+  {
+    return; // la chèvre d'indice i n'existe pas 
+  }
+
+  free(monde_courant->goats_tab[index]);
+
+  for (int i = index; i < monde_courant->nb_goat - 1; i++)
+  {
+    monde_courant->goats_tab[i] = monde_courant->goats_tab[i + 1];
+  }
+
+  monde_courant->goats_tab[monde_courant->nb_goat - 1] = NULL;
+  monde_courant->nb_goat--;
+}
+
 /* ENtrées : le tableau de chèvre, nombre de chèvre
     Sotie : aucune
     Synopsis : libère toute les goats du tableau*/

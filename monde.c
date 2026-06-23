@@ -9,6 +9,8 @@
 #include "loup.h"
 #include "monde.h"
 #include "reinforce.h"
+#include "monde_goat.h"
+#include "monde_wolf.h"
 
 
 /**
@@ -480,6 +482,25 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     {
       fermier_actuel->frame = (fermier_actuel->frame + 1) % 9;
     }
+  }
+  // attaque loup chèvre
+  for (int i = 0; i < monde_courant->nb_wolf; i++)
+  {
+      Wolf *wolf = monde_courant->wolfs_tab[i];
+      Hitbox hb_wolf = get_hitbox_wolf(wolf->x, wolf->y);
+      
+      for (int j = 0; j < monde_courant->nb_goat; j++)
+      {
+          Goat *goat = monde_courant->goats_tab[j];
+          Hitbox hb_goat = get_hitbox_goat(goat->x, goat->y);
+          
+          if (check_collision_rect(hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
+          {
+              // mort de la chèvre
+              mourrir_goat(monde_courant, j);
+              j--;
+          }
+      }
   }
 
   return monde_courant;

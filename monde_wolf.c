@@ -214,6 +214,24 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
   return wolf;
 }
 
+void mourrir_wolf(monde *monde_courant, int index)
+{
+  if (index < 0 || index >= monde_courant->nb_wolf)
+  {
+    return; // le loup d'indice i n'existe pas 
+  }
+
+  free(monde_courant->wolfs_tab[index]);
+
+  for (int i = index; i < monde_courant->nb_wolf - 1; i++)
+  {
+    monde_courant->wolfs_tab[i] = monde_courant->wolfs_tab[i + 1];
+  }
+
+  monde_courant->wolfs_tab[monde_courant->nb_wolf - 1] = NULL;
+  monde_courant->nb_wolf--;
+}
+
 /* ENtrées : le tableau de wolf, nombre de wolf
     Sotie : aucune
     Synopsis : libère toute les wolfs du tableau*/

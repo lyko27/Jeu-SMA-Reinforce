@@ -117,7 +117,6 @@ void nettoyer_monde(monde *m)
 // Boucle d'entraînement hors-ligne
 void entrainer_agents()
 {
-    printf("Initialisation de l'entrainement...\n");
     int nb_cycles = 100;
     int nb_episodes = 10;
     int max_steps = 1000;

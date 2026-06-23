@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "affichage.h"
 
 SDL_Window *window = NULL;
@@ -9,6 +10,7 @@ SDL_Texture *texture_chevre = NULL;
 SDL_Texture *texture_chevreau = NULL;
 SDL_Texture *texture_fermier = NULL;
 SDL_Texture *texture_wolf = NULL;
+TTF_Font *police_compteur = NULL;
 
 int init_affichage() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -21,12 +23,21 @@ int init_affichage() {
         SDL_Quit();
         return 0;
     }
+
+    if (TTF_Init() == -1) {
+    printf("Attention Erreur TTF_Init : %s\n", TTF_GetError());
+    } else {
+        police_compteur = TTF_OpenFont("./fonts/arial.ttf", 30); 
+        if (!police_compteur) {
+            printf("Attention : Impossible de charger la police. Erreur : %s\n", TTF_GetError());
+        }
+    }
     
     window = SDL_CreateWindow("Jeu de la Ferme", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_RenderSetLogicalSize(renderer, 1024, 1024);
     
-    texture_fond = IMG_LoadTexture(renderer, "./images/map.png");
+    texture_fond = IMG_LoadTexture(renderer, "./images/mymap.png");
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");
     texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");

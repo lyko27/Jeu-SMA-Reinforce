@@ -37,13 +37,17 @@ typedef struct
 
 typedef struct
 {
+    //position
     float x;
     float y;
     float speed;
     float dir_x;
     float dir_y;
+    // annimation
     int frame;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
+    
+    int or;
     float table_interets[NB_ACTIONS_FERMIER];
     float weights[NB_ACTIONS_FERMIER][DIMENSION_PHI_FERMIER];
     int decision_cooldown;

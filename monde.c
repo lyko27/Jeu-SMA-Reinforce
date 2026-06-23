@@ -306,26 +306,6 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     perception_fermier.input_x = input_x;
     perception_fermier.input_y = input_y;
     action_fermier = decider_action_fermier(monde_courant->fermiers, perception_fermier);
-
-    int action_choisie = ACTION_FERMIER_ERRER;
-    if (input_x == 1 && input_y == 1)
-      action_choisie = ACTION_FERMIER_HAUT_GAUCHE;
-    else if (input_x == -1 && input_y == 1)
-      action_choisie = ACTION_FERMIER_HAUT_DROITE;
-    else if (input_x == 1 && input_y == -1)
-      action_choisie = ACTION_FERMIER_BAS_GAUCHE;
-    else if (input_x == -1 && input_y == -1)
-      action_choisie = ACTION_FERMIER_BAS_DROITE;
-    else if (input_y == 1)
-      action_choisie = ACTION_FERMIER_AVANCER;
-    else if (input_y == -1)
-      action_choisie = ACTION_FERMIER_RECULER;
-    else if (input_x == 1)
-      action_choisie = ACTION_FERMIER_GAUCHE;
-    else if (input_x == -1)
-      action_choisie = ACTION_FERMIER_DROITE;
-
-    monde_courant->fermiers->action_id = action_choisie;
   }
 
   // Chèvres

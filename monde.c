@@ -121,73 +121,6 @@ Hitbox get_hitbox_wolf(float x, float y)
   return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 5.0f, 10.0f, 10.0f);
 }
 
-/* ========== Fermier ========== */
-
-/**
- * Synopsis : Initialise le fermier devant sa maison.
- * Entrée   : Pointeur vers la structure Fermier à initialiser.
- * Sortie   : Pointeur vers la structure Fermier initialisée.
- */
-Fermier *init_fermier(Fermier *fermier)
-{
-  fermier->x = 347;
-  fermier->y = 185;
-  fermier->speed = VITESSE_FERMIER;
-  for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
-  {
-    for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
-    {
-      fermier->weights[a][k] = 0.0f;
-    }
-  }
-  return fermier;
-}
-
-
-/* ========= Monde ========= */
-
-PerceptionFermier calculer_perception_fermier(Fermier *f, monde *monde_courant) {
-    PerceptionFermier perc;
-    perc.input_x = 0;
-    perc.input_y = 0;
-    perc.dist_wolf = 2000.0f; // Valeur par défaut
-    perc.dx_wolf = 0.0f;
-    perc.dy_wolf = 0.0f;
-    perc.dist_goat = 2000.0f;
-    perc.dx_goat = 0.0f;
-    perc.dy_goat = 0.0f;
-
-    for (int i = 0; i < monde_courant->nb_wolf; i++) {
-        Wolf *w = monde_courant->wolfs_tab[i];
-        if (w) {
-            float dx = w->x - f->x;
-            float dy = w->y - f->y;
-            float dist = sqrtf(dx * dx + dy * dy);
-            if (dist < perc.dist_wolf) {
-                perc.dist_wolf = dist;
-                perc.dx_wolf = dx;
-                perc.dy_wolf = dy;
-            }
-        }
-    }
-
-    for (int i = 0; i < monde_courant->nb_goat; i++) {
-        Goat *g = monde_courant->goats_tab[i];
-        if (g) {
-            float dx = g->x - f->x;
-            float dy = g->y - f->y;
-            float dist = sqrtf(dx * dx + dy * dy);
-            if (dist < perc.dist_goat) {
-                perc.dist_goat = dist;
-                perc.dx_goat = dx;
-                perc.dy_goat = dy;
-            }
-        }
-    }
-
-    return perc;
-}
-
 /* ========= Monde ========= */
 
 /* Entrée : deux entier la largeur et la hauteur du monde
@@ -401,104 +334,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     }
     update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));
   }
-
   // Action du Fermier
-  Fermier *fermier_actuel = monde_courant->fermiers;
-  float next_fermier_x = fermier_actuel->x;
-  float next_fermier_y = fermier_actuel->y;
-
-  float vitesse_actuelle = fermier_actuel->speed;
-  if (action_fermier.dx != 0 && action_fermier.dy != 0)
-  {
-    vitesse_actuelle /= sqrt(2);
-  }
-
-  if (action_fermier.dy == 1)
-  {
-    next_fermier_y -= vitesse_actuelle;
-    fermier_actuel->direction_sprite = 1;
-  }
-  if (action_fermier.dy == -1)
-  {
-    next_fermier_y += vitesse_actuelle;
-    fermier_actuel->direction_sprite = 3;
-  }
-  if (action_fermier.dx == 1)
-  {
-    next_fermier_x -= vitesse_actuelle;
-    fermier_actuel->direction_sprite = 4;
-  }
-  if (action_fermier.dx == -1)
-  {
-    next_fermier_x += vitesse_actuelle;
-    fermier_actuel->direction_sprite = 2;
-  }
-
-  if (action_fermier.dx == 0 && action_fermier.dy == 0)
-  {
-    fermier_actuel->frame = 5;
-    fermier_actuel->direction_sprite = 0;
-  }
-  else
-  {
-    if (next_fermier_x < MARGE)
-      next_fermier_x = MARGE;
-    if (next_fermier_x > LARGEUR - MARGE - WIDTH_FERMIER)
-      next_fermier_x = LARGEUR - MARGE - WIDTH_FERMIER;
-    if (next_fermier_y < MARGE)
-      next_fermier_y = MARGE;
-    if (next_fermier_y > HAUTEUR - MARGE - HEIGHT_FERMIER)
-      next_fermier_y = HAUTEUR - MARGE - HEIGHT_FERMIER;
-
-    int collision_fermier = 0;
-
-    Hitbox hb_future_fermier = get_hitbox_fermier(next_fermier_x, next_fermier_y);
-    Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
-
-    if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
-    {
-      collision_fermier = 1;
-    }
-    // collision avec chevres
-    if (!collision_fermier)
-    {
-      for (int j = 0; j < monde_courant->nb_goat; j++)
-      {
-        Hitbox hb_goat = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
-
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
-        {
-          collision_fermier = 1;
-          break;
-        }
-      }
-    }
-    // collision avec chevres
-    if (!collision_fermier)
-    {
-      for (int j = 0; j < monde_courant->nb_wolf; j++)
-      {
-        Hitbox hb_wolf = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
-
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
-        {
-          collision_fermier = 1; // Le fermier se cogne contre un loup
-          break;
-        }
-      }
-    }
-
-    if (!collision_fermier)
-    {
-      fermier_actuel->x = next_fermier_x;
-      fermier_actuel->y = next_fermier_y;
-    }
-
-    if (tick_animation % 6 == 0)
-    {
-      fermier_actuel->frame = (fermier_actuel->frame + 1) % 9;
-    }
-  }
+  PerceptionFermier perception_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
+  update_fermier(monde_courant, monde_courant->fermiers, action_fermier, tick_animation, perception_fermier);
   // attaque loup chèvre
   for (int i = 0; i < monde_courant->nb_wolf; i++)
   {
@@ -531,7 +369,7 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     {
       Wolf *wolf = monde_courant->wolfs_tab[i];
       Hitbox hb_wolf = get_hitbox_wolf(wolf->x, wolf->y);
-      Hitbox hb_fermier = get_hitbox_fermier(fermier_actuel->x, fermier_actuel->y);
+      Hitbox hb_fermier = get_hitbox_fermier(monde_courant->fermiers->x, monde_courant->fermiers->y);
       
       if (check_collision_rect(hb_fermier.x, hb_fermier.y, hb_fermier.w, hb_fermier.h,
                               hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))

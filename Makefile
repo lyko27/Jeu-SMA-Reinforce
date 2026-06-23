@@ -11,7 +11,7 @@ else
 endif
 
 EXEC = farmer$(EXE)
-SRC = maitre_du_jeu.c goat.c utilisateur.c affichage.c fermier.c loup.c monde.c reinforce.c monde_goat.c monde_wolf.c
+SRC = maitre_du_jeu.c goat.c utilisateur.c affichage.c fermier.c loup.c monde.c reinforce.c monde_goat.c monde_wolf.c monde_fermier.c
 
 all: $(EXEC)
 

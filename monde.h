@@ -5,6 +5,16 @@
 #include "loup.h"
 #include "fermier.h"
 
+#define LARGEUR 1024
+#define HAUTEUR 1024
+#define MARGE 90
+
+// Zone du lac (obstacle)
+#define LAC_X 713
+#define LAC_Y 515
+#define LAC_WIDTH 120
+#define LAC_HEIGHT 110
+
 #define WIDTH_GOAT 50
 #define HEIGHT_GOAT 30
 #define WIDTH_WOLF 50
@@ -37,16 +47,19 @@ typedef struct {
 
 
 Hitbox creer_hitbox(float x, float y, float w, float h, float marge_gauche, float marge_droite, float marge_haut, float marge_bas);
-void free_goats(Goat **goats_tab, int nb_goat);
-void free_wolf(Wolf **wolf_tab, int nombre_wolf);
-monde *ajouter_goat(monde *monde_courant, Goat *goat);
-monde *ajouter_wolf(monde *monde_courant, Wolf *wolf);
+Hitbox get_hitbox_fermier(float x, float y);
+Hitbox get_hitbox_goat(float x, float y);
+Hitbox get_hitbox_wolf(float x, float y);
+
 Fermier *init_fermier(Fermier *fermier);
-Wolf *init_wolf(Wolf *wolf);
 monde *creer_monde(int largeur, int hauteur);
 monde *generer_un_monde(monde *monde_courant);
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y);
 int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2);
 void afficher_monde(monde *monde_courant);
+
+// Inclusion des modules spécifiques restructurés
+#include "monde_goat.h"
+#include "monde_wolf.h"
 
 #endif

@@ -164,6 +164,30 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
       wolf->direction_sprite = 1;
     }
   }
+
+  // Si le loup touche ou dépasse une paroi, on la repositionne et on fait rebondir son angle
+  if (next_x < MARGE)
+  {
+    next_x = MARGE;
+    wolf->angle_actuel = 3.14159265f - wolf->angle_actuel; // Rebond horizontal
+  }
+  else if (next_x > LARGEUR - MARGE - WIDTH_WOLF)
+  {
+    next_x = LARGEUR - MARGE - WIDTH_WOLF;
+    wolf->angle_actuel = 3.14159265f - wolf->angle_actuel; // Rebond horizontal
+  }
+
+  if (next_y < MARGE)
+  {
+    next_y = MARGE;
+    wolf->angle_actuel = -wolf->angle_actuel; // Rebond vertical
+  }
+  else if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF)
+  {
+    next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
+    wolf->angle_actuel = -wolf->angle_actuel; // Rebond vertical
+  }
+
   float old_x = wolf->x;
   float old_y = wolf->y;
 

@@ -24,7 +24,7 @@
 #define WIDTH_GOAT 50
 #define HEIGHT_GOAT 30
 #define WIDTH_WOLF 50
-#define HEIGHT_WOLF 30
+#define HEIGHT_WOLF 60
 #define WIDTH_FERMIER 30
 #define HEIGHT_FERMIER 60
 #define VITESSE_FERMIER 5

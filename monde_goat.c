@@ -125,6 +125,29 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     goat->speed = 0;
   }
 
+  // Si la chèvre touche ou dépasse une paroi, on la repositionne et on fait rebondir son angle
+  if (next_x < MARGE)
+  {
+    next_x = MARGE;
+    goat->angle_actuel = 3.14159265f - goat->angle_actuel; // Rebond horizontal
+  }
+  else if (next_x > LARGEUR - MARGE - WIDTH_GOAT)
+  {
+    next_x = LARGEUR - MARGE - WIDTH_GOAT;
+    goat->angle_actuel = 3.14159265f - goat->angle_actuel; // Rebond horizontal
+  }
+
+  if (next_y < MARGE)
+  {
+    next_y = MARGE;
+    goat->angle_actuel = -goat->angle_actuel; // Rebond vertical
+  }
+  else if (next_y > HAUTEUR - MARGE - HEIGHT_GOAT)
+  {
+    next_y = HAUTEUR - MARGE - HEIGHT_GOAT;
+    goat->angle_actuel = -goat->angle_actuel; // Rebond vertical
+  }
+
   float old_x = goat->x;
   float old_y = goat->y;
 

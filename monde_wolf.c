@@ -135,11 +135,11 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
   {
     if (next_y > wolf->y)
     {
-      wolf->direction_sprite = 1;
+      wolf->direction_sprite = 3;
     }
     else
     {
-      wolf->direction_sprite = 3;
+      wolf->direction_sprite = 1;
     }
   }
   if (next_x < MARGE)

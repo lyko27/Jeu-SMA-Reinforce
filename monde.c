@@ -144,6 +144,49 @@ Fermier *init_fermier(Fermier *fermier)
 }
 
 
+/* ========= Monde ========= */
+
+PerceptionFermier calculer_perception_fermier(Fermier *f, monde *monde_courant) {
+    PerceptionFermier perc;
+    perc.input_x = 0;
+    perc.input_y = 0;
+    perc.dist_wolf = 2000.0f; // Valeur par défaut
+    perc.dx_wolf = 0.0f;
+    perc.dy_wolf = 0.0f;
+    perc.dist_goat = 2000.0f;
+    perc.dx_goat = 0.0f;
+    perc.dy_goat = 0.0f;
+
+    for (int i = 0; i < monde_courant->nb_wolf; i++) {
+        Wolf *w = monde_courant->wolfs_tab[i];
+        if (w) {
+            float dx = w->x - f->x;
+            float dy = w->y - f->y;
+            float dist = sqrtf(dx * dx + dy * dy);
+            if (dist < perc.dist_wolf) {
+                perc.dist_wolf = dist;
+                perc.dx_wolf = dx;
+                perc.dy_wolf = dy;
+            }
+        }
+    }
+
+    for (int i = 0; i < monde_courant->nb_goat; i++) {
+        Goat *g = monde_courant->goats_tab[i];
+        if (g) {
+            float dx = g->x - f->x;
+            float dy = g->y - f->y;
+            float dist = sqrtf(dx * dx + dy * dy);
+            if (dist < perc.dist_goat) {
+                perc.dist_goat = dist;
+                perc.dx_goat = dx;
+                perc.dy_goat = dy;
+            }
+        }
+    }
+
+    return perc;
+}
 
 /* ========= Monde ========= */
 
@@ -248,8 +291,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
   // Fermier - Décision
   if (monde_courant->mode)
   {
-    float phi[7];
-    calcul_interets_fermier(monde_courant->fermiers, monde_courant, phi);
+    float phi[DIMENSION_PHI_FERMIER];
+    PerceptionFermier perc_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
+    generer_phi_fermier(perc_fermier, phi);
     for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
     {
       float val = 0.0f;

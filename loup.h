@@ -48,5 +48,6 @@ typedef struct
 
 ActionWolf decider_action_wolf(Wolf *wolf, PerceptionWolf perception_wolf);
 void evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf);
+void evaluer_interets_wolf_rl(Wolf *wolf, PerceptionWolf perception_wolf);
 
 #endif

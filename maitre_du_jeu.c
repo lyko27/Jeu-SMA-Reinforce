@@ -14,9 +14,6 @@
 #include "reinforce.h"
 #include "utilisateur.h"
 
-#define LARGEUR 1024
-#define HAUTEUR 1024
-
 // Calcul de la récompense instantanée pour le fermier
 float calculer_recompense_fermier(monde *m)
 {
@@ -141,9 +138,6 @@ void entrainer_agents()
         Trajectoire *trajectoires_fermier = malloc(nb_episodes * sizeof(Trajectoire));
         Trajectoire *trajectoires_loups = malloc(nb_episodes * 3 * sizeof(Trajectoire));
 
-        float total_r_fermier = 0.0f;
-        float total_r_loup = 0.0f;
-
         for (int ep = 0; ep < nb_episodes; ep++)
         {
             init_trajectoire(&trajectoires_fermier[ep]);
@@ -181,13 +175,11 @@ void entrainer_agents()
 
                 // Calculer les récompenses suite à l'action
                 float r_fermier = calculer_recompense_fermier(m);
-                total_r_fermier += r_fermier;
 
                 float r_loups[3];
                 for (int w = 0; w < m->nb_wolf && w < 3; w++)
                 {
                     r_loups[w] = calculer_recompense_loup(m->wolfs_tab[w], m);
-                    total_r_loup += r_loups[w];
                 }
 
                 // Enregistrer l'étape dans les trajectoires correspondantes

@@ -38,13 +38,13 @@ typedef struct monde_t
     int mode; // 0 = clavier pour le fermier, 1 = politique apprise
 } monde;
 
-typedef struct {
+typedef struct
+{
     float x;
     float y;
     float w;
     float h;
 } Hitbox;
-
 
 Hitbox creer_hitbox(float x, float y, float w, float h, float marge_gauche, float marge_droite, float marge_haut, float marge_bas);
 Hitbox get_hitbox_fermier(float x, float y);

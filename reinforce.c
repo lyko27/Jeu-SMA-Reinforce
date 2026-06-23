@@ -36,6 +36,7 @@ void liberer_trajectoire(Trajectoire *t)
   t->taille = 0;
   t->capacite = 0;
 }
+
 // Extraction de phi pour le Fermier
 void generer_phi_fermier(PerceptionFermier perception, float *phi)
 {
@@ -43,7 +44,7 @@ void generer_phi_fermier(PerceptionFermier perception, float *phi)
 
   if (perception.dist_wolf > 0.001f && perception.dist_wolf < 99999.0f)
   {
-    phi[1] = perception.dist_wolf / 1024.0f; // distance normalisée du loup le plus proche
+    phi[1] = perception.dist_wolf / 1024.0f;            // distance normalisée du loup le plus proche
     phi[2] = perception.dx_wolf / perception.dist_wolf; // direction x du loup le plus proche
     phi[3] = perception.dy_wolf / perception.dist_wolf; // direction y du loup le plus proche
   }
@@ -56,7 +57,7 @@ void generer_phi_fermier(PerceptionFermier perception, float *phi)
 
   if (perception.dist_goat > 0.001f && perception.dist_goat < 99999.0f)
   {
-    phi[4] = perception.dist_goat / 1024.0f; // distance normalisée du goat le plus proche
+    phi[4] = perception.dist_goat / 1024.0f;            // distance normalisée du goat le plus proche
     phi[5] = perception.dx_goat / perception.dist_goat; // direction x du goat le plus proche
     phi[6] = perception.dy_goat / perception.dist_goat; // direction y du goat le plus proche
   }

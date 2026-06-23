@@ -5,8 +5,7 @@
 #include "monde.h"
 #include "loup.h"
 
-
-void evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception_goat) 
+void evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception_goat)
 {
     // intérêts par défaut
     current_goat->table_interets[ACTION_ERRER] = 0.0;
@@ -14,7 +13,7 @@ void evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception_goat)
     current_goat->table_interets[ACTION_BROUTER] = 0.0;
 
     // modif selon la Perception
-    if (perception_goat.dist_wolf_proche < 150.0) 
+    if (perception_goat.dist_wolf_proche < 150.0)
     {
         // on fuit si le wolf est très proche
         current_goat->table_interets[ACTION_FUIR_WOLF] = 10.0 - (perception_goat.dist_wolf_proche / 15.0);

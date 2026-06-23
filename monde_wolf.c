@@ -49,9 +49,7 @@ monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
 {
   if (monde_courant->nb_wolf + 1 > monde_courant->capacite_max_wolf)
   {
-    monde_courant->wolfs_tab =
-        realloc(monde_courant->wolfs_tab,
-                monde_courant->capacite_max_wolf * 2 * sizeof(Wolf));
+    monde_courant->wolfs_tab = realloc(monde_courant->wolfs_tab, monde_courant->capacite_max_wolf * 2 * sizeof(Wolf));
     monde_courant->capacite_max_wolf *= 2;
   }
   monde_courant->wolfs_tab[monde_courant->nb_wolf] = wolf;
@@ -87,8 +85,7 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
   return perception;
 }
 
-Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
-                  int tick_animation, PerceptionWolf perception_wolf)
+Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
 {
   float next_x = wolf->x;
   float next_y = wolf->y;
@@ -103,7 +100,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
       {
         // Aller vers la chèvre
         /* on calcul le vecteur qui va du loup vers la chèvre, et atan2 renvoie l'angle exact que le loup doit suivre pour aller sur la chèvre
-        atan2(x_direction_voulu - x_actuel, y_direction_voulu - y_actuel) => angle pour aller à direction voulu 
+        atan2(x_direction_voulu - x_actuel, y_direction_voulu - y_actuel) => angle pour aller à direction voulu
         soit l'angle entre l'axe des abscisses et le vecteur de direction voulu*/
         wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y,
                                    perception_wolf.pos_x_goat - wolf->x);
@@ -115,8 +112,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
   {
     wolf->speed = 4;
     // Fuir le fermier
-    wolf->angle_actuel = atan2(wolf->y - perception_wolf.pos_y_fermier,
-                               wolf->x - perception_wolf.pos_x_fermier);
+    wolf->angle_actuel = atan2(wolf->y - perception_wolf.pos_y_fermier, wolf->x - perception_wolf.pos_x_fermier);
   }
   if (action == ACTION_WOLF_ARRET)
   {
@@ -160,13 +156,10 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
   int collision = 0;
 
   // Hitbox future du loup (Marges : gauche, droite, haut, bas)
-  Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF,
-                                  20.0f, 20.0f, 15.0f, 15.0f);
-  Hitbox hb_lac =
-      creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
+  Hitbox hb_future = creer_hitbox(next_x, next_y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
+  Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
 
-  if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h,
-                           hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
+  if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
   {
     collision = 1;
     wolf->timer_mouvement = 0;
@@ -178,13 +171,9 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action,
     {
       if (monde_courant->wolfs_tab[j] != wolf)
       {
-        Hitbox hb_autre = creer_hitbox(
-            monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y,
-            WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
+        Hitbox hb_autre = creer_hitbox(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y, WIDTH_WOLF, HEIGHT_WOLF, 20.0f, 20.0f, 15.0f, 15.0f);
 
-        if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w,
-                                 hb_future.h, hb_autre.x, hb_autre.y,
-                                 hb_autre.w, hb_autre.h))
+        if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
         {
           collision = 1;
           wolf->timer_mouvement = 0;
@@ -224,7 +213,7 @@ void mourrir_wolf(monde *monde_courant, int index)
 {
   if (index < 0 || index >= monde_courant->nb_wolf)
   {
-    return; // le loup d'indice i n'existe pas 
+    return; // le loup d'indice i n'existe pas
   }
 
   free(monde_courant->wolfs_tab[index]);

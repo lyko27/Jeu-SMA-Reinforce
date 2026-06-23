@@ -1,13 +1,13 @@
 #ifndef goat_h
 #define goat_h
 
-typedef enum {
-    ACTION_FUIR_WOLF,      // Fuit dans la direction opposée au wolf
-    ACTION_ERRER,          // Marche aléatoirement
+typedef enum
+{
+    ACTION_FUIR_WOLF, // Fuit dans la direction opposée au wolf
+    ACTION_ERRER,     // Marche aléatoirement
     ACTION_BROUTER,
     NB_ACTIONS
 } ActionGoat;
-
 
 typedef struct
 {
@@ -17,7 +17,7 @@ typedef struct
     float speed;
     float dir_x;
     float dir_y;
-        float angle_actuel;
+    float angle_actuel;
 
     // var d'animation
     int frame;
@@ -30,17 +30,18 @@ typedef struct
     int cooldown_dinvisibilite;
 
     float table_interets[NB_ACTIONS];
-    int decision_cooldown ;
+    int decision_cooldown;
     ActionGoat action_choisi;
 } Goat;
 
-typedef struct {
+typedef struct
+{
     float dist_wolf_proche;
     int pos_x_wolf;
     int pos_y_wolf;
-    Goat ** goats_tab;
-    int capacite_max_goat;   // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
-    int nb_goat ;      // Nombre actuel de chèvres
+    Goat **goats_tab;
+    int capacite_max_goat; // Taille allouée pour le tableau (pour ajouter des bébés chèvres)
+    int nb_goat;           // Nombre actuel de chèvres
     int pos_x_fermier;
     int pos_y_fermier;
 } PerceptionGoat;

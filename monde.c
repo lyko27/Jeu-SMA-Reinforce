@@ -179,10 +179,10 @@ monde *generer_un_monde(monde *monde_courant)
             une_goat->direction_sprite = 2;
             
             // Calcul du placement en rectangle (grille de 2 colonnes par 5 lignes)
-            int col = i % nbre_collonne;
-            int row = i / nbre_collonne;
-            int spawn_x = start_x + col * écart_x;
-            int spawn_y = start_y + row * écart_y;
+            int colonne = i % nbre_collonne;
+            int ligne = i / nbre_collonne;
+            int spawn_x = start_x + colonne * écart_x;
+            int spawn_y = start_y + ligne * écart_y;
             
             une_goat = init_goat(une_goat, spawn_x, spawn_y);
             monde_courant = ajouter_goat(monde_courant, une_goat);
@@ -282,6 +282,12 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         perception_fermier.input_x = input_x;
         perception_fermier.input_y = input_y;
         action_fermier = decider_action_fermier(monde_courant->fermiers, perception_fermier);
+    }
+
+    // economie :
+    if (tick_animation % 60 == 0)
+    {
+        monde_courant->fermiers->or += monde_courant->nb_goat * 2; // +2 pièces par chèvre vivante par seconde
     }
 
     // Chèvres

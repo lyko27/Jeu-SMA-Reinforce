@@ -42,7 +42,7 @@ int init_affichage() {
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");
     texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
-    texture_wolf = IMG_LoadTexture(renderer, "./images/loup.png");
+    texture_wolf = IMG_LoadTexture(renderer, "./images/loup2.png");
 
     if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier) {
         printf("Erreur chargement image : %s\n", IMG_GetError());
@@ -69,10 +69,10 @@ int gestion_direction_fermier(int direction){
 
 
 int gestion_direction_wolf(int direction){
-    if (direction==1) return 3;
-    else if (direction==2) return 1;
+    if (direction==1) return 1;
+    else if (direction==2) return 2;
     else if (direction==3) return 0;
-    else if (direction==4) return 2;
+    else if (direction==4) return 3;
     return 0;
 }
 

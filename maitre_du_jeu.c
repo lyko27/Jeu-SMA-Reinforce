@@ -21,7 +21,6 @@ float calculer_recompense_fermier(monde *m)
     Fermier *f = m->fermiers;
     float min_dist_wolf = 9999.0f;
 
-    int proche_loup = 0;
     for (int i = 0; i < m->nb_wolf; i++)
     {
         Wolf *w = m->wolfs_tab[i];

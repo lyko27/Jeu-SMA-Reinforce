@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +15,6 @@
 #include "reinforce.h"
 #include "utilisateur.h"
 
-#define LARGEUR 1024
-#define HAUTEUR 1024
 
 // Calcul de la récompense instantanée pour le fermier
 float calculer_recompense_fermier(monde *m)

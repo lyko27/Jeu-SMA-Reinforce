@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include "monde.h"
 #include "affichage.h"
 
 SDL_Window *window = NULL;
@@ -33,9 +34,9 @@ int init_affichage() {
         }
     }
     
-    window = SDL_CreateWindow("Jeu de la Ferme", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("Jeu de la Ferme", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, LARGEUR, HAUTEUR, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    SDL_RenderSetLogicalSize(renderer, 1024, 1024);
+    SDL_RenderSetLogicalSize(renderer, LARGEUR, HAUTEUR);
     
     texture_fond = IMG_LoadTexture(renderer, "./images/mymap.png");
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");

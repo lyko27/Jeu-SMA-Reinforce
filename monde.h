@@ -5,8 +5,8 @@
 #include "loup.h"
 #include "fermier.h"
 
-#define LARGEUR 1024
-#define HAUTEUR 1024
+#define LARGEUR 2048
+#define HAUTEUR 1152
 #define MARGE 90
 
 // Zone du lac (obstacle)

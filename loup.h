@@ -38,6 +38,7 @@ typedef struct
     int timer_mouvement; // Le temps restant à marcher dans la même direction
 
     int hp;
+    int cooldown_dinvisibilite;
 
     float table_interets[NB_ACTIONS_WOLF];
     float weights[NB_ACTIONS_WOLF][DIMENSION_PHI_WOLF];

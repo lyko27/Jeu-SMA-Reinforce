@@ -357,6 +357,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
   {
     Goat *goat = monde_courant->goats_tab[i];
     goat->decision_cooldown--;
+    if (goat->cooldown_dinvisibilite > 0) goat->cooldown_dinvisibilite--; // on descend l'invisibilité si la chèvre est en cooldown, sinon on ne fait rien
+    else goat->cooldown_dinvisibilite = 0;
+    
 
     // Prise de décision (seulement à l'expiration du cooldown)
     if (goat->decision_cooldown <= 0)
@@ -376,6 +379,8 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
   {
     Wolf *wolf = monde_courant->wolfs_tab[i];
     wolf->decision_cooldown--;
+    if (wolf->cooldown_dinvisibilite > 0) wolf->cooldown_dinvisibilite--; // on descend l'invisibilité si le loup est en cooldown, sinon on ne fait rien
+    else wolf->cooldown_dinvisibilite = 0;
 
     if (wolf->decision_cooldown <= 0)
     {
@@ -502,19 +507,28 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
       
       for (int j = 0; j < monde_courant->nb_goat; j++)
       {
+        if(monde_courant->goats_tab[j]->cooldown_dinvisibilite == 0) 
+        {
           Goat *goat = monde_courant->goats_tab[j];
           Hitbox hb_goat = get_hitbox_goat(goat->x, goat->y);
           
           if (check_collision_rect(hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
           {
-              // mort de la chèvre
-              mourrir_goat(monde_courant, j);
-              j--;
+              goat->hp--;
+              if (goat->hp <= 0)
+              {
+                  mourrir_goat(monde_courant, j);
+                  j--;
+              }
           }
+        }
       }
   }
+  // attaque fermier loup
   for (int i = 0; i < monde_courant->nb_wolf; i++)
   {
+    if(monde_courant->wolfs_tab[i]->cooldown_dinvisibilite == 0) 
+    {
       Wolf *wolf = monde_courant->wolfs_tab[i];
       Hitbox hb_wolf = get_hitbox_wolf(wolf->x, wolf->y);
       Hitbox hb_fermier = get_hitbox_fermier(fermier_actuel->x, fermier_actuel->y);
@@ -523,9 +537,14 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
                               hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
       {
           // Le fermier élimine le loup
-          mourrir_wolf(monde_courant, i);
-          i--; 
+          wolf->hp--;
+          if (wolf->hp <= 0)
+          {
+              mourrir_wolf(monde_courant, i);
+              i--;
+          }
       }
+    }
   }
 
 

@@ -25,6 +25,9 @@ Wolf *init_wolf(Wolf *wolf)
   wolf->en_mouvement = 0;
   wolf->angle_actuel = 0.0f;
 
+  wolf->hp = 2;
+  wolf->cooldown_dinvisibilite = 180; // 3 secondes
+
   for (int i = 0; i < NB_ACTIONS_WOLF; i++)
   {
     wolf->table_interets[i] = 0.0f;

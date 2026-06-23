@@ -25,6 +25,9 @@ Goat *init_goat(Goat *goat)
   goat->en_mouvement = 0;
   goat->angle_actuel = 0.0f;
 
+  goat->hp = 2;
+  goat->cooldown_dinvisibilite = 180; // 3 secondes
+
   // Initialisation de la table des intérêts
   for (int i = 0; i < NB_ACTIONS; i++)
   {

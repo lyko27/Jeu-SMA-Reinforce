@@ -24,6 +24,12 @@ typedef enum {
 typedef struct {
   int input_x; // -1, 0, 1
   int input_y; // -1, 0, 1
+  float dist_wolf; // Distance loup le plus proche
+  float dx_wolf; // Direction x loup le plus proche
+  float dy_wolf; // Direction y loup le plus proche
+  float dist_goat; // Distance goat le plus proche
+  float dx_goat; // Direction x goat le plus proche
+  float dy_goat; // Direction y goat le plus proche
 } PerceptionFermier;
 
 typedef struct {
@@ -41,7 +47,6 @@ typedef struct {
   int action_id;
 } Fermier;
 
-ActionFermier decider_action_fermier(Fermier *fermier,
-                                     PerceptionFermier perception_fermier);
+ActionFermier decider_action_fermier(Fermier *fermier, PerceptionFermier perception_fermier);
 
 #endif

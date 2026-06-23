@@ -51,7 +51,6 @@ Hitbox get_hitbox_fermier(float x, float y);
 Hitbox get_hitbox_goat(float x, float y);
 Hitbox get_hitbox_wolf(float x, float y);
 
-Fermier *init_fermier(Fermier *fermier);
 monde *creer_monde(int largeur, int hauteur);
 monde *generer_un_monde(monde *monde_courant);
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y);
@@ -61,5 +60,6 @@ void afficher_monde(monde *monde_courant);
 // Inclusion des modules spécifiques restructurés
 #include "monde_goat.h"
 #include "monde_wolf.h"
+#include "monde_fermier.h"
 
 #endif

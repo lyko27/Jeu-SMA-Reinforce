@@ -121,30 +121,6 @@ Hitbox get_hitbox_wolf(float x, float y)
   return creer_hitbox(x, y, WIDTH_WOLF, HEIGHT_WOLF, 0.5f, 5.0f, 10.0f, 10.0f);
 }
 
-/* ========== Fermier ========== */
-
-/**
- * Synopsis : Initialise le fermier devant sa maison.
- * Entrée   : Pointeur vers la structure Fermier à initialiser.
- * Sortie   : Pointeur vers la structure Fermier initialisée.
- */
-Fermier *init_fermier(Fermier *fermier)
-{
-  fermier->x = 347;
-  fermier->y = 185;
-  fermier->speed = VITESSE_FERMIER;
-  for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
-  {
-    for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
-    {
-      fermier->weights[a][k] = 0.0f;
-    }
-  }
-  return fermier;
-}
-
-
-
 /* ========= Monde ========= */
 
 /* Entrée : deux entier la largeur et la hauteur du monde
@@ -248,8 +224,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
   // Fermier - Décision
   if (monde_courant->mode)
   {
-    float phi[7];
-    calcul_interets_fermier(monde_courant->fermiers, monde_courant, phi);
+    float phi[DIMENSION_PHI_FERMIER];
+    PerceptionFermier perc_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
+    generer_phi_fermier(perc_fermier, phi);
     for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
     {
       float val = 0.0f;
@@ -313,6 +290,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
   {
     Goat *goat = monde_courant->goats_tab[i];
     goat->decision_cooldown--;
+    if (goat->cooldown_dinvisibilite > 0) goat->cooldown_dinvisibilite--; // on descend l'invisibilité si la chèvre est en cooldown, sinon on ne fait rien
+    else goat->cooldown_dinvisibilite = 0;
+    
 
     // Prise de décision (seulement à l'expiration du cooldown)
     if (goat->decision_cooldown <= 0)
@@ -332,27 +312,18 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
   {
     Wolf *wolf = monde_courant->wolfs_tab[i];
     wolf->decision_cooldown--;
+    if (wolf->cooldown_dinvisibilite > 0) wolf->cooldown_dinvisibilite--; // on descend l'invisibilité si le loup est en cooldown, sinon on ne fait rien
+    else wolf->cooldown_dinvisibilite = 0;
 
     if (wolf->decision_cooldown <= 0)
     {
+      PerceptionWolf perception_wolf = calculer_perception_wolf(wolf, monde_courant);
       if (monde_courant->mode)
       {
-        float phi[7];
-        calcul_interets_wolf(wolf, monde_courant, phi);
-        for (int a = 0; a < NB_ACTIONS_WOLF; a++)
-        {
-          float val = 0.0f;
-          for (int k = 0; k < DIMENSION_PHI_WOLF; k++)
-          {
-            val += wolf->weights[a][k] * phi[k];
-          }
-          wolf->table_interets[a] = val;
-        }
+        evaluer_interets_wolf_rl(wolf, perception_wolf);
       }
       else
       {
-        PerceptionWolf perception_wolf =
-            calculer_perception_wolf(wolf, monde_courant);
         evaluer_interets_wolf(wolf, perception_wolf);
       }
       wolf->action_choisi =
@@ -363,106 +334,9 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
     }
     update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));
   }
-
-  // ========
-  // Action physique du Fermier
-  // ========
-  Fermier *fermier_actuel = monde_courant->fermiers;
-  float next_fermier_x = fermier_actuel->x;
-  float next_fermier_y = fermier_actuel->y;
-
-  float vitesse_actuelle = fermier_actuel->speed;
-  if (action_fermier.dx != 0 && action_fermier.dy != 0)
-  {
-    vitesse_actuelle /= sqrt(2);
-  }
-
-  if (action_fermier.dy == 1)
-  {
-    next_fermier_y -= vitesse_actuelle;
-    fermier_actuel->direction_sprite = 1;
-  }
-  if (action_fermier.dy == -1)
-  {
-    next_fermier_y += vitesse_actuelle;
-    fermier_actuel->direction_sprite = 3;
-  }
-  if (action_fermier.dx == 1)
-  {
-    next_fermier_x -= vitesse_actuelle;
-    fermier_actuel->direction_sprite = 4;
-  }
-  if (action_fermier.dx == -1)
-  {
-    next_fermier_x += vitesse_actuelle;
-    fermier_actuel->direction_sprite = 2;
-  }
-
-  if (action_fermier.dx == 0 && action_fermier.dy == 0)
-  {
-    fermier_actuel->frame = 5;
-    fermier_actuel->direction_sprite = 0;
-  }
-  else
-  {
-    if (next_fermier_x < MARGE)
-      next_fermier_x = MARGE;
-    if (next_fermier_x > LARGEUR - MARGE - WIDTH_FERMIER)
-      next_fermier_x = LARGEUR - MARGE - WIDTH_FERMIER;
-    if (next_fermier_y < MARGE)
-      next_fermier_y = MARGE;
-    if (next_fermier_y > HAUTEUR - MARGE - HEIGHT_FERMIER)
-      next_fermier_y = HAUTEUR - MARGE - HEIGHT_FERMIER;
-
-    int collision_fermier = 0;
-
-    Hitbox hb_future_fermier = get_hitbox_fermier(next_fermier_x, next_fermier_y);
-    Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
-
-    if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
-    {
-      collision_fermier = 1;
-    }
-    // collision avec chevres
-    if (!collision_fermier)
-    {
-      for (int j = 0; j < monde_courant->nb_goat; j++)
-      {
-        Hitbox hb_goat = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
-
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
-        {
-          collision_fermier = 1;
-          break;
-        }
-      }
-    }
-    // collision avec chevres
-    if (!collision_fermier)
-    {
-      for (int j = 0; j < monde_courant->nb_wolf; j++)
-      {
-        Hitbox hb_wolf = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
-
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
-        {
-          collision_fermier = 1; // Le fermier se cogne contre un loup
-          break;
-        }
-      }
-    }
-
-    if (!collision_fermier)
-    {
-      fermier_actuel->x = next_fermier_x;
-      fermier_actuel->y = next_fermier_y;
-    }
-
-    if (tick_animation % 6 == 0)
-    {
-      fermier_actuel->frame = (fermier_actuel->frame + 1) % 9;
-    }
-  }
+  // Action du Fermier
+  PerceptionFermier perception_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
+  update_fermier(monde_courant, monde_courant->fermiers, action_fermier, tick_animation, perception_fermier);
   // attaque loup chèvre
   for (int i = 0; i < monde_courant->nb_wolf; i++)
   {
@@ -471,17 +345,48 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
       
       for (int j = 0; j < monde_courant->nb_goat; j++)
       {
+        if(monde_courant->goats_tab[j]->cooldown_dinvisibilite == 0) 
+        {
           Goat *goat = monde_courant->goats_tab[j];
           Hitbox hb_goat = get_hitbox_goat(goat->x, goat->y);
           
           if (check_collision_rect(hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
           {
-              // mort de la chèvre
-              mourrir_goat(monde_courant, j);
-              j--;
+              goat->hp--;
+              if (goat->hp <= 0)
+              {
+                  mourrir_goat(monde_courant, j);
+                  j--;
+              }
+              else monde_courant->goats_tab[j]->cooldown_dinvisibilite = 180; // 3 secondes d'invisibilité après avoir été attaquée
           }
+        }
       }
   }
+  // attaque fermier loup
+  for (int i = 0; i < monde_courant->nb_wolf; i++)
+  {
+    if(monde_courant->wolfs_tab[i]->cooldown_dinvisibilite == 0) 
+    {
+      Wolf *wolf = monde_courant->wolfs_tab[i];
+      Hitbox hb_wolf = get_hitbox_wolf(wolf->x, wolf->y);
+      Hitbox hb_fermier = get_hitbox_fermier(monde_courant->fermiers->x, monde_courant->fermiers->y);
+      
+      if (check_collision_rect(hb_fermier.x, hb_fermier.y, hb_fermier.w, hb_fermier.h,
+                              hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
+      {
+          // Le fermier élimine le loup
+          wolf->hp--;
+          if (wolf->hp <= 0)
+          {
+              mourrir_wolf(monde_courant, i);
+              i--;
+          }
+          else monde_courant->wolfs_tab[i]->cooldown_dinvisibilite = 180; // 3 secondes d'invisibilité après avoir été attaqué
+      }
+    }
+  }
+
 
   return monde_courant;
 }

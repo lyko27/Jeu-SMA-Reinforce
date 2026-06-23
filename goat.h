@@ -11,17 +11,23 @@ typedef enum {
 
 typedef struct
 {
+    // var de position
     float x;
     float y;
     float speed;
     float dir_x;
     float dir_y;
+        float angle_actuel;
+
+    // var d'animation
     int frame;
     int direction_sprite; // 1 haut, 2 droite, 3 bas, 4,gauche
     int en_mouvement;
     int timer_mouvement; // Le temps restant à marcher dans la même direction
-    float angle_actuel;
+
+    // decision / vie
     int hp;
+    int cooldown_dinvisibilite;
 
     float table_interets[NB_ACTIONS];
     int decision_cooldown ;

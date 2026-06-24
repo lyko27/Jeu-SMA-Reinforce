@@ -5,7 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+// Compatibilité parallélisation avec mac
+#ifdef __APPLE__
+#include <pthread.h>
+#define thrd_t pthread_t
+#define thrd_create(thr, func, arg) pthread_create((thr), NULL, (void *(*)(void *))(void *)(func), (arg))
+#define thrd_join(thr, res) ((void)(res), pthread_join((thr), NULL))
+#else
 #include <threads.h>
+#endif
 
 #include "affichage.h"
 #include "fermier.h"

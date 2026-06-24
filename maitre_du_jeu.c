@@ -84,6 +84,7 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
         {
             ajouter_transition(&args->trajectoires_loups[episode_id * 3 + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
         }
+        printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]);
     }
     nettoyer_monde(monde_local);
     return 0;
@@ -205,7 +206,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
 {
     time_t begin = time( NULL );
 
-    int nb_cycles = 5000;
+    int nb_cycles = 500;
     int nb_episodes = 25;
     int max_steps = 1000;
     float alpha = 0.001f;

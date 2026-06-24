@@ -83,7 +83,7 @@ float calculer_recompense_loup(Wolf *w, monde *m)
             }
             if (dist < 40.0f)
             {
-                r += 100.0f; // Récompense pour avoir mangé/attrapé une chèvre
+                r += 70.0f; // Récompense pour avoir mangé/attrapé une chèvre
             }
         }
     }
@@ -99,13 +99,13 @@ float calculer_recompense_loup(Wolf *w, monde *m)
         float dfx = f->x - w->x;
         float dfy = f->y - w->y;
         float dist_f = sqrtf(dfx * dfx + dfy * dfy);
-        if (dist_f < 120.0f)
+        if (dist_f < 200.0f)
         {
             r -= (250.0f - dist_f) / 20.0f; // Peur du fermier
         }
-        if (dist_f < 60.0f)
+        if (dist_f < 80.0f)
         {
-            r -= 15.0f; // Grosse pénalité s'il se fait presque attraper
+            r -= 25.0f; // Grosse pénalité s'il se fait presque attraper
         }
     }
     return r;

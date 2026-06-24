@@ -216,7 +216,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
     printf("\nDémarage entrainement...\n");
     time_t begin = time( NULL );
     // modifier
-    int nb_cycles = 1000;
+    int nb_cycles = 10000;
     int nb_episodes = 25;
     int max_steps = 1000;
     float alpha = 0.00001f;

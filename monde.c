@@ -191,7 +191,7 @@ monde *generer_un_monde(monde *monde_courant)
         free(le_fermier);
         return NULL;
     }
-    int start_x = 1500;
+    int start_x = 1000;
     int start_y = 300;
     int écart_x = 120;
     int écart_y = 100;

@@ -15,6 +15,11 @@
 #include "reinforce.h"
 #include "utilisateur.h"
 
+// Pour utiliser les fonction plus basse dans le multithreading (ne pas supprimer)
+float calculer_recompense_fermier(monde *m);
+float calculer_recompense_loup(Wolf *w, monde *m);
+void nettoyer_monde(monde *m);
+
 // Multi threading pour l'entrainment
 
 typedef struct thread_arg {
@@ -37,6 +42,7 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
 
     monde *monde_local = creer_monde(LARGEUR, HAUTEUR);
     monde_local = generer_un_monde(monde_local);
+    monde_local->mode = 1;
 
     // on copie le monde pour le thread
 
@@ -55,10 +61,10 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
     for(int step = 0; step< args->max_steps; step ++)
     { 
         float phi_fermier[DIMENSION_PHI_FERMIER];
-        PerceptionFermier perception_fermier = calculer_perception_fermier(monde_local, phi_fermier);
+        PerceptionFermier perception_fermier = calculer_perception_fermier(monde_local->fermiers, monde_local);
         generer_phi_fermier(perception_fermier, phi_fermier);
         float phi_loups[3][DIMENSION_PHI_WOLF];
-        for (int w = 0; w < monde_local->nb_wolf; w++)
+        for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
         {
             PerceptionWolf perception_loup = calculer_perception_wolf(monde_local->wolfs_tab[w], monde_local);
             generer_phi_wolf(monde_local->wolfs_tab[w], perception_loup, phi_loups[w]);
@@ -73,6 +79,7 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
             r_loups[w] = calculer_recompense_loup(monde_local->wolfs_tab[w], monde_local);
         }
         // on enregistre dans la trajectoire
+        ajouter_transition(&args->trajectoires_fermier[episode_id], phi_fermier, monde_local->fermiers->action_id, r_fermier);
         for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
         {
             ajouter_transition(&args->trajectoires_loups[episode_id * 3 + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
@@ -235,7 +242,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
 
                 monde *m = creer_monde(LARGEUR, HAUTEUR);
                 m = generer_un_monde(m);
-                m->mode = 1;
+                m->mode = 2;
 
                 // Injection des poids
                 memcpy(m->fermiers->weights, fermier_poids->weights, sizeof(fermier_poids->weights));
@@ -286,7 +293,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
             int taille_chunk = 8;
             for(int episode = 0; episode < nb_episodes; episode += taille_chunk)
             {
-                int thread_a_lancer = nb_episodes - episode;
+                int thread_a_lancer = taille_chunk;
                 if(episode + thread_a_lancer > nb_episodes) thread_a_lancer = nb_episodes - episode;
                 thrd_t thread_handle_i[taille_chunk];
                 EpisodeThreads thread_args[taille_chunk];
@@ -308,7 +315,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
                 for(int i = 0; i<thread_a_lancer;i++)
                 {
                     int error_code_thread_i = 0;
-                    thrd_join(thread_handle_i, &error_code_thread_i);
+                    thrd_join(thread_handle_i[i], &error_code_thread_i);
                 }
             }
         }
@@ -347,14 +354,14 @@ int main(int argc, char **argv)
 {
     srand(time(NULL));
 
-    if (argc > 1 && strcmp(argv[1], "train") == 0)
-    {
-        entrainer_agents(1);
-        return 0;
-    }
-    else if (argc > 2 && strcmp(argv[1], "train")==0 && strcmp(argv[2], "-m"==0))
+    if (argc > 2 && strcmp(argv[1], "train") == 0 && strcmp(argv[2], "-m") == 0)
     {
         entrainer_agents(0);
+        return 0;
+    }
+    else if (argc > 1 && strcmp(argv[1], "train") == 0)
+    {
+        entrainer_agents(1);
         return 0;
     }
 

@@ -1,6 +1,28 @@
 #ifndef MONDE_H
 #define MONDE_H
 
+#include <stdlib.h>
+#include <time.h>
+#include <stdint.h>
+
+// Version thread-safe de rand() avec graine locale par thread (__thread)
+static inline int thread_safe_rand(void)
+{
+    static __thread unsigned int seed = 0;
+    if (seed == 0)
+    {
+        // Graine initiale basée sur le temps et l'adresse mémoire du thread
+        seed = (unsigned int)time(NULL) ^ (unsigned int)(uintptr_t)&seed;
+    }
+    return rand_r(&seed);
+}
+
+// Redéfinition transparente de rand()
+#ifdef rand
+#undef rand
+#endif
+#define rand() thread_safe_rand()
+
 #include "goat.h"
 #include "loup.h"
 #include "fermier.h"

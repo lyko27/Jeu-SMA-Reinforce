@@ -193,7 +193,7 @@ void entrainer_agents()
                 // Calculer les récompenses suite à l'action
                 float r_fermier = calculer_recompense_fermier(m);
 
-                float r_loups[3];
+                float r_loups[3]={0.0,0.0,0.0};
                 for (int w = 0; w < m->nb_wolf && w < 3; w++)
                 {
                     r_loups[w] = calculer_recompense_loup(m->wolfs_tab[w], m);

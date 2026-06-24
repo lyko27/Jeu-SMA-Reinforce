@@ -35,7 +35,7 @@ static inline int thread_safe_rand(void)
 #define LAC_X 1050
 #define LAC_Y 803
 #define LAC_WIDTH 195
-#define LAC_HEIGHT 195
+#define LAC_HEIGHT 300
 
 // Zone de la maison (obstacle)
 #define MAISON_X 738

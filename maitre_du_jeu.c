@@ -31,10 +31,11 @@ void nettoyer_monde(monde *m);
 
 // Multi threading pour l'entrainment
 
-typedef struct thread_arg {
+typedef struct thread_arg
+{
     int episode_id; // le numéro de l'épisode à simuler
-    Trajectoire *trajectoires_fermier; 
-    Trajectoire *trajectoires_loups; 
+    Trajectoire *trajectoires_fermier;
+    Trajectoire *trajectoires_loups;
     Fermier *fermier_poids;
     Wolf **loups_poids;
     int max_steps;
@@ -42,12 +43,13 @@ typedef struct thread_arg {
 
 // Calcul de récompense Reinforce
 
-int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
+int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
 {
     EpisodeThreads *args = (EpisodeThreads *)parameters;
     int episode_id = args->episode_id;
     init_trajectoire(&args->trajectoires_fermier[episode_id]);
-    for (int w = 0; w < 3; w++) init_trajectoire(&args->trajectoires_loups[episode_id * 3 + w]);
+    for (int w = 0; w < 3; w++)
+        init_trajectoire(&args->trajectoires_loups[episode_id * 3 + w]);
 
     monde *monde_local = creer_monde(LARGEUR, HAUTEUR);
     monde_local = generer_un_monde(monde_local);
@@ -56,8 +58,8 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
     // on copie le monde pour le thread
 
     /*  void * memcpy( void * restrict destination, const void * restrict source, size_t size );
-    Cette fonction permet de copier un bloc de mémoire spécifié par le paramètre source, 
-    et dont la taille est spécifiée via le paramètre size, dans un nouvel emplacement 
+    Cette fonction permet de copier un bloc de mémoire spécifié par le paramètre source,
+    et dont la taille est spécifiée via le paramètre size, dans un nouvel emplacement
     désigné par le paramètre destination. source : https://koor.fr/C/cstring/memcpy.wp*/
 
     memcpy(monde_local->fermiers->weights, args->fermier_poids->weights, sizeof(args->fermier_poids->weights));
@@ -67,8 +69,8 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
     }
 
     // on simule l'épisode :
-    for(int step = 0; step< args->max_steps; step ++)
-    { 
+    for (int step = 0; step < args->max_steps; step++)
+    {
         float phi_fermier[DIMENSION_PHI_FERMIER];
         PerceptionFermier perception_fermier = calculer_perception_fermier(monde_local->fermiers, monde_local);
         generer_phi_fermier(perception_fermier, phi_fermier);
@@ -102,7 +104,7 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
 // Calcul de la récompense instantanée pour le fermier
 float calculer_recompense_fermier(monde *m)
 {
-    float r = -0.1f; // Pénalité de temps par tick pour forcer le mouvement
+    float r = -0.5f; // Pénalité de temps
     Fermier *f = m->fermiers;
     float min_dist_wolf = 9999.0f;
 
@@ -130,7 +132,7 @@ float calculer_recompense_fermier(monde *m)
                     float dist_g = sqrtf(dgx * dgx + dgy * dgy);
                     if (dist_g < 50.0f)
                     {
-                        r -= 5.0f; // Pénalité
+                        r -= 10.0f; // Pénalité pour que le fermier protège la chèvre
                     }
                 }
             }
@@ -138,12 +140,12 @@ float calculer_recompense_fermier(monde *m)
     }
     if (min_dist_wolf < 9999.0f)
     {
-        r += (400.0f - min_dist_wolf) / 50.0f; // Gradient d'approche plus fort et portée plus longue
+        r += (800.0f - min_dist_wolf) / 100.0f; // Gradient d'approche ajusté
     }
 
     if (min_dist_wolf < 80.0f)
     {
-        r += 15.0f; // Récompense forte pour chasser le loup
+        r += 50.0f; // Grosse récompense pour chasser le loup
     }
     return r;
 }
@@ -151,7 +153,7 @@ float calculer_recompense_fermier(monde *m)
 // Calcul de la récompense instantanée pour un loup
 float calculer_recompense_loup(Wolf *w, monde *m)
 {
-    float r = -0.1f; // Pénalité de temps par tick pour forcer le mouvement
+    float r = -0.5f; // Pénalité de temps
     float min_dist_chevre = 9999.0f;
 
     for (int j = 0; j < m->nb_goat; j++)
@@ -168,14 +170,14 @@ float calculer_recompense_loup(Wolf *w, monde *m)
             }
             if (dist < 40.0f)
             {
-                r += 70.0f; // Récompense pour avoir mangé/attrapé une chèvre
+                r += 80.0f; // Récompense pour avoir mangé/attrapé une chèvre
             }
         }
     }
 
     if (min_dist_chevre < 9999.0f)
     {
-        r += (300.0f - min_dist_chevre) / 50.0f; // Récompense pour chasser la chèvre
+        r += (400.0f - min_dist_chevre) / 100.0f; // Récompense pour chasser la chèvre
     }
 
     Fermier *f = m->fermiers;
@@ -186,11 +188,11 @@ float calculer_recompense_loup(Wolf *w, monde *m)
         float dist_f = sqrtf(dfx * dfx + dfy * dfy);
         if (dist_f < 200.0f)
         {
-            r -= (250.0f - dist_f) / 20.0f; // Peur du fermier
+            r -= (250.0f - dist_f) / 10.0f; // Peur du fermier
         }
-        if (dist_f < 80.0f)
+        if (dist_f < 100.0f)
         {
-            r -= 25.0f; // Grosse pénalité s'il se fait presque attraper
+            r -= 80.0f; // Grosse pénalité (supérieure à la récompense d'une chèvre) s'il est très proche
         }
     }
     return r;
@@ -214,16 +216,18 @@ void nettoyer_monde(monde *m)
 void entrainer_agents(int simple_ou_multi_coeur)
 {
     printf("\nDémarage entrainement...\n");
-    time_t begin = time( NULL );
+    time_t begin = time(NULL);
     // modifier
-    int nb_cycles = 1000;
+    int nb_cycles = 10000;
     int nb_episodes = 25;
     int max_steps = 1000;
-    float alpha = 0.00001f;
+    float alpha = 0.00000001f;
     float gamma = 0.99f;
 
-    if(simple_ou_multi_coeur == 1) printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Simple Coeur ! ...\n", nb_cycles, nb_episodes);
-    else printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Multi-Coeur ! ...\n", nb_cycles, nb_episodes);
+    if (simple_ou_multi_coeur == 1)
+        printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Simple Coeur ! ...\n", nb_cycles, nb_episodes);
+    else
+        printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Multi-Coeur ! ...\n", nb_cycles, nb_episodes);
 
     // Mémoriser les poids appris d'une époque à l'autre
     Fermier *fermier_poids = malloc(sizeof(Fermier));
@@ -244,7 +248,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
         Trajectoire *trajectoires_fermier = malloc(nb_episodes * sizeof(Trajectoire));
         Trajectoire *trajectoires_loups = malloc(nb_episodes * 3 * sizeof(Trajectoire));
 
-        if(simple_ou_multi_coeur == 1)
+        if (simple_ou_multi_coeur == 1)
         {
             for (int ep = 0; ep < nb_episodes; ep++)
             {
@@ -284,8 +288,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
                     // Calculer les récompenses suite à l'action
                     float r_fermier = calculer_recompense_fermier(m);
 
-
-                    float r_loups[3] = {0.0f, 0.0f , 0.0f};
+                    float r_loups[3] = {0.0f, 0.0f, 0.0f};
                     for (int w = 0; w < m->nb_wolf && w < 3; w++)
                     {
                         r_loups[w] = calculer_recompense_loup(m->wolfs_tab[w], m);
@@ -305,16 +308,17 @@ void entrainer_agents(int simple_ou_multi_coeur)
         else
         {
             int taille_chunk = 8;
-            for(int episode = 0; episode < nb_episodes; episode += taille_chunk)
+            for (int episode = 0; episode < nb_episodes; episode += taille_chunk)
             {
                 int thread_a_lancer = taille_chunk;
-                if(episode + thread_a_lancer > nb_episodes) thread_a_lancer = nb_episodes - episode;
+                if (episode + thread_a_lancer > nb_episodes)
+                    thread_a_lancer = nb_episodes - episode;
                 thrd_t thread_handle_i[taille_chunk];
                 EpisodeThreads thread_args[taille_chunk];
-                
+
                 // On lance les threads
 
-                for(int i = 0; i < thread_a_lancer;i++)
+                for (int i = 0; i < thread_a_lancer; i++)
                 {
                     thread_args[i].episode_id = episode + i;
                     thread_args[i].trajectoires_fermier = trajectoires_fermier;
@@ -326,7 +330,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
                     thrd_create(&thread_handle_i[i], lancer_un_episode, &thread_args[i]);
                 }
                 // on attend la fin de tout le groupe
-                for(int i = 0; i<thread_a_lancer;i++)
+                for (int i = 0; i < thread_a_lancer; i++)
                 {
                     int error_code_thread_i = 0;
                     thrd_join(thread_handle_i[i], &error_code_thread_i);
@@ -358,9 +362,10 @@ void entrainer_agents(int simple_ou_multi_coeur)
     sauvegarder_poids_fermier(fermier_poids, "poids_fermier.txt");
     sauvegarder_poids_loup(loups_poids[0], "poids_loup.txt");
     free(fermier_poids);
-    for (int i = 0; i < 3; i++) free(loups_poids[i]);
-    time_t end = time( NULL );
-    printf("\nEntairnement terminé ! %d cyles effectués en %ld minutes et %ld secondes\n", nbre_cycles_effectués, ((unsigned long) difftime( end, begin ))/60, ((unsigned long) difftime( end, begin ))%60);
+    for (int i = 0; i < 3; i++)
+        free(loups_poids[i]);
+    time_t end = time(NULL);
+    printf("\nEntairnement terminé ! %d cyles effectués en %ld minutes et %ld secondes\n", nbre_cycles_effectués, ((unsigned long)difftime(end, begin)) / 60, ((unsigned long)difftime(end, begin)) % 60);
 }
 
 int main(int argc, char **argv)
@@ -396,7 +401,7 @@ int main(int argc, char **argv)
 
     int quiiter_le_programme = 0;
     int en_pause = 1;
-    monde_courrant->en_pause=1;
+    monde_courrant->en_pause = 1;
     int tick_animation = 0;
     init_affichage();
 
@@ -417,8 +422,7 @@ int main(int argc, char **argv)
             if (utilisateur->pause)
             {
                 en_pause = !en_pause;
-                monde_courrant->en_pause=!monde_courrant->en_pause;
-                
+                monde_courrant->en_pause = !monde_courrant->en_pause;
             }
             if (utilisateur->switch_mode)
             {
@@ -436,7 +440,7 @@ int main(int argc, char **argv)
                 tick_animation++;
                 monde_courrant = mis_à_jour_monde(monde_courrant, tick_animation, utilisateur->x_deplacement, utilisateur->y_deplacement);
             }
-            
+
             afficher_monde(monde_courrant);
             free(utilisateur);
         }

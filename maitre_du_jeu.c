@@ -84,7 +84,7 @@ int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
         {
             ajouter_transition(&args->trajectoires_loups[episode_id * 3 + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
         }
-        printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]);
+        // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]); // (à décomenter pour afficher mais ralenti l'entrainement)
     }
     nettoyer_monde(monde_local);
     return 0;
@@ -204,13 +204,17 @@ void nettoyer_monde(monde *m)
 // Boucle d'entraînement
 void entrainer_agents(int simple_ou_multi_coeur)
 {
+    printf("\nDémarage entrainement...\n");
     time_t begin = time( NULL );
-
-    int nb_cycles = 500;
+    // modifier
+    int nb_cycles = 1000;
     int nb_episodes = 25;
     int max_steps = 1000;
-    float alpha = 0.001f;
+    float alpha = 0.00001f;
     float gamma = 0.99f;
+
+    if(simple_ou_multi_coeur == 1) printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Simple Coeur ! ...\n", nb_cycles, nb_episodes);
+    else printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Multi-Coeur ! ...\n", nb_cycles, nb_episodes);
 
     // Mémoriser les poids appris d'une époque à l'autre
     Fermier *fermier_poids = malloc(sizeof(Fermier));
@@ -284,7 +288,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
                     {
                         ajouter_transition(&trajectoires_loups[ep * 3 + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
                     }
-                    printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]);
+                    // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]); // (à décomenter pour afficher mais ralenti l'entrainement)
                 }
                 nettoyer_monde(m);
             }
@@ -339,7 +343,6 @@ void entrainer_agents(int simple_ou_multi_coeur)
 
         sauvegarder_poids_fermier(fermier_poids, "poids_fermier.txt");
         sauvegarder_poids_loup(loups_poids[0], "poids_loup.txt");
-        printf("Poids sauvegardés.\n");
         nbre_cycles_effectués++;
     }
 
@@ -348,7 +351,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
     free(fermier_poids);
     for (int i = 0; i < 3; i++) free(loups_poids[i]);
     time_t end = time( NULL );
-    printf("Entairnement terminé ! %d cyles effectués en %ld minutes et %ld secondes\n", nbre_cycles_effectués, ((unsigned long) difftime( end, begin ))/60, ((unsigned long) difftime( end, begin ))%60);
+    printf("\nEntairnement terminé ! %d cyles effectués en %ld minutes et %ld secondes\n", nbre_cycles_effectués, ((unsigned long) difftime( end, begin ))/60, ((unsigned long) difftime( end, begin ))%60);
 }
 
 int main(int argc, char **argv)

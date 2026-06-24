@@ -46,11 +46,11 @@ int init_affichage()
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_RenderSetLogicalSize(renderer, LARGEUR, HAUTEUR);
 
-    texture_fond = IMG_LoadTexture(renderer, "./images/mymap.png");
+    texture_fond = IMG_LoadTexture(renderer, "./images/map.png");
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");
     texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
-    texture_wolf = IMG_LoadTexture(renderer, "./images/loup2.png");
+    texture_wolf = IMG_LoadTexture(renderer, "./images/loup.png");
     texture_planche = IMG_LoadTexture(renderer, "./images/ath.png");
 
     if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche)
@@ -90,13 +90,13 @@ int gestion_direction_fermier(int direction)
 int gestion_direction_wolf(int direction)
 {
     if (direction == 1)
-        return 1;
+        return 3;
     else if (direction == 2)
         return 2;
     else if (direction == 3)
         return 0;
     else if (direction == 4)
-        return 3;
+        return 1;
     return 0;
 }
 
@@ -195,11 +195,12 @@ void dessiner_entite(int type_entite, int position_x, int position_y, int frame,
         nb_image = 4;
         nb_ligne = 5;
     }
-    else if (type_entite == 4)
-    {
-        zoom = 0.7;
+
+    else if (type_entite == 4) { 
+        zoom=0.6;
+
         texture_actuelle = texture_wolf;
-        nb_image = 4;
+        nb_image = 3;
         nb_ligne = 4;
         direction = gestion_direction_wolf(direction);
     }

@@ -166,7 +166,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y,int frame,i
         nb_ligne=5;
     }
     else if (type_entite == 4) { 
-        zoom=0.7;
+        zoom=0.6;
         texture_actuelle = texture_wolf;
         nb_image=4;
         nb_ligne=4;

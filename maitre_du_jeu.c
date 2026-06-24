@@ -194,7 +194,7 @@ void nettoyer_monde(monde *m)
 }
 
 // Boucle d'entraînement
-void entrainer_agents()
+void entrainer_agents(int simple_ou_multi_coeur)
 {
     time_t begin = time( NULL );
 
@@ -223,60 +223,94 @@ void entrainer_agents()
         Trajectoire *trajectoires_fermier = malloc(nb_episodes * sizeof(Trajectoire));
         Trajectoire *trajectoires_loups = malloc(nb_episodes * 3 * sizeof(Trajectoire));
 
-        for (int ep = 0; ep < nb_episodes; ep++)
+        if(simple_ou_multi_coeur == 1)
         {
-            init_trajectoire(&trajectoires_fermier[ep]);
-            for (int w = 0; w < 3; w++)
+            for (int ep = 0; ep < nb_episodes; ep++)
             {
-                init_trajectoire(&trajectoires_loups[ep * 3 + w]);
-            }
-
-            monde *m = creer_monde(LARGEUR, HAUTEUR);
-            m = generer_un_monde(m);
-            m->mode = 1;
-
-            // Injection des poids
-            memcpy(m->fermiers->weights, fermier_poids->weights, sizeof(fermier_poids->weights));
-            for (int w = 0; w < m->nb_wolf && w < 3; w++)
-            {
-                memcpy(m->wolfs_tab[w]->weights, loups_poids[w]->weights, sizeof(loups_poids[w]->weights));
-            }
-
-            for (int step = 0; step < max_steps; step++)
-            {
-                // Extraire phi dans l'état courant
-                float phi_fermier[DIMENSION_PHI_FERMIER];
-                PerceptionFermier perc_fermier = calculer_perception_fermier(m->fermiers, m);
-                generer_phi_fermier(perc_fermier, phi_fermier);
-
-                float phi_loups[3][DIMENSION_PHI_WOLF];
-                for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                init_trajectoire(&trajectoires_fermier[ep]);
+                for (int w = 0; w < 3; w++)
                 {
-                    PerceptionWolf perc_wolf = calculer_perception_wolf(m->wolfs_tab[w], m);
-                    generer_phi_wolf(m->wolfs_tab[w], perc_wolf, phi_loups[w]);
+                    init_trajectoire(&trajectoires_loups[ep * 3 + w]);
                 }
 
-                m = mis_à_jour_monde(m, step, 0, 0);
+                monde *m = creer_monde(LARGEUR, HAUTEUR);
+                m = generer_un_monde(m);
+                m->mode = 1;
 
-                // Calculer les récompenses suite à l'action
-                float r_fermier = calculer_recompense_fermier(m);
-
-
-                float r_loups[3] = {0.0f, 0.0f , 0.0f};
+                // Injection des poids
+                memcpy(m->fermiers->weights, fermier_poids->weights, sizeof(fermier_poids->weights));
                 for (int w = 0; w < m->nb_wolf && w < 3; w++)
                 {
-                    r_loups[w] = calculer_recompense_loup(m->wolfs_tab[w], m);
+                    memcpy(m->wolfs_tab[w]->weights, loups_poids[w]->weights, sizeof(loups_poids[w]->weights));
                 }
 
-                // Enregistrer l'étape dans les trajectoires correspondantes
-                ajouter_transition(&trajectoires_fermier[ep], phi_fermier, m->fermiers->action_id, r_fermier);
-                for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                for (int step = 0; step < max_steps; step++)
                 {
-                    ajouter_transition(&trajectoires_loups[ep * 3 + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
+                    // Extraire phi dans l'état courant
+                    float phi_fermier[DIMENSION_PHI_FERMIER];
+                    PerceptionFermier perc_fermier = calculer_perception_fermier(m->fermiers, m);
+                    generer_phi_fermier(perc_fermier, phi_fermier);
+
+                    float phi_loups[3][DIMENSION_PHI_WOLF];
+                    for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                    {
+                        PerceptionWolf perc_wolf = calculer_perception_wolf(m->wolfs_tab[w], m);
+                        generer_phi_wolf(m->wolfs_tab[w], perc_wolf, phi_loups[w]);
+                    }
+
+                    m = mis_à_jour_monde(m, step, 0, 0);
+
+                    // Calculer les récompenses suite à l'action
+                    float r_fermier = calculer_recompense_fermier(m);
+
+
+                    float r_loups[3] = {0.0f, 0.0f , 0.0f};
+                    for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                    {
+                        r_loups[w] = calculer_recompense_loup(m->wolfs_tab[w], m);
+                    }
+
+                    // Enregistrer l'étape dans les trajectoires correspondantes
+                    ajouter_transition(&trajectoires_fermier[ep], phi_fermier, m->fermiers->action_id, r_fermier);
+                    for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                    {
+                        ajouter_transition(&trajectoires_loups[ep * 3 + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
+                    }
+                    printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]);
                 }
-                 printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]);
+                nettoyer_monde(m);
             }
-            nettoyer_monde(m);
+        }
+        else
+        {
+            int taille_chunk = 8;
+            for(int episode = 0; episode < nb_episodes; episode += taille_chunk)
+            {
+                int thread_a_lancer = nb_episodes - episode;
+                if(episode + thread_a_lancer > nb_episodes) thread_a_lancer = nb_episodes - episode;
+                thrd_t thread_handle_i[taille_chunk];
+                EpisodeThreads thread_args[taille_chunk];
+                
+                // On lance les threads
+
+                for(int i = 0; i < thread_a_lancer;i++)
+                {
+                    thread_args[i].episode_id = episode + i;
+                    thread_args[i].trajectoires_fermier = trajectoires_fermier;
+                    thread_args[i].fermier_poids = fermier_poids;
+                    thread_args[i].trajectoires_loups = trajectoires_loups;
+                    thread_args[i].loups_poids = loups_poids;
+                    thread_args[i].max_steps = max_steps;
+
+                    thrd_create(&thread_handle_i[i], lancer_un_episode, &thread_args[i]);
+                }
+                // on attend la fin de tout le groupe
+                for(int i = 0; i<thread_a_lancer;i++)
+                {
+                    int error_code_thread_i = 0;
+                    thrd_join(thread_handle_i, &error_code_thread_i);
+                }
+            }
         }
 
         // Appliquer reinforce
@@ -315,7 +349,12 @@ int main(int argc, char **argv)
 
     if (argc > 1 && strcmp(argv[1], "train") == 0)
     {
-        entrainer_agents();
+        entrainer_agents(1);
+        return 0;
+    }
+    else if (argc > 2 && strcmp(argv[1], "train")==0 && strcmp(argv[2], "-m"==0))
+    {
+        entrainer_agents(0);
         return 0;
     }
 

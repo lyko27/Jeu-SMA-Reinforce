@@ -122,23 +122,23 @@ Fermier *update_fermier(monde *monde_courant, Fermier *fermier_actuel, ActionFer
   }
   else
   {
-    // --- Déplacement et Collision sur l'axe X ---
+    // déplacement et collision sur l'axe x 
     float pos_potentielle_x = next_fermier_x;
     
-    // Limites de la carte en X
+    // Limites de la carte en x
     if (pos_potentielle_x < MARGE) pos_potentielle_x = MARGE;
     if (pos_potentielle_x > LARGEUR - MARGE - WIDTH_FERMIER) pos_potentielle_x = LARGEUR - MARGE - WIDTH_FERMIER;
 
     int collision_x = 0;
     Hitbox hb_pos_potentielle_x = get_hitbox_fermier(pos_potentielle_x, fermier_actuel->y);
 
-    // Collision de l'axe X avec les obstacles du terrain (lac, maison)
+    // Collision axe x avec le terrain (lac, maison)
     if (check_collision_obstacles(hb_pos_potentielle_x))
     {
       collision_x = 1;
     }
 
-    // Collision de l'axe X avec les chèvres
+    // Collision avec l'axe x avec les chèvres
     if (!collision_x)
     {
       for (int j = 0; j < monde_courant->nb_goat; j++)
@@ -238,43 +238,43 @@ monde *mis_a_jour_fermier(monde *monde_courant, int tick_animation, int input_x,
       f->action_id = action_choisie;
 
       // de ActionFermierType vers ActionFermier
-      ActionFermier action_mappee;
-      action_mappee.dx = 0;
-      action_mappee.dy = 0;
+      ActionFermier action;
+      action.dx = 0;
+      action.dy = 0;
       switch (action_choisie)
       {
       case ACTION_FERMIER_AVANCER:
-        action_mappee.dy = 1;
+        action.dy = 1;
         break;
       case ACTION_FERMIER_RECULER:
-        action_mappee.dy = -1;
+        action.dy = -1;
         break;
       case ACTION_FERMIER_DROITE:
-        action_mappee.dx = -1;
+        action.dx = -1;
         break;
       case ACTION_FERMIER_GAUCHE:
-        action_mappee.dx = 1;
+        action.dx = 1;
         break;
       case ACTION_FERMIER_HAUT_GAUCHE:
-        action_mappee.dx = 1;
-        action_mappee.dy = 1;
+        action.dx = 1;
+        action.dy = 1;
         break;
       case ACTION_FERMIER_HAUT_DROITE:
-        action_mappee.dx = -1;
-        action_mappee.dy = 1;
+        action.dx = -1;
+        action.dy = 1;
         break;
       case ACTION_FERMIER_BAS_GAUCHE:
-        action_mappee.dx = 1;
-        action_mappee.dy = -1;
+        action.dx = 1;
+        action.dy = -1;
         break;
       case ACTION_FERMIER_BAS_DROITE:
-        action_mappee.dx = -1;
-        action_mappee.dy = -1;
+        action.dx = -1;
+        action.dy = -1;
         break;
       default:
         break;
       }
-      f->dirrection_choisi = action_mappee;
+      f->dirrection_choisi = action;
       f->decision_cooldown = 30 + (rand() % 45); // Cooldown entre 0.5s et 1.25s à 60 FPS
     }
     action_fermier = f->dirrection_choisi;
@@ -287,7 +287,7 @@ monde *mis_a_jour_fermier(monde *monde_courant, int tick_animation, int input_x,
     action_fermier = decider_action_fermier(monde_courant->fermiers, perception_fermier);
   }
 
-  // Application de l'action du Fermier
+  // application de l'action du Fermier
   PerceptionFermier perception_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
   update_fermier(monde_courant, monde_courant->fermiers, action_fermier, tick_animation, perception_fermier);
 

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <threads.h>
 
 #include "affichage.h"
 #include "fermier.h"
@@ -13,6 +14,73 @@
 #include "monde.h"
 #include "reinforce.h"
 #include "utilisateur.h"
+
+// Multi threading pour l'entrainment
+
+typedef struct thread_arg {
+    int episode_id; // le numéro de l'épisode à simuler
+    Trajectoire *trajectoires_fermier; 
+    Trajectoire *trajectoires_loups; 
+    Fermier *fermier_poids;
+    Wolf **loups_poids;
+    int max_steps;
+} EpisodeThreads;
+
+// Calcul de récompense Reinforce
+
+int lancer_un_episode(void * parameters) // Voir 5.4 site du projet
+{
+    EpisodeThreads *args = (EpisodeThreads *)parameters;
+    int episode_id = args->episode_id;
+    init_trajectoire(&args->trajectoires_fermier[episode_id]);
+    for (int w = 0; w < 3; w++) init_trajectoire(&args->trajectoires_loups[episode_id * 3 + w]);
+
+    monde *monde_local = creer_monde(LARGEUR, HAUTEUR);
+    monde_local = generer_un_monde(monde_local);
+
+    // on copie le monde pour le thread
+
+    /*  void * memcpy( void * restrict destination, const void * restrict source, size_t size );
+    Cette fonction permet de copier un bloc de mémoire spécifié par le paramètre source, 
+    et dont la taille est spécifiée via le paramètre size, dans un nouvel emplacement 
+    désigné par le paramètre destination. source : https://koor.fr/C/cstring/memcpy.wp*/
+
+    memcpy(monde_local->fermiers->weights, args->fermier_poids->weights, sizeof(args->fermier_poids->weights));
+    for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+    {
+        memcpy(monde_local->wolfs_tab[w]->weights, args->loups_poids[w]->weights, sizeof(args->loups_poids[w]->weights));
+    }
+
+    // on simule l'épisode :
+    for(int step = 0; step< args->max_steps; step ++)
+    { 
+        float phi_fermier[DIMENSION_PHI_FERMIER];
+        PerceptionFermier perception_fermier = calculer_perception_fermier(monde_local, phi_fermier);
+        generer_phi_fermier(perception_fermier, phi_fermier);
+        float phi_loups[3][DIMENSION_PHI_WOLF];
+        for (int w = 0; w < monde_local->nb_wolf; w++)
+        {
+            PerceptionWolf perception_loup = calculer_perception_wolf(monde_local->wolfs_tab[w], monde_local);
+            generer_phi_wolf(monde_local->wolfs_tab[w], perception_loup, phi_loups[w]);
+        }
+        monde_local = mis_à_jour_monde(monde_local, step, 0, 0);
+
+        // Cacul des récompenses
+        float r_fermier = calculer_recompense_fermier(monde_local);
+        float r_loups[3] = {0.0f, 0.0f, 0.0f};
+        for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+        {
+            r_loups[w] = calculer_recompense_loup(monde_local->wolfs_tab[w], monde_local);
+        }
+        // on enregistre dans la trajectoire
+        for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+        {
+            ajouter_transition(&args->trajectoires_loups[episode_id * 3 + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
+        }
+    }
+    nettoyer_monde(monde_local);
+    return 0;
+}
 
 // Calcul de la récompense instantanée pour le fermier
 float calculer_recompense_fermier(monde *m)

@@ -128,6 +128,8 @@ void nettoyer_monde(monde *m)
 // Boucle d'entraînement
 void entrainer_agents()
 {
+    time_t begin = time( NULL );
+
     int nb_cycles = 5000;
     int nb_episodes = 25;
     int max_steps = 1000;
@@ -146,6 +148,7 @@ void entrainer_agents()
         init_wolf(loups_poids[i]);
         charger_poids_loup(loups_poids[i], "poids_loup.txt");
     }
+    int nbre_cycles_effectués = 0;
 
     for (int cycle = 1; cycle <= nb_cycles; cycle++)
     {
@@ -224,15 +227,17 @@ void entrainer_agents()
 
         sauvegarder_poids_fermier(fermier_poids, "poids_fermier.txt");
         sauvegarder_poids_loup(loups_poids[0], "poids_loup.txt");
-        printf("Poids sauvegardés.\n");
+        printf("Poids sauvegardés. Récompense fermier : %f Recompense loup : %f\n", 
+            calculer_recompense_fermier(fermier_poids), calculer_recompense_loup(loups_poids[0], NULL));
+        nbre_cycles_effectués++;
     }
 
     sauvegarder_poids_fermier(fermier_poids, "poids_fermier.txt");
     sauvegarder_poids_loup(loups_poids[0], "poids_loup.txt");
     free(fermier_poids);
-    for (int i = 0; i < 3; i++)
-        free(loups_poids[i]);
-    printf("Entairnement terminé !\n");
+    for (int i = 0; i < 3; i++) free(loups_poids[i]);
+    time_t end = time( NULL );
+    printf("Entairnement terminé ! %d cyles effectués en %ld minutes et %ld secondes\n", nbre_cycles_effectués, ((unsigned long) difftime( end, begin ))/60, ((unsigned long) difftime( end, begin ))%60);
 }
 
 int main(int argc, char **argv)

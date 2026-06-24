@@ -217,56 +217,67 @@ monde *mis_a_jour_fermier(monde *monde_courant, int tick_animation, int input_x,
   // Fermier - Décision
   if (monde_courant->mode)
   {
-    float phi[DIMENSION_PHI_FERMIER];
-    PerceptionFermier perc_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
-    generer_phi_fermier(perc_fermier, phi);
-    for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
-    {
-      float val = 0.0f;
-      for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
-      {
-        val += monde_courant->fermiers->weights[a][k] * phi[k];
-      }
-      monde_courant->fermiers->table_interets[a] = val;
-    }
-    int action_choisie = choisir_action_softmax(monde_courant->fermiers->table_interets, NB_ACTIONS_FERMIER);
-    monde_courant->fermiers->action_id = action_choisie;
+    Fermier *f = monde_courant->fermiers;
+    f->decision_cooldown--;
 
-    // de ActionFermierType vers ActionFermier
-    switch (action_choisie)
+    if (f->decision_cooldown <= 0)
     {
-    case ACTION_FERMIER_AVANCER:
-      action_fermier.dy = 1;
-      break;
-    case ACTION_FERMIER_RECULER:
-      action_fermier.dy = -1;
-      break;
-    case ACTION_FERMIER_DROITE:
-      action_fermier.dx = -1;
-      break;
-    case ACTION_FERMIER_GAUCHE:
-      action_fermier.dx = 1;
-      break;
-    case ACTION_FERMIER_HAUT_GAUCHE:
-      action_fermier.dx = 1;
-      action_fermier.dy = 1;
-      break;
-    case ACTION_FERMIER_HAUT_DROITE:
-      action_fermier.dx = -1;
-      action_fermier.dy = 1;
-      break;
-    case ACTION_FERMIER_BAS_GAUCHE:
-      action_fermier.dx = 1;
-      action_fermier.dy = -1;
-      break;
-    case ACTION_FERMIER_BAS_DROITE:
-      action_fermier.dx = -1;
-      action_fermier.dy = -1;
-      break;
-    default:
-      break;
+      float phi[DIMENSION_PHI_FERMIER];
+      PerceptionFermier perc_fermier = calculer_perception_fermier(f, monde_courant);
+      generer_phi_fermier(perc_fermier, phi);
+      for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
+      {
+        float val = 0.0f;
+        for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
+        {
+          val += f->weights[a][k] * phi[k];
+        }
+        f->table_interets[a] = val;
+      }
+      int action_choisie = choisir_action_softmax(f->table_interets, NB_ACTIONS_FERMIER);
+      f->action_id = action_choisie;
+
+      // de ActionFermierType vers ActionFermier
+      ActionFermier action_mappee;
+      action_mappee.dx = 0;
+      action_mappee.dy = 0;
+      switch (action_choisie)
+      {
+      case ACTION_FERMIER_AVANCER:
+        action_mappee.dy = 1;
+        break;
+      case ACTION_FERMIER_RECULER:
+        action_mappee.dy = -1;
+        break;
+      case ACTION_FERMIER_DROITE:
+        action_mappee.dx = -1;
+        break;
+      case ACTION_FERMIER_GAUCHE:
+        action_mappee.dx = 1;
+        break;
+      case ACTION_FERMIER_HAUT_GAUCHE:
+        action_mappee.dx = 1;
+        action_mappee.dy = 1;
+        break;
+      case ACTION_FERMIER_HAUT_DROITE:
+        action_mappee.dx = -1;
+        action_mappee.dy = 1;
+        break;
+      case ACTION_FERMIER_BAS_GAUCHE:
+        action_mappee.dx = 1;
+        action_mappee.dy = -1;
+        break;
+      case ACTION_FERMIER_BAS_DROITE:
+        action_mappee.dx = -1;
+        action_mappee.dy = -1;
+        break;
+      default:
+        break;
+      }
+      f->dirrection_choisi = action_mappee;
+      f->decision_cooldown = 30 + (rand() % 45); // Cooldown entre 0.5s et 1.25s à 60 FPS
     }
-    monde_courant->fermiers->dirrection_choisi = action_fermier;
+    action_fermier = f->dirrection_choisi;
   }
   else
   {

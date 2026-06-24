@@ -248,21 +248,6 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         monde_courant->fermiers->or += monde_courant->nb_goat * 2; // +2 pièces par chèvre vivante par seconde
     }
 
-    // Fermier
-    if(monde_courant->mode)
-    {
-        Fermier *fermier = monde_courant->fermiers;
-        fermier->decision_cooldown--;
-        // Prise de décision (seulement à l'expiration du cooldown)
-        if (fermier->decision_cooldown <= 0)
-        {
-            PerceptionFermier perception_fermier = calculer_perception_fermier(fermier, monde_courant);
-            evaluer_interets_fermier(fermier, perception_fermier);
-            fermier->action_choisi = choisir_action_softmax(fermier->table_interets, NB_ACTIONS);
-            fermier->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
-        }
-        update_fermier(monde_courant, fermier, fermier->dirrection_choisi, tick_animation, calculer_perception_fermier(fermier, monde_courant));
-    }
 
     // Chèvres
     for (int i = 0; i < monde_courant->nb_goat; i++)

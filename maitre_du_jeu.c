@@ -83,14 +83,14 @@ float calculer_recompense_loup(Wolf *w, monde *m)
             }
             if (dist < 40.0f)
             {
-                r += 20.0f; // Récompense pour avoir mangé/attrapé une chèvre
+                r += 100.0f; // Récompense pour avoir mangé/attrapé une chèvre
             }
         }
     }
 
     if (min_dist_chevre < 9999.0f)
     {
-        r += (300.0f - min_dist_chevre) / 100.0f; // Récompense pour chasser la chèvre
+        r += (300.0f - min_dist_chevre) / 50.0f; // Récompense pour chasser la chèvre
     }
 
     Fermier *f = m->fermiers;
@@ -99,13 +99,13 @@ float calculer_recompense_loup(Wolf *w, monde *m)
         float dfx = f->x - w->x;
         float dfy = f->y - w->y;
         float dist_f = sqrtf(dfx * dfx + dfy * dfy);
-        if (dist_f < 250.0f)
+        if (dist_f < 120.0f)
         {
-            r -= (250.0f - dist_f) / 10.0f; // Peur du fermier
+            r -= (250.0f - dist_f) / 20.0f; // Peur du fermier
         }
-        if (dist_f < 80.0f)
+        if (dist_f < 60.0f)
         {
-            r -= 30.0f; // Grosse pénalité s'il se fait presque attraper
+            r -= 15.0f; // Grosse pénalité s'il se fait presque attraper
         }
     }
     return r;
@@ -128,7 +128,7 @@ void nettoyer_monde(monde *m)
 // Boucle d'entraînement
 void entrainer_agents()
 {
-    int nb_cycles = 1000;
+    int nb_cycles = 5000;
     int nb_episodes = 25;
     int max_steps = 1000;
     float alpha = 0.001f;

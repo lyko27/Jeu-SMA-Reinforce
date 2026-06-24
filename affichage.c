@@ -11,8 +11,11 @@ SDL_Texture *texture_chevre = NULL;
 SDL_Texture *texture_chevreau = NULL;
 SDL_Texture *texture_fermier = NULL;
 SDL_Texture *texture_wolf = NULL;
-TTF_Font *police_compteur = NULL;
 SDL_Texture *texture_planche = NULL;
+SDL_Texture *texture_pause = NULL;
+SDL_Texture *texture_mode = NULL;
+SDL_Texture *texture_fin = NULL;
+TTF_Font *police_compteur = NULL;
 
 int init_affichage()
 {
@@ -52,8 +55,11 @@ int init_affichage()
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
     texture_wolf = IMG_LoadTexture(renderer, "./images/loup.png");
     texture_planche = IMG_LoadTexture(renderer, "./images/ath.png");
+    texture_pause = IMG_LoadTexture(renderer, "./images/reprendre.png"); 
+    texture_mode = IMG_LoadTexture(renderer, "./images/mode.png");   
+    texture_fin = IMG_LoadTexture(renderer, "./images/fin.png");
 
-    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche)
+    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche || !texture_pause || !texture_mode || !texture_fin)
     {
         printf("Erreur chargement image : %s\n", IMG_GetError());
         return 0;
@@ -162,6 +168,107 @@ void afficher_planche(int nb_chevres, int nb_loups)
     }
 }
 
+void afficher_mode(int mode)
+{
+    if (!police_compteur || !texture_mode)
+        return;
+
+    // Afficher la planche en bois en arrière-plan du HUD
+    SDL_Rect position_mode;
+    position_mode.x = 1200; // Décalage depuis la gauche
+    position_mode.y = 20; // Décalage depuis le haut
+
+    SDL_QueryTexture(texture_planche, NULL, NULL, &position_mode.w, &position_mode.h);
+
+    // Zoom de la plamche
+    position_mode.w *= 1.5;
+    position_mode.h *= 1.5;
+
+    SDL_RenderCopy(renderer, texture_mode, NULL, &position_mode);
+
+    // Choix la couleur du texte 
+    SDL_Color couleur = {0, 0, 0, 255};
+
+    // Affichage du compteur des chèvres
+    char texte_mode[64];
+    if (mode==1){
+    snprintf(texte_mode, sizeof(texte_mode), "%s", "AUTOMATIQUE");
+    }
+    else{
+        snprintf(texte_mode, sizeof(texte_mode), "%s", "MANUEL");
+    }
+    SDL_Surface *surface_mode = TTF_RenderText_Solid(police_compteur, texte_mode, couleur);
+    if (surface_mode)
+    {
+        SDL_Texture *texture_texte_mode = SDL_CreateTextureFromSurface(renderer, surface_mode);
+        SDL_Rect pos_texte_mode;
+        // position du texte pour le mettre dans la planche
+        pos_texte_mode.x = position_mode.x + 400;
+        pos_texte_mode.y = position_mode.y + 50;
+        pos_texte_mode.w = surface_mode->w;
+        pos_texte_mode.h = surface_mode->h;
+
+        SDL_RenderCopy(renderer, texture_texte_mode, NULL, &pos_texte_mode);
+        SDL_FreeSurface(surface_mode);
+        SDL_DestroyTexture(texture_texte_mode);
+    }
+}
+
+void afficher_pause()
+{
+
+    // on vérifie que l'image a bien été chargée
+    if (!texture_pause) return;
+
+    // On dessine un rectangle noir semi-transparent sur tout l'écran
+    // Cela permet de griser le jeu en arrière-plan et de mettre le menu en valeur
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);//definir comment la couleur et l image vont se blend se melanger superposition en presant compre la transparence
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 150); // 150 correspond à l'opacité (0 = invisible, 255 = totalement noir)
+    SDL_Rect fond_assombri = {0, 0, LARGEUR, HAUTEUR};
+    SDL_RenderFillRect(renderer, &fond_assombri);
+    // ------------------------------------------------
+
+    SDL_Rect destination;
+    
+    // Récupérer les dimensions largeur et hauteur de l'image
+    SDL_QueryTexture(texture_pause, NULL, NULL, &destination.w, &destination.h);
+
+    // Calculer les coordonnées exactes pour que l'image soit parfaitement au centre
+    destination.x = (LARGEUR - destination.w) / 2;
+    destination.y = (HAUTEUR - destination.h) / 2;
+
+    // Afficher la texture sur l'écran
+    SDL_RenderCopy(renderer, texture_pause, NULL, &destination);
+}
+    
+
+void afficher_fin()
+{
+
+    // on vérifie que l'image a bien été chargée
+    if (!texture_fin) return;
+
+    // On dessine un rectangle noir semi-transparent sur tout l'écran
+    // Cela permet de griser le jeu en arrière-plan et de mettre le menu en valeur
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);//definir comment la couleur et l image vont se blend se melanger superposition en presant compre la transparence
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 150); // 150 correspond à l'opacité (0 = invisible, 255 = totalement noir)
+    SDL_Rect fond_assombri = {0, 0, LARGEUR, HAUTEUR};
+    SDL_RenderFillRect(renderer, &fond_assombri);
+    // ------------------------------------------------
+
+    SDL_Rect destination;
+    
+    // Récupérer les dimensions largeur et hauteur de l'image
+    SDL_QueryTexture(texture_fin, NULL, NULL, &destination.w, &destination.h);
+
+    // Calculer les coordonnées exactes pour que l'image soit parfaitement au centre
+    destination.x = (LARGEUR - destination.w) / 2;
+    destination.y = (HAUTEUR - destination.h) / 2;
+
+    // Afficher la texture sur l'écran
+    SDL_RenderCopy(renderer, texture_fin, NULL, &destination);
+}
+
 void dessiner_entite(int type_entite, int position_x, int position_y, int frame, int direction)
 {
     int nb_image = 0;
@@ -244,6 +351,8 @@ void quitter_affichage()
         police_compteur = NULL;
     }
     TTF_Quit();
+    SDL_DestroyTexture(texture_pause);
+    SDL_DestroyTexture(texture_mode);
     SDL_DestroyTexture(texture_fond);
     SDL_DestroyTexture(texture_chevre);
     SDL_DestroyTexture(texture_fermier);
@@ -252,6 +361,8 @@ void quitter_affichage()
     SDL_DestroyTexture(texture_planche);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    SDL_DestroyTexture(texture_fin);
     IMG_Quit();
     SDL_Quit();
 }
+

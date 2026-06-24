@@ -16,5 +16,10 @@ void dessiner_monde();
 void actualiser_ecran();
 void dessiner_entite(int type_entite, int position_x, int position_y, int frame, int direction);
 int init_affichage();
+void afficher_fin();
+void afficher_mode();
+void afficher_pause();
 
 #endif
+
+

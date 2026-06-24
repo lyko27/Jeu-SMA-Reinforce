@@ -390,6 +390,16 @@ void afficher_monde(monde *monde_courant)
     {
         dessiner_entite(2, monde_courant->fermiers->x, monde_courant->fermiers->y, monde_courant->fermiers->frame, monde_courant->fermiers->direction_sprite);
     }
+
     afficher_planche(monde_courant->nb_goat, monde_courant->nb_wolf);
+    afficher_mode(monde_courant->mode);
+    if(monde_courant->en_pause==1){
+        afficher_pause();
+    } 
+    // Vérifier si le jeu est fini 
+    if (monde_courant->nb_goat <= 0 || monde_courant->nb_wolf <= 0) 
+    {
+        afficher_fin();
+    }
     actualiser_ecran();
 }

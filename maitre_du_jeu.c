@@ -267,7 +267,8 @@ int main(int argc, char **argv)
     }
 
     int quiiter_le_programme = 0;
-    int en_pause = 0;
+    int en_pause = 1;
+    monde_courrant->en_pause=1;
     int tick_animation = 0;
     init_affichage();
 
@@ -288,6 +289,8 @@ int main(int argc, char **argv)
             if (utilisateur->pause)
             {
                 en_pause = !en_pause;
+                monde_courrant->en_pause=!monde_courrant->en_pause;
+                
             }
             if (utilisateur->switch_mode)
             {
@@ -305,6 +308,7 @@ int main(int argc, char **argv)
                 tick_animation++;
                 monde_courrant = mis_à_jour_monde(monde_courrant, tick_animation, utilisateur->x_deplacement, utilisateur->y_deplacement);
             }
+            
             afficher_monde(monde_courrant);
             free(utilisateur);
         }

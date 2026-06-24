@@ -42,6 +42,7 @@ typedef struct monde_t
     int capacite_max_wolf;
     int nb_wolf;
     int mode; // 0 = clavier pour le fermier, 1 = politique apprise
+    int en_pause;
 } monde;
 
 typedef struct

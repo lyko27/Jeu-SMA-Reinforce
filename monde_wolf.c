@@ -287,7 +287,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
     int a_bouge = (wolf->x != old_x || wolf->y != old_y);
     if (wolf->speed > 0 && a_bouge)
     {
-      wolf->frame = (wolf->frame + 1) % 4;
+      wolf->frame = (wolf->frame + 1) % 3;
     }
     else
     {

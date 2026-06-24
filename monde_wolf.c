@@ -18,11 +18,11 @@ Wolf *init_wolf(Wolf *wolf)
 
   while (!coordonnees_valides)
   {
-    // Limiter aux limites autorisées de la map (MARGE à LARGEUR - MARGE - WIDTH)
+    // spawn uniquemnt DANS la map pas au bord
     x_genere = MARGE + (rand() % (LARGEUR - 2 * MARGE - WIDTH_WOLF));
     y_genere = MARGE + (rand() % (HAUTEUR - 2 * MARGE - HEIGHT_WOLF));
 
-    // Créer une hitbox temporaire
+    //hitbox temporaire
     Hitbox hb_temp = get_hitbox_wolf(x_genere, y_genere);
 
     // Si pas de collision avec le lac ou la maison
@@ -236,7 +236,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
     wolf->dir_x = wolf->x;
   }
 
-  // --- Déplacement et Collision sur l'axe Y ---
+  // déplacement et collision sur l'axe y
   float pos_potentielle_y = next_y;
   if (pos_potentielle_y < MARGE)
     pos_potentielle_y = MARGE;

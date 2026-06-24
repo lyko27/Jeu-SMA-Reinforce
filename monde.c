@@ -66,6 +66,8 @@ int check_collision_rect(float x1, float y1, float w1, float h1, float x2, float
     return 1; // Collision
 }
 
+/// ========== Hitbox ==========
+
 /**
  * Synopsis : Crée et retourne la Hitbox à partir d'un rectangle de base.
  * Permet de réduire la taille de la zone sensible du sprite d'une entité en
@@ -117,14 +119,14 @@ Hitbox get_hitbox_wolf(float x, float y)
  */
 int check_collision_obstacles(Hitbox hb)
 {
-    // Obstacle : Le Lac
+    // Le Lac
     Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
     if (check_collision_rect(hb.x, hb.y, hb.w, hb.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
     {
         return 1;
     }
 
-    // Obstacle : La Maison
+    // La Maison
     Hitbox hb_maison = creer_hitbox(MAISON_X, MAISON_Y, MAISON_WIDTH, MAISON_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
     if (check_collision_rect(hb.x, hb.y, hb.w, hb.h, hb_maison.x, hb_maison.y, hb_maison.w, hb_maison.h))
     {
@@ -202,7 +204,7 @@ monde *generer_un_monde(monde *monde_courant)
             une_goat->frame = 0;
             une_goat->direction_sprite = 2;
             
-            // Calcul du placement en rectangle (grille de 2 colonnes par 5 lignes)
+            // rectangle de 2 par 5
             int colonne = i % nbre_collonne;
             int ligne = i / nbre_collonne;
             int spawn_x = start_x + colonne * écart_x;

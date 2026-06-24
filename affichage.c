@@ -110,20 +110,19 @@ void afficher_planche(int nb_chevres, int nb_loups)
     SDL_Rect position_planche;
     position_planche.x = 20; // Décalage depuis la gauche
     position_planche.y = 20; // Décalage depuis le haut
-    // Tu peux forcer une taille (ex: position_hud.w = 300; position_hud.h = 100;)
-    // ou récupérer la taille originale de l'image avec SDL_QueryTexture :
+
     SDL_QueryTexture(texture_planche, NULL, NULL, &position_planche.w, &position_planche.h);
 
-    // Zoomer un peu la planche si elle est trop petite (optionnel)
+    // Zoom de la plamche
     position_planche.w *= 1.5;
     position_planche.h *= 1.5;
 
     SDL_RenderCopy(renderer, texture_planche, NULL, &position_planche);
 
-    // Choisir la couleur du texte (ex: un marron foncé ou noir pour bien ressortir sur le bois)
+    // Choix la couleur du texte 
     SDL_Color couleur = {0, 0, 0, 255};
 
-    // 2. Afficher le compteur des chèvres
+    // Affichage du compteur des chèvres
     char texte_chevres[64];
     snprintf(texte_chevres, sizeof(texte_chevres), "%d", nb_chevres);
     SDL_Surface *surface_chevres = TTF_RenderText_Solid(police_compteur, texte_chevres, couleur);
@@ -131,7 +130,7 @@ void afficher_planche(int nb_chevres, int nb_loups)
     {
         SDL_Texture *texture_texte_chevres = SDL_CreateTextureFromSurface(renderer, surface_chevres);
         SDL_Rect pos_texte_chevres;
-        // Ajuste ces coordonnées (x, y) pour bien placer le texte à côté de la tête de chèvre sur l'image
+        // position du texte pour le mettre dans la planche
         pos_texte_chevres.x = position_planche.x + 550;
         pos_texte_chevres.y = position_planche.y + 50;
         pos_texte_chevres.w = surface_chevres->w;
@@ -142,7 +141,7 @@ void afficher_planche(int nb_chevres, int nb_loups)
         SDL_DestroyTexture(texture_texte_chevres);
     }
 
-    // Afficher le compteur des loups
+    // Affichage du compteur des loups
     char texte_loups[64];
     snprintf(texte_loups, sizeof(texte_loups), "%d", nb_loups);
     SDL_Surface *surface_loups = TTF_RenderText_Blended(police_compteur, texte_loups, couleur);
@@ -151,7 +150,7 @@ void afficher_planche(int nb_chevres, int nb_loups)
     {
         SDL_Texture *texture_texte_loups = SDL_CreateTextureFromSurface(renderer, surface_loups);
         SDL_Rect pos_texte_loups;
-        // Ajuste ces coordonnées pour bien placer le texte à côté de la tête du loup
+        // position du texte du loup sur la planche
         pos_texte_loups.x = position_planche.x + 230;
         pos_texte_loups.y = position_planche.y + 50;
         pos_texte_loups.w = surface_loups->w;
@@ -170,9 +169,9 @@ void dessiner_entite(int type_entite, int position_x, int position_y, int frame,
     float zoom = 1.0;
     SDL_Texture *texture_actuelle = NULL;
     SDL_Rect
-        source = {0},      // Rectangle définissant la zone totale de la planche
-        destination = {0}, // Rectangle définissant où la zone_source doit être déposée dans le renderer
-        state = {0};       // Rectangle de la vignette en cours dans la planche
+        source = {0},      // Rectangle pour le dessin des entites
+        destination = {0}, 
+        state = {0};       
 
     if (type_entite == 1)
     {

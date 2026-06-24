@@ -242,76 +242,26 @@ monde *generer_un_monde(monde *monde_courant)
    notre jeu */
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y)
 {
-    ActionFermier action_fermier;
-
-    // Fermier - Décision
-    if (monde_courant->mode)
-    {
-        float phi[DIMENSION_PHI_FERMIER];
-        PerceptionFermier perc_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
-        generer_phi_fermier(perc_fermier, phi);
-        for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
-        {
-            float val = 0.0f;
-            for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
-            {
-                val += monde_courant->fermiers->weights[a][k] * phi[k];
-            }
-            monde_courant->fermiers->table_interets[a] = val;
-        }
-        int action_choisie = choisir_action_softmax(monde_courant->fermiers->table_interets, NB_ACTIONS_FERMIER);
-        monde_courant->fermiers->action_id = action_choisie;
-
-        // Mapper de ActionFermierType vers ActionFermier
-        action_fermier.dx = 0;
-        action_fermier.dy = 0;
-        switch (action_choisie)
-        {
-        case ACTION_FERMIER_AVANCER:
-            action_fermier.dy = 1;
-            break;
-        case ACTION_FERMIER_RECULER:
-            action_fermier.dy = -1;
-            break;
-        case ACTION_FERMIER_DROITE:
-            action_fermier.dx = -1;
-            break;
-        case ACTION_FERMIER_GAUCHE:
-            action_fermier.dx = 1;
-            break;
-        case ACTION_FERMIER_HAUT_GAUCHE:
-            action_fermier.dx = 1;
-            action_fermier.dy = 1;
-            break;
-        case ACTION_FERMIER_HAUT_DROITE:
-            action_fermier.dx = -1;
-            action_fermier.dy = 1;
-            break;
-        case ACTION_FERMIER_BAS_GAUCHE:
-            action_fermier.dx = 1;
-            action_fermier.dy = -1;
-            break;
-        case ACTION_FERMIER_BAS_DROITE:
-            action_fermier.dx = -1;
-            action_fermier.dy = -1;
-            break;
-        default:
-            break;
-        }
-        monde_courant->fermiers->action_choisi = action_fermier;
-    }
-    else
-    {
-        PerceptionFermier perception_fermier;
-        perception_fermier.input_x = input_x;
-        perception_fermier.input_y = input_y;
-        action_fermier = decider_action_fermier(monde_courant->fermiers, perception_fermier);
-    }
-
     // economie :
     if (tick_animation % 60 == 0)
     {
         monde_courant->fermiers->or += monde_courant->nb_goat * 2; // +2 pièces par chèvre vivante par seconde
+    }
+
+    // Fermier
+    if(monde_courant->mode)
+    {
+        Fermier *fermier = monde_courant->fermiers;
+        fermier->decision_cooldown--;
+        // Prise de décision (seulement à l'expiration du cooldown)
+        if (fermier->decision_cooldown <= 0)
+        {
+            PerceptionFermier perception_fermier = calculer_perception_fermier(fermier, monde_courant);
+            evaluer_interets_fermier(fermier, perception_fermier);
+            fermier->action_choisi = choisir_action_softmax(fermier->table_interets, NB_ACTIONS);
+            fermier->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS
+        }
+        update_fermier(monde_courant, fermier, fermier->dirrection_choisi, tick_animation, calculer_perception_fermier(fermier, monde_courant));
     }
 
     // Chèvres
@@ -366,9 +316,10 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         }
         update_wolf(monde_courant, wolf, wolf->action_choisi, tick_animation, calculer_perception_wolf(wolf, monde_courant));
     }
+
     // Action du Fermier
-    PerceptionFermier perception_fermier = calculer_perception_fermier(monde_courant->fermiers, monde_courant);
-    update_fermier(monde_courant, monde_courant->fermiers, action_fermier, tick_animation, perception_fermier);
+    monde_courant = mis_a_jour_fermier(monde_courant, tick_animation, input_x, input_y);
+
     // attaque loup chèvre
     for (int i = 0; i < monde_courant->nb_wolf; i++)
     {

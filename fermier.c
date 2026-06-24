@@ -11,7 +11,7 @@ ActionFermier decider_action_fermier(Fermier *fermier, PerceptionFermier percept
     ActionFermier action;
     action.dx = perception_fermier.input_x;
     action.dy = perception_fermier.input_y;
-    fermier->action_choisi = action;
+    fermier->dirrection_choisi = action;
     return action;
 }
 

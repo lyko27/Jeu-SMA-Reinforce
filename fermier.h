@@ -11,7 +11,6 @@ typedef struct
 
 typedef enum
 {
-    ACTION_FERMIER_ERRER,
     ACTION_FERMIER_AVANCER,
     ACTION_FERMIER_RECULER,
     ACTION_FERMIER_DROITE,
@@ -51,7 +50,8 @@ typedef struct
     float table_interets[NB_ACTIONS_FERMIER];
     float weights[NB_ACTIONS_FERMIER][DIMENSION_PHI_FERMIER];
     int decision_cooldown;
-    ActionFermier action_choisi;
+    ActionFermierType action_choisi;
+    ActionFermier dirrection_choisi;
     int action_id;
 } Fermier;
 

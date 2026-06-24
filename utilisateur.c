@@ -1,9 +1,9 @@
 
 #include "utilisateur.h"
 
-interaction_utilisateur * recuperer_mouvement(interaction_utilisateur *resultat)
+interaction_utilisateur *recuperer_mouvement(interaction_utilisateur *resultat)
 {
-    const Uint8 * Keyborad = SDL_GetKeyboardState(NULL);
+    const Uint8 *Keyborad = SDL_GetKeyboardState(NULL);
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {

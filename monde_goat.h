@@ -3,7 +3,7 @@
 
 #include "monde.h"
 
-Goat *init_goat(Goat *goat);
+Goat *init_goat(Goat *goat, int x, int y);
 monde *ajouter_goat(monde *monde_courant, Goat *goat);
 PerceptionGoat calculer_perception_goat(Goat *goat, monde *monde_courant);
 Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_animation, PerceptionGoat perception_goat);

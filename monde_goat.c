@@ -10,10 +10,10 @@
  * direction par défaut. Entrée   : Pointeur vers la structure Goat à
  * initialiser. Sortie   : Pointeur vers la structure Goat initialisée.
  */
-Goat *init_goat(Goat *goat)
+Goat *init_goat(Goat *goat, int x, int y)
 {
-  goat->x = rand() % (LARGEUR - WIDTH_GOAT);
-  goat->y = rand() % (HAUTEUR - HEIGHT_GOAT);
+  goat->x = x;
+  goat->y = y;
 
   goat->dir_x = goat->x;
   goat->dir_y = goat->y;
@@ -44,9 +44,7 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
 {
   if (monde_courant->nb_goat + 1 > monde_courant->capacite_max_goat)
   {
-    monde_courant->goats_tab =
-        realloc(monde_courant->goats_tab,
-                monde_courant->capacite_max_goat * 2 * sizeof(Goat));
+    monde_courant->goats_tab = realloc(monde_courant->goats_tab, monde_courant->capacite_max_goat * 2 * sizeof(Goat));
     monde_courant->capacite_max_goat *= 2;
   }
   monde_courant->goats_tab[monde_courant->nb_goat] = goat;
@@ -80,8 +78,7 @@ PerceptionGoat calculer_perception_goat(Goat *goat, monde *monde_courant)
   return perception;
 }
 
-Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action,
-                  int tick_animation, PerceptionGoat perception_goat)
+Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_animation, PerceptionGoat perception_goat)
 {
   float next_x = goat->x;
   float next_y = goat->y;
@@ -94,8 +91,7 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action,
       if (perception_goat.pos_x_wolf != -1)
       {
         // Fuir dans la direction opposée
-        goat->angle_actuel = atan2(goat->y - perception_goat.pos_y_wolf,
-                                   goat->x - perception_goat.pos_x_wolf);
+        goat->angle_actuel = atan2(goat->y - perception_goat.pos_y_wolf, goat->x - perception_goat.pos_x_wolf);
       }
     }
     next_x += cos(goat->angle_actuel) * goat->speed;
@@ -129,42 +125,60 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action,
     goat->speed = 0;
   }
 
+  // Si la chèvre touche ou dépasse une paroi, on la repositionne et on fait rebondir son angle
   if (next_x < MARGE)
-    next_x = MARGE;
-  if (next_y < MARGE)
-    next_y = MARGE;
-  if (next_x > LARGEUR - MARGE - WIDTH_GOAT)
-    next_x = LARGEUR - MARGE - WIDTH_GOAT;
-  if (next_y > HAUTEUR - MARGE - HEIGHT_GOAT)
-    next_y = HAUTEUR - MARGE - HEIGHT_GOAT;
-
-  int collision = 0;
-
-  Hitbox hb_future = get_hitbox_goat(next_x, next_y);
-  Hitbox hb_lac =
-      creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
-
-  if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w, hb_future.h,
-                           hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
   {
-    collision = 1;
+    next_x = MARGE;
+    goat->angle_actuel = 3.14159265f - goat->angle_actuel; // Rebond horizontal
+  }
+  else if (next_x > LARGEUR - MARGE - WIDTH_GOAT)
+  {
+    next_x = LARGEUR - MARGE - WIDTH_GOAT;
+    goat->angle_actuel = 3.14159265f - goat->angle_actuel; // Rebond horizontal
+  }
+
+  if (next_y < MARGE)
+  {
+    next_y = MARGE;
+    goat->angle_actuel = -goat->angle_actuel; // Rebond vertical
+  }
+  else if (next_y > HAUTEUR - MARGE - HEIGHT_GOAT)
+  {
+    next_y = HAUTEUR - MARGE - HEIGHT_GOAT;
+    goat->angle_actuel = -goat->angle_actuel; // Rebond vertical
+  }
+
+  float old_x = goat->x;
+  float old_y = goat->y;
+
+  // --- Déplacement et Collision sur l'axe X ---
+  float pos_potentiel_x = next_x;
+  if (pos_potentiel_x < MARGE)
+    pos_potentiel_x = MARGE;
+  if (pos_potentiel_x > LARGEUR - MARGE - WIDTH_GOAT)
+    pos_potentiel_x = LARGEUR - MARGE - WIDTH_GOAT;
+
+  int collision_x = 0;
+  Hitbox hb_pos_potentiel_x = get_hitbox_goat(pos_potentiel_x, goat->y);
+
+  // Collision de l'axe X avec les obstacles du terrain (lac, maison)
+  if (check_collision_obstacles(hb_pos_potentiel_x))
+  {
+    collision_x = 1;
     goat->timer_mouvement = 0;
   }
 
-  if (!collision)
+  // Collision de l'axe X avec d'autres chèvres
+  if (!collision_x)
   {
     for (int j = 0; j < monde_courant->nb_goat; j++)
     {
       if (monde_courant->goats_tab[j] != goat)
       {
-        Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x,
-                                          monde_courant->goats_tab[j]->y);
-
-        if (check_collision_rect(hb_future.x, hb_future.y, hb_future.w,
-                                 hb_future.h, hb_autre.x, hb_autre.y,
-                                 hb_autre.w, hb_autre.h))
+        Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
+        if (check_collision_rect(hb_pos_potentiel_x.x, hb_pos_potentiel_x.y, hb_pos_potentiel_x.w, hb_pos_potentiel_x.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
         {
-          collision = 1;
+          collision_x = 1;
           goat->timer_mouvement = 0;
           break;
         }
@@ -172,22 +186,66 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action,
     }
   }
 
-  if (!collision)
+  if (!collision_x)
   {
-    goat->x = next_x;
-    goat->y = next_y;
-    goat->dir_x = next_x;
-    goat->dir_y = next_y;
+    goat->x = pos_potentiel_x;
+    goat->dir_x = pos_potentiel_x;
   }
   else
   {
     goat->dir_x = goat->x;
+  }
+
+  // --- Déplacement et Collision sur l'axe Y ---
+  float pos_potentiel_y = next_y;
+  if (pos_potentiel_y < MARGE)
+    pos_potentiel_y = MARGE;
+  if (pos_potentiel_y > HAUTEUR - MARGE - HEIGHT_GOAT)
+    pos_potentiel_y = HAUTEUR - MARGE - HEIGHT_GOAT;
+
+  int collision_y = 0;
+  // On teste le Y en utilisant la nouvelle coordonnée X de la chèvre
+  Hitbox hb_pos_potentiel_y = get_hitbox_goat(goat->x, pos_potentiel_y);
+
+  // Collision de l'axe Y avec les obstacles du terrain (lac, maison)
+  if (check_collision_obstacles(hb_pos_potentiel_y))
+  {
+    collision_y = 1;
+    goat->timer_mouvement = 0;
+  }
+
+  // Collision de l'axe Y avec d'autres chèvres
+  if (!collision_y)
+  {
+    for (int j = 0; j < monde_courant->nb_goat; j++)
+    {
+      if (monde_courant->goats_tab[j] != goat)
+      {
+        Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
+        if (check_collision_rect(hb_pos_potentiel_y.x, hb_pos_potentiel_y.y, hb_pos_potentiel_y.w, hb_pos_potentiel_y.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+        {
+          collision_y = 1;
+          goat->timer_mouvement = 0;
+          break;
+        }
+      }
+    }
+  }
+
+  if (!collision_y)
+  {
+    goat->y = pos_potentiel_y;
+    goat->dir_y = pos_potentiel_y;
+  }
+  else
+  {
     goat->dir_y = goat->y;
   }
 
   if (tick_animation % 6 == 0)
   {
-    if (goat->speed > 0 && !collision)
+    int a_bouge = (goat->x != old_x || goat->y != old_y);
+    if (goat->speed > 0 && a_bouge)
     {
       goat->frame = (goat->frame + 1) % 4;
     }
@@ -203,7 +261,7 @@ void mourrir_goat(monde *monde_courant, int index)
 {
   if (index < 0 || index >= monde_courant->nb_goat)
   {
-    return; // la chèvre d'indice i n'existe pas 
+    return; // la chèvre d'indice i n'existe pas
   }
 
   free(monde_courant->goats_tab[index]);

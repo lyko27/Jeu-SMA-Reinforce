@@ -12,8 +12,8 @@
  */
 Fermier *init_fermier(Fermier *fermier)
 {
-  fermier->x = 347;
-  fermier->y = 185;
+  fermier->x = 842;
+  fermier->y = 242;
   fermier->speed = VITESSE_FERMIER;
   for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
   {
@@ -120,57 +120,79 @@ Fermier *update_fermier(monde *monde_courant, Fermier *fermier_actuel, ActionFer
   }
   else
   {
-    if (next_fermier_x < MARGE)
-      next_fermier_x = MARGE;
-    if (next_fermier_x > LARGEUR - MARGE - WIDTH_FERMIER)
-      next_fermier_x = LARGEUR - MARGE - WIDTH_FERMIER;
-    if (next_fermier_y < MARGE)
-      next_fermier_y = MARGE;
-    if (next_fermier_y > HAUTEUR - MARGE - HEIGHT_FERMIER)
-      next_fermier_y = HAUTEUR - MARGE - HEIGHT_FERMIER;
+    // --- Déplacement et Collision sur l'axe X ---
+    float pos_potentielle_x = next_fermier_x;
+    
+    // Limites de la carte en X
+    if (pos_potentielle_x < MARGE) pos_potentielle_x = MARGE;
+    if (pos_potentielle_x > LARGEUR - MARGE - WIDTH_FERMIER) pos_potentielle_x = LARGEUR - MARGE - WIDTH_FERMIER;
 
-    int collision_fermier = 0;
+    int collision_x = 0;
+    Hitbox hb_pos_potentielle_x = get_hitbox_fermier(pos_potentielle_x, fermier_actuel->y);
 
-    Hitbox hb_future_fermier = get_hitbox_fermier(next_fermier_x, next_fermier_y);
-    Hitbox hb_lac = creer_hitbox(LAC_X, LAC_Y, LAC_WIDTH, LAC_HEIGHT, 0.0f, 0.0f, 0.0f, 0.0f);
-
-    if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_lac.x, hb_lac.y, hb_lac.w, hb_lac.h))
+    // Collision de l'axe X avec les obstacles du terrain (lac, maison)
+    if (check_collision_obstacles(hb_pos_potentielle_x))
     {
-      collision_fermier = 1;
+      collision_x = 1;
     }
-    // collision avec chevres
-    if (!collision_fermier)
+
+    // Collision de l'axe X avec les chèvres
+    if (!collision_x)
     {
       for (int j = 0; j < monde_courant->nb_goat; j++)
       {
         Hitbox hb_goat = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
-
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
+        if (check_collision_rect(hb_pos_potentielle_x.x, hb_pos_potentielle_x.y, hb_pos_potentielle_x.w, hb_pos_potentielle_x.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
         {
-          collision_fermier = 1;
+          collision_x = 1;
           break;
         }
       }
     }
-    // collision avec loups
-    if (!collision_fermier)
+
+    // Si l'axe X est libre, on applique le mouvement X
+    if (!collision_x)
     {
-      for (int j = 0; j < monde_courant->nb_wolf; j++)
+      fermier_actuel->x = pos_potentielle_x;
+    }
+
+    // --- Déplacement et Collision sur l'axe Y ---
+    float pos_potentielle_y = next_fermier_y;
+    
+    // Limites de la carte en Y
+    if (pos_potentielle_y < MARGE)
+      pos_potentielle_y = MARGE;
+    if (pos_potentielle_y > HAUTEUR - MARGE - HEIGHT_FERMIER)
+      pos_potentielle_y = HAUTEUR - MARGE - HEIGHT_FERMIER;
+
+    int collision_y = 0;
+    // On teste le Y en utilisant la nouvelle coordonnée X du fermier (mise à jour juste avant)
+    Hitbox hb_pos_potentielle_y = get_hitbox_fermier(fermier_actuel->x, pos_potentielle_y);
+
+    // Collision de l'axe Y avec les obstacles du terrain (lac, maison)
+    if (check_collision_obstacles(hb_pos_potentielle_y))
+    {
+      collision_y = 1;
+    }
+
+    // Collision de l'axe Y avec les chèvres
+    if (!collision_y)
+    {
+      for (int j = 0; j < monde_courant->nb_goat; j++)
       {
-        Hitbox hb_wolf = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
-
-        if (check_collision_rect(hb_future_fermier.x, hb_future_fermier.y, hb_future_fermier.w, hb_future_fermier.h, hb_wolf.x, hb_wolf.y, hb_wolf.w, hb_wolf.h))
+        Hitbox hb_goat = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
+        if (check_collision_rect(hb_pos_potentielle_y.x, hb_pos_potentielle_y.y, hb_pos_potentielle_y.w, hb_pos_potentielle_y.h, hb_goat.x, hb_goat.y, hb_goat.w, hb_goat.h))
         {
-          collision_fermier = 1; // Le fermier se cogne contre un loup
+          collision_y = 1;
           break;
         }
       }
     }
 
-    if (!collision_fermier)
+    // Si l'axe Y est libre, on applique le mouvement Y
+    if (!collision_y)
     {
-      fermier_actuel->x = next_fermier_x;
-      fermier_actuel->y = next_fermier_y;
+      fermier_actuel->y = pos_potentielle_y;
     }
 
     if (tick_animation % 6 == 0)

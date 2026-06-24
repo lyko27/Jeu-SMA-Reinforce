@@ -205,6 +205,7 @@ void entrainer_agents()
                 {
                     ajouter_transition(&trajectoires_loups[ep * 3 + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
                 }
+                 printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]);
             }
             nettoyer_monde(m);
         }
@@ -227,8 +228,7 @@ void entrainer_agents()
 
         sauvegarder_poids_fermier(fermier_poids, "poids_fermier.txt");
         sauvegarder_poids_loup(loups_poids[0], "poids_loup.txt");
-        printf("Poids sauvegardés. Récompense fermier : %f Recompense loup : %f\n", 
-            calculer_recompense_fermier(fermier_poids), calculer_recompense_loup(loups_poids[0], NULL));
+        printf("Poids sauvegardés.\n");
         nbre_cycles_effectués++;
     }
 

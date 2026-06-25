@@ -244,13 +244,6 @@ monde *generer_un_monde(monde *monde_courant)
    notre jeu */
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y)
 {
-    // economie :
-    if (tick_animation % 60 == 0)
-    {
-        monde_courant->fermiers->or += monde_courant->nb_goat * 2; // +2 pièces par chèvre vivante par seconde
-    }
-
-
     // Chèvres
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {
@@ -385,13 +378,17 @@ void afficher_monde(monde *monde_courant)
 
     afficher_planche(monde_courant->nb_goat, monde_courant->nb_wolf);
     afficher_mode(monde_courant->mode);
-    if(monde_courant->en_pause==1){
+    if(monde_courant->en_pause==1 && monde_courant->nb_goat > 0 && monde_courant->nb_wolf > 0  ){
         afficher_pause();
     } 
     // Vérifier si le jeu est fini 
-    if (monde_courant->nb_goat <= 0 || monde_courant->nb_wolf <= 0) 
+    if (monde_courant->nb_goat <= 0 ) 
     {
-        afficher_fin();
+        afficher_fin(0);
+    }
+    else if (monde_courant->nb_wolf <= 0 ) 
+    {
+        afficher_fin(1);
     }
     actualiser_ecran();
 }

@@ -101,6 +101,18 @@ PerceptionFermier calculer_perception_fermier(Fermier *fermier, monde *monde_cou
     }
   }
 
+  perception.dist_mur_gauche = fermier->x - MARGE;
+  if (perception.dist_mur_gauche < 0) perception.dist_mur_gauche = 0;
+
+  perception.dist_mur_droite = (LARGEUR - MARGE - WIDTH_FERMIER) - fermier->x;
+  if (perception.dist_mur_droite < 0) perception.dist_mur_droite = 0;
+
+  perception.dist_mur_haut = fermier->y - MARGE;
+  if (perception.dist_mur_haut < 0) perception.dist_mur_haut = 0;
+
+  perception.dist_mur_bas = (HAUTEUR - MARGE - HEIGHT_FERMIER) - fermier->y;
+  if (perception.dist_mur_bas < 0) perception.dist_mur_bas = 0;
+
   return perception;
 }
 

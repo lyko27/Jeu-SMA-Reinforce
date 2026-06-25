@@ -90,10 +90,10 @@ int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
             r_loups[w] = calculer_recompense_loup(monde_local->wolfs_tab[w], monde_local);
         }
         // on enregistre dans la trajectoire
-        ajouter_transition(&args->trajectoires_fermier[episode_id], phi_fermier, monde_local->fermiers->action_id, r_fermier);
+        ajouter_transition(&args->trajectoires_fermier[episode_id], phi_fermier, DIMENSION_PHI_FERMIER, monde_local->fermiers->action_id, r_fermier);
         for (int w = 0; w < monde_local->nb_wolf; w++)
         {
-            ajouter_transition(&args->trajectoires_loups[episode_id * NB_LOUPS + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
+            ajouter_transition(&args->trajectoires_loups[episode_id * NB_LOUPS + w], phi_loups[w], DIMENSION_PHI_WOLF, monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
         }
         // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]); // (à décomenter pour afficher mais ralenti l'entrainement)
     }
@@ -147,6 +147,14 @@ float calculer_recompense_fermier(monde *m)
     {
         r += 1.0f; // Grosse récompense plus importante
     }
+
+    // Pénalité pour les bords
+    if (f->x <= MARGE || f->x >= (LARGEUR - MARGE - WIDTH_FERMIER) ||
+        f->y <= MARGE || f->y >= (HAUTEUR - MARGE - HEIGHT_FERMIER))
+    {
+        r -= 0.5f; // Punition en percutant le bord
+    }
+
     return r;
 }
 
@@ -218,7 +226,7 @@ void entrainer_agents(int simple_ou_multi_coeur)
     printf("\nDémarage entrainement...\n");
     time_t begin = time(NULL);
     // modifier
-    int nb_cycles = 10000;
+    int nb_cycles = 50000;
     int nb_episodes = 25;
     int max_steps = 1000;
     float alpha = 0.00002f; // Alpha légèrement réduit pour la stabilité
@@ -305,10 +313,10 @@ void entrainer_agents(int simple_ou_multi_coeur)
                     }
 
                     // Enregistrer l'étape dans les trajectoires correspondantes
-                    ajouter_transition(&trajectoires_fermier[ep], phi_fermier, m->fermiers->action_id, r_fermier);
+                    ajouter_transition(&trajectoires_fermier[ep], phi_fermier, DIMENSION_PHI_FERMIER, m->fermiers->action_id, r_fermier);
                     for (int w = 0; w < m->nb_wolf; w++)
                     {
-                        ajouter_transition(&trajectoires_loups[ep * NB_LOUPS + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
+                        ajouter_transition(&trajectoires_loups[ep * NB_LOUPS + w], phi_loups[w], DIMENSION_PHI_WOLF, m->wolfs_tab[w]->action_choisi, r_loups[w]);
                     }
                     // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier,
                     // r_loups[0]); // (à décomenter pour afficher mais ralenti

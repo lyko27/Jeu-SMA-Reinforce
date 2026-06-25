@@ -28,17 +28,20 @@ void init_trajectoire(Trajectoire *trajectoire)
  * @brief Ajoute une transition à une trajectoire en cours.
  * @param[in,out] trajectoire Pointeur vers la structure Trajectoire
  * @param[in] phi Vecteur de caractéristiques de l'état d'origine
+ * @param[in] dim_phi Dimension du vecteur de caractéristiques phi
  * @param[in] action Action effectuée
  * @param[in] recompense Récompense obtenue
  */
-void ajouter_transition(Trajectoire *trajectoire, float *phi, int action, float recompense)
+void ajouter_transition(Trajectoire *trajectoire, float *phi, int dim_phi, int action, float recompense)
 {
   if (trajectoire->taille == trajectoire->capacite)
   {
     trajectoire->capacite *= 2;
     trajectoire->transitions = realloc(trajectoire->transitions, trajectoire->capacite * sizeof(Transition));
   }
-  memcpy(trajectoire->transitions[trajectoire->taille].phi, phi, 7 * sizeof(float));
+  for (int i = 0; i < dim_phi; i++) {
+    trajectoire->transitions[trajectoire->taille].phi[i] = phi[i];
+  }
   trajectoire->transitions[trajectoire->taille].action = action;
   trajectoire->transitions[trajectoire->taille].recompense = recompense;
   trajectoire->taille++;
@@ -69,7 +72,7 @@ void liberer_trajectoire(Trajectoire *trajectoire)
  * @param[in] dim_phi Dimension du vecteur phi (nombre de caractéristiques)
  * @param[out] probabilites Tableau de sortie dans lequel stocker les probabilités calculées
  */
-void calculer_softmax(const float *phi, float poids[][7], int nb_actions, int dim_phi, float *probabilites)
+void calculer_softmax(const float *phi, float *poids, int nb_actions, int dim_phi, float *probabilites)
 {
   float logits[nb_actions];
   float max_logit = -999999.0f;
@@ -80,7 +83,7 @@ void calculer_softmax(const float *phi, float poids[][7], int nb_actions, int di
     float val = 0.0f;
     for (int k = 0; k < dim_phi; k++)
     {
-      val += poids[a][k] * phi[k];
+      val += poids[a * dim_phi + k] * phi[k];
     }
     logits[a] = val;
     if (val > max_logit)
@@ -143,6 +146,11 @@ void generer_phi_fermier(PerceptionFermier perception, float *phi)
     phi[5] = 0.0f;
     phi[6] = 0.0f;
   }
+
+  phi[7] = perception.dist_mur_gauche / 1024.0f;
+  phi[8] = perception.dist_mur_droite / 1024.0f;
+  phi[9] = perception.dist_mur_haut / 1024.0f;
+  phi[10] = perception.dist_mur_bas / 1024.0f;
 }
 
 /**
@@ -181,7 +189,7 @@ void mise_a_jour_reinforce_fermier(Fermier *fermier, Trajectoire *trajectoires, 
       float GG = powf(gamma, t) * G;
 
       float P[NB_ACTIONS_FERMIER];
-      calculer_softmax(transition.phi, fermier->weights, NB_ACTIONS_FERMIER, DIMENSION_PHI_FERMIER, P);
+      calculer_softmax(transition.phi, (float *)fermier->weights, NB_ACTIONS_FERMIER, DIMENSION_PHI_FERMIER, P);
 
       // Accumulation des gradients,  modif = phi * (I(a == action_choisie) - P(a))
       for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
@@ -358,7 +366,7 @@ void mise_a_jour_reinforce_loups(Wolf **loups, int nb_loups, Trajectoire *trajec
 
       float P[NB_ACTIONS_WOLF];
       // On utilise les poids du premier loup (ils sont partagés et identiques)
-      calculer_softmax(transition.phi, loups[0]->weights, NB_ACTIONS_WOLF, DIMENSION_PHI_WOLF, P);
+      calculer_softmax(transition.phi, (float *)loups[0]->weights, NB_ACTIONS_WOLF, DIMENSION_PHI_WOLF, P);
 
       // Accumulation des gradients
       for (int a = 0; a < NB_ACTIONS_WOLF; a++)

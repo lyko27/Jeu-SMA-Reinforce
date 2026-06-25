@@ -7,7 +7,7 @@
 #ifndef fermier_h
 #define fermier_h
 
-#define DIMENSION_PHI_FERMIER 7
+#define DIMENSION_PHI_FERMIER 11
 
 /**
  * @struct ActionFermier
@@ -50,6 +50,10 @@ typedef struct
     float dist_goat; ///< Distance euclidienne vers la chèvre la plus proche
     float dx_goat;   ///< coordonée x de la direction vers la chèvre la plus proche
     float dy_goat;   ///< coordonée y de la direction vers la chèvre la plus proche
+    float dist_mur_gauche; ///< Distance au mur gauche
+    float dist_mur_droite; ///< Distance au mur droit
+    float dist_mur_haut;   ///< Distance au mur du haut
+    float dist_mur_bas;    ///< Distance au mur du bas
 } PerceptionFermier;
 
 /**

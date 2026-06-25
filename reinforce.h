@@ -13,6 +13,8 @@
 
 struct monde_t;
 
+#define MAX_DIMENSION_PHI 11
+
 /**
  * @struct Transition
  * @brief Représente une transition (état, action, récompense) à une étape donnée
@@ -43,10 +45,11 @@ void init_trajectoire(Trajectoire *trajectoire);
  * @brief Ajoute une transition à une trajectoire en cours
  * @param[in,out] trajectoire Pointeur vers la structure Trajectoire
  * @param[in] phi Vecteur de caractéristiques de l'état d'origine
+ * @param[in] dim_phi Dimension du vecteur phi
  * @param[in] action Action effectuée
  * @param[in] recompense Récompense obtenue
  */
-void ajouter_transition(Trajectoire *trajectoire, float *phi, int action, float recompense);
+void ajouter_transition(Trajectoire *trajectoire, float *phi, int dim_phi, int action, float recompense);
 
 /**
  * @brief Libère la mémoire associée aux transitions d'une trajectoire

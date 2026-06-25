@@ -18,6 +18,7 @@ SDL_Texture *texture_fin_loups_gagnent = NULL;
 SDL_Texture *texture_fin_fermier_gagne = NULL;
 TTF_Font *police_compteur = NULL;
 
+//fonction qui initialise et charge les textures
 int init_affichage()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -68,6 +69,7 @@ int init_affichage()
     }
     return 1;
 }
+//les fonction de gestions de directions gerent les direction en fonction du sprite de l'entite nous nous sommes mis d'accord de dire (1=haut,2=droite,3=bas,4=gauche)
 
 int gestion_direction_chevre(int direction)
 {
@@ -108,7 +110,7 @@ int gestion_direction_wolf(int direction)
     return 0;
 }
 
-// Modification de la fonction pour prendre en compte les deux compteurs de nombre de chevres et de loups vivants
+// fonction qui affiche un planche en haut a gauche avec un compteur du nombre de chevres et un compteur du nombre de loups
 void afficher_planche(int nb_chevres, int nb_loups)
 {
     if (!police_compteur || !texture_planche)
@@ -170,6 +172,7 @@ void afficher_planche(int nb_chevres, int nb_loups)
     }
 }
 
+//fonction qui affiche le mode en haut a gauche "automatique" ou "manuel" et qui indique que l'on peut changer de mode en appuyant sur M
 void afficher_mode(int mode)
 {
     if (!police_compteur || !texture_mode)
@@ -216,6 +219,7 @@ void afficher_mode(int mode)
     }
 }
 
+//fonction qui affiche une planche qui informe le joueur que le jeu est en pause et qu'il peut appuyer sur espace pour reprendre le jeu
 void afficher_pause()
 {
 
@@ -243,7 +247,7 @@ void afficher_pause()
     SDL_RenderCopy(renderer, texture_pause, NULL, &destination);
 }
     
-
+//fonction qui affiche un panneau fin en fonction nde comment se fini le jeu si le fermier gagne ou perd
 void afficher_fin(int fermier_gagne) // si fermier gagne vaut 1 on affiche la texture fermier_gagne si ca vaut 0 on affiche lous_gagnent
 {
 
@@ -278,6 +282,7 @@ void afficher_fin(int fermier_gagne) // si fermier gagne vaut 1 on affiche la te
     }
 }
 
+//fonction qui dessine une entite donne en parametre dans l'endroit donne en parametre suivant la frame et la direction donnees en parametre aussi  
 void dessiner_entite(int type_entite, int position_x, int position_y, int frame, int direction)
 {
     int nb_image = 0;

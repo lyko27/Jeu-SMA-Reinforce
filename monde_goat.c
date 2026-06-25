@@ -1,3 +1,9 @@
+/**
+ * @file monde_goat.c
+ * @brief Implémentation des fonctions de gestion de l'agent Chèvre dans le monde
+ * @details Gère la création, la perception, les mouvements et collisions ainsi que la destruction des chèvres
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -6,14 +12,18 @@
 /* ========== Chèvres ========== */
 
 /**
- * Synopsis : Initialise une chèvre avec des coordonnées aléatoires et une
- * direction par défaut. Entrée   : Pointeur vers la structure Goat à
- * initialiser. Sortie   : Pointeur vers la structure Goat initialisée.
+ * @brief Initialise une chèvre avec ses coordonnées et ses attributs par défaut
+ * @details Configure les positions initiales, la vitesse, le sprite, le timer de mouvement et la vie de la chèvre
+ * Initialise également la table des intérêts pour la prise de décision
+ * @param[in,out] goat Pointeur vers la structure de la chèvre à initialiser
+ * @param[in] position_x pos x initiale de la chèvre
+ * @param[in] position_y pos y initiale de la chèvre
+ * @return Pointeur vers la chèvre initialisée
  */
-Goat *init_goat(Goat *goat, int x, int y)
+Goat *init_goat(Goat *goat, int position_x, int position_y)
 {
-  goat->x = x;
-  goat->y = y;
+  goat->x = position_x;
+  goat->y = position_y;
 
   goat->dir_x = goat->x;
   goat->dir_y = goat->y;
@@ -26,20 +36,24 @@ Goat *init_goat(Goat *goat, int x, int y)
   goat->angle_actuel = 0.0f;
 
   goat->hp = 2;
-  goat->cooldown_dinvisibilite = 180; // 3 secondes
+  goat->cooldown_dinvisibilite = 180; // 3 secondes 
 
   // Initialisation de la table des intérêts
-  for (int i = 0; i < NB_ACTIONS; i++)
+  for (int index_action = 0; index_action < NB_ACTIONS; index_action++)
   {
-    goat->table_interets[i] = 0.0f;
+    goat->table_interets[index_action] = 0.0f;
   }
 
   return goat;
 }
 
-/* ENtrées : le monde actuel dans sa structure et une chèvre
-    Sotie : Le monde mis a jour avec la nouvelle chèvre en plus
-    Synopsis : prend une chèvre et l'ajoute au monde*/
+/**
+ * @brief Ajoute une chèvre dans le tableau des chèvres du monde
+ * @details Réalloue le tableau des chèvres si la capacité max est dépassée
+ * @param[in,out] monde_courant Pointeur vers le monde
+ * @param[in] goat Pointeur vers la chèvre à ajouter au monde
+ * @return Pointeur vers le monde mis à jour avec la nouvelle chèvre
+ */
 monde *ajouter_goat(monde *monde_courant, Goat *goat)
 {
   if (monde_courant->nb_goat + 1 > monde_courant->capacite_max_goat)
@@ -52,6 +66,14 @@ monde *ajouter_goat(monde *monde_courant, Goat *goat)
   return monde_courant;
 }
 
+/**
+ * @brief Calcule ce qu'une chèvre perçoit
+ * @details Identifie le loup le plus proche s'il est à portée de détection (< 200 pixels) et stocke ses coordonnées
+ * Récupère aussi le tableau de chèvres et la position du fermier
+ * @param[in] goat Pointeur vers la chèvre concernée
+ * @param[in] monde_courant Pointeur vers le monde de la simulation
+ * @return Structure contenant la perception de la chèvre
+ */
 PerceptionGoat calculer_perception_goat(Goat *goat, monde *monde_courant)
 {
   PerceptionGoat perception;
@@ -61,27 +83,43 @@ PerceptionGoat calculer_perception_goat(Goat *goat, monde *monde_courant)
   perception.pos_x_fermier = monde_courant->fermiers->x;
   perception.pos_y_fermier = monde_courant->fermiers->y;
 
-  for (int i = 0; i < monde_courant->nb_wolf; i++)
-  {
-    Wolf *current_wolf = monde_courant->wolfs_tab[i];
-    float dist_x = current_wolf->x - goat->x;
-    float dist_y = current_wolf->y - goat->y;
-    float distance = sqrt(dist_x * dist_x + dist_y * dist_y);
+  // Initialisation par défaut pour éviter des valeurs indéterminées
+  perception.pos_x_wolf = -1;
+  perception.pos_y_wolf = -1;
 
-    if (distance < perception.dist_wolf_proche)
+  for (int index_loup = 0; index_loup < monde_courant->nb_wolf; index_loup++)
+  {
+    Wolf *loup_courant = monde_courant->wolfs_tab[index_loup];
+    float distance_x = loup_courant->x - goat->x;
+    float distance_y = loup_courant->y - goat->y;
+    float distance_euclidienne = sqrt(distance_x * distance_x + distance_y * distance_y);
+
+    if (distance_euclidienne < perception.dist_wolf_proche)
     {
-      perception.dist_wolf_proche = distance;
-      perception.pos_x_wolf = current_wolf->x;
-      perception.pos_y_wolf = current_wolf->y;
+      perception.dist_wolf_proche = distance_euclidienne;
+      perception.pos_x_wolf = loup_courant->x;
+      perception.pos_y_wolf = loup_courant->y;
     }
   }
   return perception;
 }
 
+/**
+ * @brief Met à jour l'état d'une chèvre (déplacement, collisions et animation) pour un tick donné
+ * @details Calcule la prochaine position de la chèvre en fonction de son action (errer, fuir ou brouter)
+ *          Gère le rebond sur les parois de la carte et les collisions avec les obstacles ou d'autres chèvres
+ *          Gère également la mise à jour de la frame d'animation du sprite
+ * @param[in,out] monde_courant Pointeur vers le monde de la simulation
+ * @param[in,out] goat Pointeur vers la chèvre à mettre à jour
+ * @param[in] action Action sélectionnée pour la chèvre
+ * @param[in] tick_animation Indice du tick pour l'animation
+ * @param[in] perception_goat Perception actuelle de cette chèvre
+ * @return Pointeur vers la chèvre mise à jour
+ */
 Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_animation, PerceptionGoat perception_goat)
 {
-  float next_x = goat->x;
-  float next_y = goat->y;
+  float prochaine_position_x = goat->x;
+  float prochaine_position_y = goat->y;
 
   if (action == ACTION_ERRER || action == ACTION_FUIR_WOLF)
   {
@@ -94,12 +132,13 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
         goat->angle_actuel = atan2(goat->y - perception_goat.pos_y_wolf, goat->x - perception_goat.pos_x_wolf);
       }
     }
-    next_x += cos(goat->angle_actuel) * goat->speed;
-    next_y += sin(goat->angle_actuel) * goat->speed;
+    prochaine_position_x += cos(goat->angle_actuel) * goat->speed;
+    prochaine_position_y += sin(goat->angle_actuel) * goat->speed;
 
-    if (fabs(next_x - goat->x) > fabs(next_y - goat->y))
+    // decision de la direction du sprite en focntion du déplacement
+    if (fabs(prochaine_position_x - goat->x) > fabs(prochaine_position_y - goat->y))
     {
-      if (next_x > goat->x)
+      if (prochaine_position_x > goat->x)
       {
         goat->direction_sprite = 2;
       }
@@ -110,7 +149,7 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     }
     else
     {
-      if (next_y > goat->y)
+      if (prochaine_position_y > goat->y)
       {
         goat->direction_sprite = 3;
       }
@@ -126,59 +165,53 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
   }
 
   // Si la chèvre touche ou dépasse une paroi, on la repositionne et on fait rebondir son angle
-  if (next_x < MARGE)
+  if (prochaine_position_x < MARGE)
   {
-    next_x = MARGE;
+    prochaine_position_x = MARGE;
     goat->angle_actuel = 3.14159265f - goat->angle_actuel; // Rebond horizontal
   }
-  else if (next_x > LARGEUR - MARGE - WIDTH_GOAT)
+  else if (prochaine_position_x > LARGEUR - MARGE - WIDTH_GOAT)
   {
-    next_x = LARGEUR - MARGE - WIDTH_GOAT;
+    prochaine_position_x = LARGEUR - MARGE - WIDTH_GOAT;
     goat->angle_actuel = 3.14159265f - goat->angle_actuel; // Rebond horizontal
   }
 
-  if (next_y < MARGE)
+  if (prochaine_position_y < MARGE)
   {
-    next_y = MARGE;
+    prochaine_position_y = MARGE;
     goat->angle_actuel = -goat->angle_actuel; // Rebond vertical
   }
-  else if (next_y > HAUTEUR - MARGE - HEIGHT_GOAT)
+  else if (prochaine_position_y > HAUTEUR - MARGE - HEIGHT_GOAT)
   {
-    next_y = HAUTEUR - MARGE - HEIGHT_GOAT;
+    prochaine_position_y = HAUTEUR - MARGE - HEIGHT_GOAT;
     goat->angle_actuel = -goat->angle_actuel; // Rebond vertical
   }
 
-  float old_x = goat->x;
-  float old_y = goat->y;
+  float ancienne_position_x = goat->x;
+  float ancienne_position_y = goat->y;
 
-  // --- Déplacement et Collision sur l'axe X ---
-  float pos_potentiel_x = next_x;
-  if (pos_potentiel_x < MARGE)
-    pos_potentiel_x = MARGE;
-  if (pos_potentiel_x > LARGEUR - MARGE - WIDTH_GOAT)
-    pos_potentiel_x = LARGEUR - MARGE - WIDTH_GOAT;
+  // colision axe x
+  int collision_axe_x = 0;
+  Hitbox hitbox_potentielle_x = get_hitbox_goat(prochaine_position_x, goat->y);
 
-  int collision_x = 0;
-  Hitbox hb_pos_potentiel_x = get_hitbox_goat(pos_potentiel_x, goat->y);
-
-  // Collision de l'axe X avec les obstacles du terrain (lac, maison)
-  if (check_collision_obstacles(hb_pos_potentiel_x))
+  // avec les obstacles du terrain (lac, maison)
+  if (check_collision_obstacles(hitbox_potentielle_x))
   {
-    collision_x = 1;
+    collision_axe_x = 1;
     goat->timer_mouvement = 0;
   }
 
-  // Collision de l'axe X avec d'autres chèvres
-  if (!collision_x)
+  // avec d'autres chèvres
+  if (!collision_axe_x)
   {
-    for (int j = 0; j < monde_courant->nb_goat; j++)
+    for (int index_autre_goat = 0; index_autre_goat < monde_courant->nb_goat; index_autre_goat++)
     {
-      if (monde_courant->goats_tab[j] != goat)
+      if (monde_courant->goats_tab[index_autre_goat] != goat)
       {
-        Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
-        if (check_collision_rect(hb_pos_potentiel_x.x, hb_pos_potentiel_x.y, hb_pos_potentiel_x.w, hb_pos_potentiel_x.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+        Hitbox hitbox_autre = get_hitbox_goat(monde_courant->goats_tab[index_autre_goat]->x, monde_courant->goats_tab[index_autre_goat]->y);
+        if (check_collision_rect(hitbox_potentielle_x.x, hitbox_potentielle_x.y, hitbox_potentielle_x.w, hitbox_potentielle_x.h, hitbox_autre.x, hitbox_autre.y, hitbox_autre.w, hitbox_autre.h))
         {
-          collision_x = 1;
+          collision_axe_x = 1;
           goat->timer_mouvement = 0;
           break;
         }
@@ -186,45 +219,38 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     }
   }
 
-  if (!collision_x)
+  if (!collision_axe_x)
   {
-    goat->x = pos_potentiel_x;
-    goat->dir_x = pos_potentiel_x;
+    goat->x = prochaine_position_x;
+    goat->dir_x = prochaine_position_x;
   }
   else
   {
     goat->dir_x = goat->x;
   }
 
-  // --- Déplacement et Collision sur l'axe Y ---
-  float pos_potentiel_y = next_y;
-  if (pos_potentiel_y < MARGE)
-    pos_potentiel_y = MARGE;
-  if (pos_potentiel_y > HAUTEUR - MARGE - HEIGHT_GOAT)
-    pos_potentiel_y = HAUTEUR - MARGE - HEIGHT_GOAT;
+  // collision sur l'axe y
+  int collision_axe_y = 0;
+  Hitbox hitbox_potentielle_y = get_hitbox_goat(goat->x, prochaine_position_y);
 
-  int collision_y = 0;
-  // On teste le Y en utilisant la nouvelle coordonnée X de la chèvre
-  Hitbox hb_pos_potentiel_y = get_hitbox_goat(goat->x, pos_potentiel_y);
-
-  // Collision de l'axe Y avec les obstacles du terrain (lac, maison)
-  if (check_collision_obstacles(hb_pos_potentiel_y))
+  // avec les obstacles du terrain (lac, maison)
+  if (check_collision_obstacles(hitbox_potentielle_y))
   {
-    collision_y = 1;
+    collision_axe_y = 1;
     goat->timer_mouvement = 0;
   }
 
-  // Collision de l'axe Y avec d'autres chèvres
-  if (!collision_y)
+  // avec d'autres chèvres
+  if (!collision_axe_y)
   {
-    for (int j = 0; j < monde_courant->nb_goat; j++)
+    for (int index_autre_goat = 0; index_autre_goat < monde_courant->nb_goat; index_autre_goat++)
     {
-      if (monde_courant->goats_tab[j] != goat)
+      if (monde_courant->goats_tab[index_autre_goat] != goat)
       {
-        Hitbox hb_autre = get_hitbox_goat(monde_courant->goats_tab[j]->x, monde_courant->goats_tab[j]->y);
-        if (check_collision_rect(hb_pos_potentiel_y.x, hb_pos_potentiel_y.y, hb_pos_potentiel_y.w, hb_pos_potentiel_y.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+        Hitbox hitbox_autre = get_hitbox_goat(monde_courant->goats_tab[index_autre_goat]->x, monde_courant->goats_tab[index_autre_goat]->y);
+        if (check_collision_rect(hitbox_potentielle_y.x, hitbox_potentielle_y.y, hitbox_potentielle_y.w, hitbox_potentielle_y.h, hitbox_autre.x, hitbox_autre.y, hitbox_autre.w, hitbox_autre.h))
         {
-          collision_y = 1;
+          collision_axe_y = 1;
           goat->timer_mouvement = 0;
           break;
         }
@@ -232,10 +258,10 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
     }
   }
 
-  if (!collision_y)
+  if (!collision_axe_y)
   {
-    goat->y = pos_potentiel_y;
-    goat->dir_y = pos_potentiel_y;
+    goat->y = prochaine_position_y;
+    goat->dir_y = prochaine_position_y;
   }
   else
   {
@@ -244,7 +270,7 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
 
   if (tick_animation % 6 == 0)
   {
-    int a_bouge = (goat->x != old_x || goat->y != old_y);
+    int a_bouge = (goat->x != ancienne_position_x || goat->y != ancienne_position_y);
     if (goat->speed > 0 && a_bouge)
     {
       goat->frame = (goat->frame + 1) % 4;
@@ -257,37 +283,46 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
   return goat;
 }
 
-void mourrir_goat(monde *monde_courant, int index)
+/**
+ * @brief Gère la mort d'une chèvre en la libérant et en mettant à jour le tableau du monde
+ * @details Libère la mémoire associée à la chèvre et décale tous les éléments suivants pour combler le vide
+ * @param[in,out] monde_courant Pointeur vers le monde de la simulation
+ * @param[in] index_goat Indice de la chèvre à supprimer du tableau
+ */
+void mourrir_goat(monde *monde_courant, int index_goat)
 {
-  if (index < 0 || index >= monde_courant->nb_goat)
+  if (index_goat < 0 || index_goat >= monde_courant->nb_goat)
   {
-    return; // la chèvre d'indice i n'existe pas
+    return; // la chèvre d'indice indiqué n'existe pas
   }
 
-  free(monde_courant->goats_tab[index]);
+  free(monde_courant->goats_tab[index_goat]);
 
-  for (int i = index; i < monde_courant->nb_goat - 1; i++)
+  for (int index_decalage = index_goat; index_decalage < monde_courant->nb_goat - 1; index_decalage++)
   {
-    monde_courant->goats_tab[i] = monde_courant->goats_tab[i + 1];
+    monde_courant->goats_tab[index_decalage] = monde_courant->goats_tab[index_decalage + 1];
   }
 
   monde_courant->goats_tab[monde_courant->nb_goat - 1] = NULL;
   monde_courant->nb_goat--;
 }
 
-/* ENtrées : le tableau de chèvre, nombre de chèvre
-    Sotie : aucune
-    Synopsis : libère toute les goats du tableau*/
-void free_goats(Goat **goats_tab, int nb_goat)
+/**
+ * @brief Libère la mémoire de toutes les chèvres allouées dans le tableau
+ * @details Parcourt le tableau de chèvres pour libérer individuellement chaque structure existante
+ * @param[in,out] tableau_goats Tableau contenant les pointeurs vers les chèvres
+ * @param[in] nombre_goats Nombre actuel de chèvres dans le tableau
+ */
+void free_goats(Goat **tableau_goats, int nombre_goats)
 {
-  if (goats_tab != NULL)
+  if (tableau_goats != NULL)
   {
-    for (int i = 0; i < nb_goat; i++)
+    for (int index_goat = 0; index_goat < nombre_goats; index_goat++)
     {
-      if (goats_tab[i] != NULL)
+      if (tableau_goats[index_goat] != NULL)
       {
-        free(goats_tab[i]);
-        goats_tab[i] = NULL;
+        free(tableau_goats[index_goat]);
+        tableau_goats[index_goat] = NULL;
       }
     }
   }

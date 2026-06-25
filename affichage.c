@@ -14,7 +14,8 @@ SDL_Texture *texture_wolf = NULL;
 SDL_Texture *texture_planche = NULL;
 SDL_Texture *texture_pause = NULL;
 SDL_Texture *texture_mode = NULL;
-SDL_Texture *texture_fin = NULL;
+SDL_Texture *texture_fin_loups_gagnent = NULL;
+SDL_Texture *texture_fin_fermier_gagne = NULL;
 TTF_Font *police_compteur = NULL;
 
 int init_affichage()
@@ -57,9 +58,10 @@ int init_affichage()
     texture_planche = IMG_LoadTexture(renderer, "./images/ath.png");
     texture_pause = IMG_LoadTexture(renderer, "./images/reprendre.png"); 
     texture_mode = IMG_LoadTexture(renderer, "./images/mode.png");   
-    texture_fin = IMG_LoadTexture(renderer, "./images/fin.png");
+    texture_fin_fermier_gagne = IMG_LoadTexture(renderer, "./images/fin_fermier_gagne.png");
+    texture_fin_loups_gagnent = IMG_LoadTexture(renderer, "./images/fin_loups_gagnent.png");
 
-    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche || !texture_pause || !texture_mode || !texture_fin)
+    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche || !texture_pause || !texture_mode || !texture_fin_loups_gagnent || !texture_fin_fermier_gagne)
     {
         printf("Erreur chargement image : %s\n", IMG_GetError());
         return 0;
@@ -242,11 +244,11 @@ void afficher_pause()
 }
     
 
-void afficher_fin()
+void afficher_fin(int fermier_gagne) // si fermier gagne vaut 1 on affiche la texture fermier_gagne si ca vaut 0 on affiche lous_gagnent
 {
 
     // on vérifie que l'image a bien été chargée
-    if (!texture_fin) return;
+    if (!texture_fin_fermier_gagne && !texture_fin_loups_gagnent) return;
 
     // On dessine un rectangle noir semi-transparent sur tout l'écran
     // Cela permet de griser le jeu en arrière-plan et de mettre le menu en valeur
@@ -257,16 +259,23 @@ void afficher_fin()
     // ------------------------------------------------
 
     SDL_Rect destination;
-    
-    // Récupérer les dimensions largeur et hauteur de l'image
-    SDL_QueryTexture(texture_fin, NULL, NULL, &destination.w, &destination.h);
-
-    // Calculer les coordonnées exactes pour que l'image soit parfaitement au centre
-    destination.x = (LARGEUR - destination.w) / 2;
-    destination.y = (HAUTEUR - destination.h) / 2;
-
-    // Afficher la texture sur l'écran
-    SDL_RenderCopy(renderer, texture_fin, NULL, &destination);
+    if(fermier_gagne==1){
+        // Récupérer les dimensions largeur et hauteur de l'image
+        SDL_QueryTexture(texture_fin_fermier_gagne, NULL, NULL, &destination.w, &destination.h);
+        // Calculer les coordonnées exactes pour que l'image soit parfaitement au centre
+        destination.x = (LARGEUR - destination.w) / 2;
+        destination.y = (HAUTEUR - destination.h) / 2;
+        // Afficher la texture sur l'écran
+        SDL_RenderCopy(renderer, texture_fin_fermier_gagne, NULL, &destination);
+    }
+    else {
+        SDL_QueryTexture(texture_fin_loups_gagnent, NULL, NULL, &destination.w, &destination.h);
+        // Calculer les coordonnées exactes pour que l'image soit parfaitement au centre
+        destination.x = (LARGEUR - destination.w) / 2;
+        destination.y = (HAUTEUR - destination.h) / 2;
+        // Afficher la texture sur l'écran
+        SDL_RenderCopy(renderer, texture_fin_loups_gagnent, NULL, &destination);
+    }
 }
 
 void dessiner_entite(int type_entite, int position_x, int position_y, int frame, int direction)
@@ -361,7 +370,8 @@ void quitter_affichage()
     SDL_DestroyTexture(texture_planche);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_DestroyTexture(texture_fin);
+    SDL_DestroyTexture(texture_fin_fermier_gagne);
+    SDL_DestroyTexture(texture_fin_loups_gagnent);
     IMG_Quit();
     SDL_Quit();
 }

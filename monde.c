@@ -397,9 +397,13 @@ void afficher_monde(monde *monde_courant)
         afficher_pause();
     } 
     // Vérifier si le jeu est fini 
-    if (monde_courant->nb_goat <= 0 || monde_courant->nb_wolf <= 0) 
+    if (monde_courant->nb_goat <= 0 ) 
     {
-        afficher_fin();
+        afficher_fin(0);
+    }
+    else if (monde_courant->nb_wolf <= 0 ) 
+    {
+        afficher_fin(1);
     }
     actualiser_ecran();
 }

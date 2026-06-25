@@ -1,3 +1,9 @@
+/**
+ * @file monde_wolf.c
+ * @brief Implémentation des fonctions de gestion de l'agent Wolf dans le monde
+ * @details Gère la création, la perception, les mouvements et collisions ainsi que la destruction des wolfs
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -6,34 +12,36 @@
 /* ========== Loups ========== */
 
 /**
- * Synopsis : Initialise un loup avec des coordonnées aléatoires et une
- * direction par défaut. Entrée   : Pointeur vers la structure Wolf à
- * initialiser. Sortie   : Pointeur vers la structure Wolf initialisée.
+ * @brief Initialise un wolf avec des coordonnées de spawn valides (hors obstacles) et des attributs par défaut
+ * @details Configure les positions de départ de manière aléatoire en évitant les obstacles de la carte
+ * Initialise sa vitesse, son sprite, son angle de déplacement, ses PV et ses matrices d'apprentissage
+ * @param[in,out] wolf Pointeur vers la structure du wolf à initialiser
+ * @return Pointeur vers le wolf initialisé
  */
 Wolf *init_wolf(Wolf *wolf)
 {
   int coordonnees_valides = 0;
-  float x_genere = 0;
-  float y_genere = 0;
+  float position_x_generee = 0;
+  float position_y_generee = 0;
 
   while (!coordonnees_valides)
   {
-    // spawn uniquemnt DANS la map pas au bord
-    x_genere = MARGE + (rand() % (LARGEUR - 2 * MARGE - WIDTH_WOLF));
-    y_genere = MARGE + (rand() % (HAUTEUR - 2 * MARGE - HEIGHT_WOLF));
+    // spawn uniquement DANS la carte et loin des bords
+    position_x_generee = MARGE + (rand() % (LARGEUR - 2 * MARGE - WIDTH_WOLF));
+    position_y_generee = MARGE + (rand() % (HAUTEUR - 2 * MARGE - HEIGHT_WOLF));
 
-    //hitbox temporaire
-    Hitbox hb_temp = get_hitbox_wolf(x_genere, y_genere);
+    // hitbox temporaire pour la validation
+    Hitbox hitbox_temporaire = get_hitbox_wolf(position_x_generee, position_y_generee);
 
-    // Si pas de collision avec le lac ou la maison
-    if (!check_collision_obstacles(hb_temp))
+    // Si aucune collision n'est détectée avec les obstacles de la carte (lac, maison)
+    if (!check_collision_obstacles(hitbox_temporaire))
     {
       coordonnees_valides = 1;
     }
   }
 
-  wolf->x = x_genere;
-  wolf->y = y_genere;
+  wolf->x = position_x_generee;
+  wolf->y = position_y_generee;
 
   wolf->dir_x = wolf->x;
   wolf->dir_y = wolf->y;
@@ -48,23 +56,30 @@ Wolf *init_wolf(Wolf *wolf)
   wolf->hp = 2;
   wolf->cooldown_dinvisibilite = 180; // 3 secondes
 
-  for (int i = 0; i < NB_ACTIONS_WOLF; i++)
+  // Initialisation de la table des intérêts
+  for (int index_action = 0; index_action < NB_ACTIONS_WOLF; index_action++)
   {
-    wolf->table_interets[i] = 0.0f;
+    wolf->table_interets[index_action] = 0.0f;
   }
-  for (int a = 0; a < NB_ACTIONS_WOLF; a++)
+
+  // Initialisation de la matrice de poids
+  for (int index_action = 0; index_action < NB_ACTIONS_WOLF; index_action++)
   {
-    for (int k = 0; k < DIMENSION_PHI_WOLF; k++)
+    for (int index_phi = 0; index_phi < DIMENSION_PHI_WOLF; index_phi++)
     {
-      wolf->weights[a][k] = 0.0f;
+      wolf->weights[index_action][index_phi] = 0.0f;
     }
   }
   return wolf;
 }
 
-/* ENtrées : le monde actuel dans sa structure et un wolf
-    Sotie : Le monde mis a jour avec le nouveau wolf en plus
-    Synopsis : prend un wolf et l'ajoute au monde*/
+/**
+ * @brief Ajoute un wolf dans le tableau des loups du monde
+ * @details Réalloue le tableau dynamique des wolfs si la capacité maximale est dépassée
+ * @param[in,out] monde_courant Pointeur vers le monde de la simulation
+ * @param[in] wolf Pointeur vers le wolf à ajouter au monde
+ * @return Pointeur vers le monde mis à jour avec le nouveau wolf
+ */
 monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
 {
   if (monde_courant->nb_wolf + 1 > monde_courant->capacite_max_wolf)
@@ -77,10 +92,18 @@ monde *ajouter_wolf(monde *monde_courant, Wolf *wolf)
   return monde_courant;
 }
 
+/**
+ * @brief Calcule la perception d'un wolf
+ * @details Parcourt toutes les goats présentes pour identifier la plus proche à moins de 300 pixels
+ * Stocke la distance et ses coordonées et la position du fermier
+ * @param[in] wolf Pointeur vers le wolf concerné
+ * @param[in] monde_courant Pointeur vers le monde
+ * @return Structure contenant la perception calculée pour le loup
+ */
 PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
 {
   PerceptionWolf perception;
-  perception.dist_goat_proche = 300.0f; // Valeur par défaut
+  perception.dist_goat_proche = 300.0f; // Valeur par défaut de la talle de sa vision, n'importe quel chèvre dans le rayon sera plus proche
   perception.goats_tab = monde_courant->goats_tab;
   perception.nb_goat = monde_courant->nb_goat;
   perception.pos_x_fermier = monde_courant->fermiers->x;
@@ -88,27 +111,43 @@ PerceptionWolf calculer_perception_wolf(Wolf *wolf, monde *monde_courant)
   perception.pos_x_goat = -1;
   perception.pos_y_goat = -1;
 
-  for (int i = 0; i < monde_courant->nb_goat; i++)
+  for (int index_goat = 0; index_goat < monde_courant->nb_goat; index_goat++)
   {
-    Goat *current_goat = monde_courant->goats_tab[i];
-    float dist_x = current_goat->x - wolf->x;
-    float dist_y = current_goat->y - wolf->y;
-    float distance = sqrt(dist_x * dist_x + dist_y * dist_y);
+    Goat *goat_courant = monde_courant->goats_tab[index_goat];
+    float distance_x = goat_courant->x - wolf->x;
+    float distance_y = goat_courant->y - wolf->y;
+    float distance_euclidienne = sqrt(distance_x * distance_x + distance_y * distance_y);
 
-    if (distance < perception.dist_goat_proche)
+    if (distance_euclidienne < perception.dist_goat_proche)
     {
-      perception.dist_goat_proche = distance;
-      perception.pos_x_goat = current_goat->x;
-      perception.pos_y_goat = current_goat->y;
+      perception.dist_goat_proche = distance_euclidienne;
+      perception.pos_x_goat = goat_courant->x;
+      perception.pos_y_goat = goat_courant->y;
     }
   }
   return perception;
 }
 
+/**
+ * @brief Met à jour l'état d'un wolf (déplacement, collisions et animation) pour un tick donné
+ * @details Gère la logique et le comportement, exploration, poursuite d'une chèvre ou fuite face au fermier
+ * Pour la poursuite (ACTION_WOLF_CHASSER), Calcul de l'angle à l'aide de la fonction trigonométrique atan2 :
+ * \code wolf->angle_actuel = atan2(y_destination - y_actuel, x_destination - x_actuel); \endcode
+ * Cette fonction calcule le vecteur qui va du loup vers la cible (la goat la plus proche)
+ * et renvoie l'angle exact (en radians) par rapport à l'axe des abscisses positive
+ * que le loup doit suivre pour aller vers la chèvre (source : )
+ * 
+ * @param[in,out] monde_courant Pointeur vers le monde de la simulation
+ * @param[in,out] wolf Pointeur vers le loup à mettre à jour
+ * @param[in] action Action sélectionnée pour le loup
+ * @param[in] tick_animation Indice du tick pour l'animation
+ * @param[in] perception_wolf Perception actuelle du loup
+ * @return Pointeur vers le wolf mis à jour
+ */
 Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_animation, PerceptionWolf perception_wolf)
 {
-  float next_x = wolf->x;
-  float next_y = wolf->y;
+  float prochaine_position_x = wolf->x;
+  float prochaine_position_y = wolf->y;
 
   if (action == ACTION_WOLF_ERRER || action == ACTION_WOLF_CHASSER)
   {
@@ -118,12 +157,11 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
     {
       if (perception_wolf.pos_x_goat != -1)
       {
-        // Aller vers la chèvre
-        /* on calcul le vecteur qui va du loup vers la chèvre, et atan2 renvoie l'angle exact que le loup doit suivre pour aller sur la chèvre
-        atan2(x_direction_voulu - x_actuel, y_direction_voulu - y_actuel) => angle pour aller à direction voulu
-        soit l'angle entre l'axe des abscisses et le vecteur de direction voulu*/
-        wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y,
-                                   perception_wolf.pos_x_goat - wolf->x);
+        // Poursuite de la goat la plus proche
+        // Calcul trigonométrique de l'angle requis avec la fonction atan2 :
+        // atan2(y_destination - y_actuel, x_destination - x_actuel) => angle pour s'orienter vers la destination
+        // Soit l'angle entre l'axe des abscisses et le vecteur menant à la destination recherchée
+        wolf->angle_actuel = atan2(perception_wolf.pos_y_goat - wolf->y, perception_wolf.pos_x_goat - wolf->x);
       }
     }
   }
@@ -131,7 +169,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
   if (action == ACTION_WOLF_FUIR_FERMIER)
   {
     wolf->speed = 4;
-    // Fuir le fermier
+    // Fuite face au fermier dans la direction opposée
     wolf->angle_actuel = atan2(wolf->y - perception_wolf.pos_y_fermier, wolf->x - perception_wolf.pos_x_fermier);
   }
   if (action == ACTION_WOLF_ARRET)
@@ -139,12 +177,12 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
     wolf->speed = 0;
   }
 
-  next_x += cos(wolf->angle_actuel) * wolf->speed;
-  next_y += sin(wolf->angle_actuel) * wolf->speed;
+  prochaine_position_x += cos(wolf->angle_actuel) * wolf->speed;
+  prochaine_position_y += sin(wolf->angle_actuel) * wolf->speed;
 
-  if (fabs(next_x - wolf->x) > fabs(next_y - wolf->y))
+  if (fabs(prochaine_position_x - wolf->x) > fabs(prochaine_position_y - wolf->y))
   {
-    if (next_x > wolf->x) // on va a droite
+    if (prochaine_position_x > wolf->x) // De déplacement vers la droite
     {
       wolf->direction_sprite = 2;
     }
@@ -155,7 +193,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
   }
   else
   {
-    if (next_y > wolf->y)
+    if (prochaine_position_y > wolf->y)
     {
       wolf->direction_sprite = 3;
     }
@@ -166,59 +204,53 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
   }
 
   // Si le loup touche ou dépasse une paroi, on la repositionne et on fait rebondir son angle
-  if (next_x < MARGE)
+  if (prochaine_position_x < MARGE)
   {
-    next_x = MARGE;
+    prochaine_position_x = MARGE;
     wolf->angle_actuel = 3.14159265f - wolf->angle_actuel; // Rebond horizontal
   }
-  else if (next_x > LARGEUR - MARGE - WIDTH_WOLF)
+  else if (prochaine_position_x > LARGEUR - MARGE - WIDTH_WOLF)
   {
-    next_x = LARGEUR - MARGE - WIDTH_WOLF;
+    prochaine_position_x = LARGEUR - MARGE - WIDTH_WOLF;
     wolf->angle_actuel = 3.14159265f - wolf->angle_actuel; // Rebond horizontal
   }
 
-  if (next_y < MARGE)
+  if (prochaine_position_y < MARGE)
   {
-    next_y = MARGE;
+    prochaine_position_y = MARGE;
     wolf->angle_actuel = -wolf->angle_actuel; // Rebond vertical
   }
-  else if (next_y > HAUTEUR - MARGE - HEIGHT_WOLF)
+  else if (prochaine_position_y > HAUTEUR - MARGE - HEIGHT_WOLF)
   {
-    next_y = HAUTEUR - MARGE - HEIGHT_WOLF;
+    prochaine_position_y = HAUTEUR - MARGE - HEIGHT_WOLF;
     wolf->angle_actuel = -wolf->angle_actuel; // Rebond vertical
   }
 
-  float old_x = wolf->x;
-  float old_y = wolf->y;
+  float ancienne_position_x = wolf->x;
+  float ancienne_position_y = wolf->y;
 
-  // Déplacement et Collision sur l'axe X
-  float pos_potentielle_x = next_x;
-  if (pos_potentielle_x < MARGE)
-    pos_potentielle_x = MARGE;
-  if (pos_potentielle_x > LARGEUR - MARGE - WIDTH_WOLF)
-    pos_potentielle_x = LARGEUR - MARGE - WIDTH_WOLF;
+  // deplacement et collision axe x
+  int collision_axe_x = 0;
+  Hitbox hitbox_potentielle_x = get_hitbox_wolf(prochaine_position_x, wolf->y);
 
-  int collision_x = 0;
-  Hitbox hb_pos_potentielle_x = get_hitbox_wolf(pos_potentielle_x, wolf->y);
-
-  // Collision de l'axe X avec les obstacles du terrain (lac, maison)
-  if (check_collision_obstacles(hb_pos_potentielle_x))
+  // avec les obstacles du terrain (lac, maison)
+  if (check_collision_obstacles(hitbox_potentielle_x))
   {
-    collision_x = 1;
+    collision_axe_x = 1;
     wolf->timer_mouvement = 0;
   }
 
-  // Collision de l'axe X avec d'autres loups
-  if (!collision_x)
+  // avec d'autres loups
+  if (!collision_axe_x)
   {
-    for (int j = 0; j < monde_courant->nb_wolf; j++)
+    for (int index_autre_wolf = 0; index_autre_wolf < monde_courant->nb_wolf; index_autre_wolf++)
     {
-      if (monde_courant->wolfs_tab[j] != wolf)
+      if (monde_courant->wolfs_tab[index_autre_wolf] != wolf)
       {
-        Hitbox hb_autre = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
-        if (check_collision_rect(hb_pos_potentielle_x.x, hb_pos_potentielle_x.y, hb_pos_potentielle_x.w, hb_pos_potentielle_x.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+        Hitbox hitbox_autre = get_hitbox_wolf(monde_courant->wolfs_tab[index_autre_wolf]->x, monde_courant->wolfs_tab[index_autre_wolf]->y);
+        if (check_collision_rect(hitbox_potentielle_x.x, hitbox_potentielle_x.y, hitbox_potentielle_x.w, hitbox_potentielle_x.h, hitbox_autre.x, hitbox_autre.y, hitbox_autre.w, hitbox_autre.h))
         {
-          collision_x = 1;
+          collision_axe_x = 1;
           wolf->timer_mouvement = 0;
           break;
         }
@@ -226,45 +258,39 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
     }
   }
 
-  if (!collision_x)
+  if (!collision_axe_x)
   {
-    wolf->x = pos_potentielle_x;
-    wolf->dir_x = pos_potentielle_x;
+    wolf->x = prochaine_position_x;
+    wolf->dir_x = prochaine_position_x;
   }
   else
   {
     wolf->dir_x = wolf->x;
   }
 
-  // déplacement et collision sur l'axe y
-  float pos_potentielle_y = next_y;
-  if (pos_potentielle_y < MARGE)
-    pos_potentielle_y = MARGE;
-  if (pos_potentielle_y > HAUTEUR - MARGE - HEIGHT_WOLF)
-    pos_potentielle_y = HAUTEUR - MARGE - HEIGHT_WOLF;
+  // deplacement et colision axe y
+  // On teste le Y en utilisant la nouvelle coordonnée X du wolf, note : prochaine_position_y est déjà clampée ci-dessus
+  int collision_axe_y = 0;
+  Hitbox hitbox_potentielle_y = get_hitbox_wolf(wolf->x, prochaine_position_y);
 
-  int collision_y = 0;
-  // On teste le Y en utilisant la nouvelle coordonnée X du loup
-  Hitbox hb_pos_potentielle_y = get_hitbox_wolf(wolf->x, pos_potentielle_y);
-
-  // Collision de l'axe Y avec les obstacles du terrain (lac, maison)
-  if (check_collision_obstacles(hb_pos_potentielle_y))
+  // avec les obstacles du terrain (lac, maison)
+  if (check_collision_obstacles(hitbox_potentielle_y))
   {
-    collision_y = 1;
+    collision_axe_y = 1;
     wolf->timer_mouvement = 0;
   }
 
-  // Collision de l'axe Y avec d'autres loups
-  if (!collision_y)
+  // avec d'autres loups
+  if (!collision_axe_y)
   {
-    for (int j = 0; j < monde_courant->nb_wolf; j++)
+    for (int index_autre_wolf = 0; index_autre_wolf < monde_courant->nb_wolf; index_autre_wolf++)
     {
-      if (monde_courant->wolfs_tab[j] != wolf)
+      if (monde_courant->wolfs_tab[index_autre_wolf] != wolf)
       {
-        Hitbox hb_autre = get_hitbox_wolf(monde_courant->wolfs_tab[j]->x, monde_courant->wolfs_tab[j]->y);
-        if (check_collision_rect(hb_pos_potentielle_y.x, hb_pos_potentielle_y.y, hb_pos_potentielle_y.w, hb_pos_potentielle_y.h, hb_autre.x, hb_autre.y, hb_autre.w, hb_autre.h))
+        Hitbox hitbox_autre = get_hitbox_wolf(monde_courant->wolfs_tab[index_autre_wolf]->x, monde_courant->wolfs_tab[index_autre_wolf]->y);
+        if (check_collision_rect(hitbox_potentielle_y.x, hitbox_potentielle_y.y, hitbox_potentielle_y.w, hitbox_potentielle_y.h, hitbox_autre.x, hitbox_autre.y, hitbox_autre.w, hitbox_autre.h))
         {
-          collision_y = 1;
+          collision_axe_y = 1;
           wolf->timer_mouvement = 0;
           break;
         }
@@ -272,10 +298,10 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
     }
   }
 
-  if (!collision_y)
+  if (!collision_axe_y)
   {
-    wolf->y = pos_potentielle_y;
-    wolf->dir_y = pos_potentielle_y;
+    wolf->y = prochaine_position_y;
+    wolf->dir_y = prochaine_position_y;
   }
   else
   {
@@ -284,7 +310,7 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
 
   if (tick_animation % 6 == 0)
   {
-    int a_bouge = (wolf->x != old_x || wolf->y != old_y);
+    int a_bouge = (wolf->x != ancienne_position_x || wolf->y != ancienne_position_y);
     if (wolf->speed > 0 && a_bouge)
     {
       wolf->frame = (wolf->frame + 1) % 3;
@@ -297,37 +323,46 @@ Wolf *update_wolf(monde *monde_courant, Wolf *wolf, ActionWolf action, int tick_
   return wolf;
 }
 
-void mourrir_wolf(monde *monde_courant, int index)
+/**
+ * @brief Gère la mort d'un wolf en le libérant et en mettant à jour le tableau du monde
+ * @details Libère la mémoire associée à la structure du wolf et décale tous les éléments suivants
+ * @param[in,out] monde_courant Pointeur vers le monde de la simulation
+ * @param[in] index_wolf Indice du wolf à supprimer du tableau
+ */
+void mourrir_wolf(monde *monde_courant, int index_wolf)
 {
-  if (index < 0 || index >= monde_courant->nb_wolf)
+  if (index_wolf < 0 || index_wolf >= monde_courant->nb_wolf)
   {
-    return; // le loup d'indice i n'existe pas
+    return; // le loup d'indice indiqué n'existe pas
   }
 
-  free(monde_courant->wolfs_tab[index]);
+  free(monde_courant->wolfs_tab[index_wolf]);
 
-  for (int i = index; i < monde_courant->nb_wolf - 1; i++)
+  for (int index_decalage = index_wolf; index_decalage < monde_courant->nb_wolf - 1; index_decalage++)
   {
-    monde_courant->wolfs_tab[i] = monde_courant->wolfs_tab[i + 1];
+    monde_courant->wolfs_tab[index_decalage] = monde_courant->wolfs_tab[index_decalage + 1];
   }
 
   monde_courant->wolfs_tab[monde_courant->nb_wolf - 1] = NULL;
   monde_courant->nb_wolf--;
 }
 
-/* ENtrées : le tableau de wolf, nombre de wolf
-    Sotie : aucune
-    Synopsis : libère toute les wolfs du tableau*/
-void free_wolf(Wolf **wolf_tab, int nombre_wolf)
+/**
+ * @brief Libère la mémoire de tous les loup alloués dans le tableau
+ * @details Parcourt le tableau de loups pour libérer individuellement chaque structure existante
+ * @param[in,out] tableau_wolfs Tableau contenant les pointeurs vers les loups
+ * @param[in] nombre_wolfs Nombre de loups dans le tableau
+ */
+void free_wolf(Wolf **tableau_wolfs, int nombre_wolfs)
 {
-  if (wolf_tab != NULL)
+  if (tableau_wolfs != NULL)
   {
-    for (int i = 0; i < nombre_wolf; i++)
+    for (int index_wolf = 0; index_wolf < nombre_wolfs; index_wolf++)
     {
-      if (wolf_tab[i] != NULL)
+      if (tableau_wolfs[index_wolf] != NULL)
       {
-        free(wolf_tab[i]);
-        wolf_tab[i] = NULL;
+        free(tableau_wolfs[index_wolf]);
+        tableau_wolfs[index_wolf] = NULL;
       }
     }
   }

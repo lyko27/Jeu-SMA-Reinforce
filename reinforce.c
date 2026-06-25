@@ -60,88 +60,6 @@ void liberer_trajectoire(Trajectoire *trajectoire)
 }
 
 /**
- * @brief Génère le vecteur de caractéristiques phi pour le Fermier à partir de sa perception
- * @param[in] perception Perception du fermier
- * @param[out] phi Tableau où on stock phi.
- */
-void generer_phi_fermier(PerceptionFermier perception, float *phi)
-{
-  phi[0] = 1.0f; // Biais
-
-  // Distance et direction du loup le plus proche
-  if (perception.dist_wolf > 0.001f && perception.dist_wolf < 99999.0f)
-  {
-    phi[1] = perception.dist_wolf / 1024.0f;            // distance normalisée
-    phi[2] = perception.dx_wolf / perception.dist_wolf; // direction x
-    phi[3] = perception.dy_wolf / perception.dist_wolf; // direction y
-  }
-  else
-  {
-    phi[1] = 1.0f;
-    phi[2] = 0.0f;
-    phi[3] = 0.0f;
-  }
-
-  // Distance et direction de la chèvre la plus proche
-  if (perception.dist_goat > 0.001f && perception.dist_goat < 99999.0f)
-  {
-    phi[4] = perception.dist_goat / 1024.0f;            // distance normalisée
-    phi[5] = perception.dx_goat / perception.dist_goat; // direction x
-    phi[6] = perception.dy_goat / perception.dist_goat; // direction y
-  }
-  else
-  {
-    phi[4] = 1.0f;
-    phi[5] = 0.0f;
-    phi[6] = 0.0f;
-  }
-}
-
-/**
- * @brief Génère le vecteur de caractéristiques phi pour un Loup à partir de sa perception
- * @param[in] wolf Pointeur vers le loup 
- * @param[in] perception Perception du loup
- * @param[out] phi Tableau où on stocke phi
- */
-void generer_phi_wolf(Wolf *wolf, PerceptionWolf perception, float *phi)
-{
-  phi[0] = 1.0f; // Biais
-
-  // Distance et direction de la chèvre la plus proche
-  if (perception.pos_x_goat != -1 && perception.dist_goat_proche > 0.001f && perception.dist_goat_proche < 99999.0f)
-  {
-    phi[1] = perception.dist_goat_proche / 1024.0f; // distance normalisée
-    float dx_goat = perception.pos_x_goat - wolf->x;
-    float dy_goat = perception.pos_y_goat - wolf->y;
-    phi[2] = dx_goat / perception.dist_goat_proche; // direction x
-    phi[3] = dy_goat / perception.dist_goat_proche; // direction y
-  }
-  else
-  {
-    phi[1] = 1.0f;
-    phi[2] = 0.0f;
-    phi[3] = 0.0f;
-  }
-
-  // Distance et direction du fermier
-  float dx_fermier = perception.pos_x_fermier - wolf->x;
-  float dy_fermier = perception.pos_y_fermier - wolf->y;
-  float dist_fermier = sqrtf(dx_fermier * dx_fermier + dy_fermier * dy_fermier);
-  if (dist_fermier > 0.001f && dist_fermier < 99999.0f)
-  {
-    phi[4] = dist_fermier / 1024.0f; // distance normalisée
-    phi[5] = dx_fermier / dist_fermier; // direction x
-    phi[6] = dy_fermier / dist_fermier; // direction y
-  }
-  else
-  {
-    phi[4] = 1.0f;
-    phi[5] = 0.0f;
-    phi[6] = 0.0f;
-  }
-}
-
-/**
  * @brief Calcule la distribution de probabilité Softmax sur les actions
  * @details Applique la formule softmax sur les logits calculés par le produit scalaire ( weights * phi )
  * soustrait le logit maximum pour assurer la stabilité
@@ -183,6 +101,47 @@ void calculer_softmax(const float *phi, float poids[][7], int nb_actions, int di
   for (int a = 0; a < nb_actions; a++)
   {
     probabilites[a] /= somme_exp;
+  }
+}
+
+
+// ..................... Reinforce pour le fermier
+
+/**
+ * @brief Génère le vecteur de caractéristiques phi pour le Fermier à partir de sa perception
+ * @param[in] perception Perception du fermier
+ * @param[out] phi Tableau où on stock phi.
+ */
+void generer_phi_fermier(PerceptionFermier perception, float *phi)
+{
+  phi[0] = 1.0f; // Biais
+
+  // Distance et direction du loup le plus proche
+  if (perception.dist_wolf > 0.001f && perception.dist_wolf < 99999.0f)
+  {
+    phi[1] = perception.dist_wolf / 1024.0f;            // distance normalisée
+    phi[2] = perception.dx_wolf / perception.dist_wolf; // direction x
+    phi[3] = perception.dy_wolf / perception.dist_wolf; // direction y
+  }
+  else
+  {
+    phi[1] = 1.0f;
+    phi[2] = 0.0f;
+    phi[3] = 0.0f;
+  }
+
+  // Distance et direction de la chèvre la plus proche
+  if (perception.dist_goat > 0.001f && perception.dist_goat < 99999.0f)
+  {
+    phi[4] = perception.dist_goat / 1024.0f;            // distance normalisée
+    phi[5] = perception.dx_goat / perception.dist_goat; // direction x
+    phi[6] = perception.dy_goat / perception.dist_goat; // direction y
+  }
+  else
+  {
+    phi[4] = 1.0f;
+    phi[5] = 0.0f;
+    phi[6] = 0.0f;
   }
 }
 
@@ -250,6 +209,113 @@ void mise_a_jour_reinforce_fermier(Fermier *fermier, Trajectoire *trajectoires, 
     }
   }
 }
+
+/**
+ * @brief Sauvegarde les poids du Fermier dans un fichier texte
+ * @param[in] fermier Pointeur vers l'agent Fermier
+ * @param[in] filepath Chemin du fichier cible
+ * @return int 1 si succès, 0 sinon
+ */
+int sauvegarder_poids_fermier(Fermier *fermier, char *filepath)
+{
+  FILE *file = fopen(filepath, "w");
+  if (!file)
+    return 0;
+  for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
+  {
+    for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
+    {
+      fprintf(file, "%f ", fermier->weights[a][k]);
+    }
+    fprintf(file, "\n");
+  }
+  fclose(file);
+  return 1;
+}
+
+/**
+ * @brief Charge les poids du Fermier depuis un fichier texte
+ * @param[in,out] fermier Pointeur vers l'agent Fermier.
+ * @param[in] filepath Chemin du fichier source
+ * @return int 1 si succès, 0 sinon
+ */
+int charger_poids_fermier(Fermier *fermier, char *filepath)
+{
+  FILE *file = fopen(filepath, "r");
+  if (!file)
+    return 0;
+  for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
+  {
+    for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
+    {
+      if (fscanf(file, "%f", &fermier->weights[a][k]) != 1)
+      {
+        fclose(file);
+        return 0;
+      }
+    }
+  }
+  fclose(file);
+  return 1;
+}
+
+
+
+
+
+
+// .................. Reinforce pour le loup
+
+
+
+
+
+/**
+ * @brief Génère le vecteur de caractéristiques phi pour un Loup à partir de sa perception
+ * @param[in] wolf Pointeur vers le loup 
+ * @param[in] perception Perception du loup
+ * @param[out] phi Tableau où on stocke phi
+ */
+void generer_phi_wolf(Wolf *wolf, PerceptionWolf perception, float *phi)
+{
+  phi[0] = 1.0f; // Biais
+
+  // Distance et direction de la chèvre la plus proche
+  if (perception.pos_x_goat != -1 && perception.dist_goat_proche > 0.001f && perception.dist_goat_proche < 99999.0f)
+  {
+    phi[1] = perception.dist_goat_proche / 1024.0f; // distance normalisée
+    float dx_goat = perception.pos_x_goat - wolf->x;
+    float dy_goat = perception.pos_y_goat - wolf->y;
+    phi[2] = dx_goat / perception.dist_goat_proche; // direction x
+    phi[3] = dy_goat / perception.dist_goat_proche; // direction y
+  }
+  else
+  {
+    phi[1] = 1.0f;
+    phi[2] = 0.0f;
+    phi[3] = 0.0f;
+  }
+
+  // Distance et direction du fermier
+  float dx_fermier = perception.pos_x_fermier - wolf->x;
+  float dy_fermier = perception.pos_y_fermier - wolf->y;
+  float dist_fermier = sqrtf(dx_fermier * dx_fermier + dy_fermier * dy_fermier);
+  if (dist_fermier > 0.001f && dist_fermier < 99999.0f)
+  {
+    phi[4] = dist_fermier / 1024.0f; // distance normalisée
+    phi[5] = dx_fermier / dist_fermier; // direction x
+    phi[6] = dy_fermier / dist_fermier; // direction y
+  }
+  else
+  {
+    phi[4] = 1.0f;
+    phi[5] = 0.0f;
+    phi[6] = 0.0f;
+  }
+}
+
+
+
 
 /**
  * @brief Met à jour les poids de la politique des Loups en appliquant l'algorithme REINFORCE
@@ -322,55 +388,6 @@ void mise_a_jour_reinforce_loups(Wolf **loups, int nb_loups, Trajectoire *trajec
       }
     }
   }
-}
-
-/**
- * @brief Sauvegarde les poids du Fermier dans un fichier texte
- * @param[in] fermier Pointeur vers l'agent Fermier
- * @param[in] filepath Chemin du fichier cible
- * @return int 1 si succès, 0 sinon
- */
-int sauvegarder_poids_fermier(Fermier *fermier, char *filepath)
-{
-  FILE *file = fopen(filepath, "w");
-  if (!file)
-    return 0;
-  for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
-  {
-    for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
-    {
-      fprintf(file, "%f ", fermier->weights[a][k]);
-    }
-    fprintf(file, "\n");
-  }
-  fclose(file);
-  return 1;
-}
-
-/**
- * @brief Charge les poids du Fermier depuis un fichier texte
- * @param[in,out] fermier Pointeur vers l'agent Fermier.
- * @param[in] filepath Chemin du fichier source
- * @return int 1 si succès, 0 sinon
- */
-int charger_poids_fermier(Fermier *fermier, char *filepath)
-{
-  FILE *file = fopen(filepath, "r");
-  if (!file)
-    return 0;
-  for (int a = 0; a < NB_ACTIONS_FERMIER; a++)
-  {
-    for (int k = 0; k < DIMENSION_PHI_FERMIER; k++)
-    {
-      if (fscanf(file, "%f", &fermier->weights[a][k]) != 1)
-      {
-        fclose(file);
-        return 0;
-      }
-    }
-  }
-  fclose(file);
-  return 1;
 }
 
 /**

@@ -244,13 +244,6 @@ monde *generer_un_monde(monde *monde_courant)
    notre jeu */
 monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, int input_y)
 {
-    // economie :
-    if (tick_animation % 60 == 0)
-    {
-        monde_courant->fermiers->or += monde_courant->nb_goat * 2; // +2 pièces par chèvre vivante par seconde
-    }
-
-
     // Chèvres
     for (int i = 0; i < monde_courant->nb_goat; i++)
     {

@@ -2,8 +2,6 @@
  * @file fermier.h
  * @brief Déclarations des structures et fonctions de l'agent Fermier.
  * @details Gère l'état du fermier, ses structures de données, sa perception et les prototypes de fonctions associées.
- * @author Nicolas
- * @date 25 Juin 2026
  */
 
 #ifndef fermier_h

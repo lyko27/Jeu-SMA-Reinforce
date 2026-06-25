@@ -196,7 +196,7 @@ monde *generer_un_monde(monde *monde_courant)
     int écart_x = 120;
     int écart_y = 100;
     int nbre_collonne = 4;
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < NB_CHEVRES; i++)
     {
         Goat *une_goat = malloc(sizeof(Goat));
         if (une_goat)
@@ -219,7 +219,7 @@ monde *generer_un_monde(monde *monde_courant)
             return NULL;
         }
     }
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < NB_LOUPS; i++)
     {
         Wolf *un_wolf = malloc(sizeof(Wolf));
         if (un_wolf)

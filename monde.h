@@ -27,6 +27,9 @@ static inline int thread_safe_rand(void)
 #include "loup.h"
 #include "fermier.h"
 
+#define NB_LOUPS 4
+#define NB_CHEVRES 20
+
 #define LARGEUR 2048
 #define HAUTEUR 1152
 #define MARGE 90

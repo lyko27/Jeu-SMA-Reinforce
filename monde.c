@@ -393,7 +393,7 @@ void afficher_monde(monde *monde_courant)
 
     afficher_planche(monde_courant->nb_goat, monde_courant->nb_wolf);
     afficher_mode(monde_courant->mode);
-    if(monde_courant->en_pause==1){
+    if(monde_courant->en_pause==1 && monde_courant->nb_goat > 0 && monde_courant->nb_wolf > 0  ){
         afficher_pause();
     } 
     // Vérifier si le jeu est fini 

@@ -20,7 +20,7 @@ struct monde_t;
  * @brief Représente une transition (état, action, récompense) à une étape donnée
  */
 typedef struct {
-  float phi[7];       ///< Vecteur de caractéristiques de l'état (taille fixe de 7)
+  float phi[MAX_DIMENSION_PHI];       ///< Vecteur de caractéristiques de l'état (taille fixe de MAX_DIMENSION_PHI)
   int action;         ///< Indice de l'action choisie à cette étape
   float recompense;   ///< Récompense immédiate obtenue suite à l'action
 } Transition;

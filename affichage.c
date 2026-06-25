@@ -1,7 +1,7 @@
 /**
  * @file affichage.c
- * @brief Fonction qui gere tout l'affichage du jeu de la declaration et l'initialisation des textures a leur destruction.
- * @details Gestion des sprites de l'ath du compteur des entites.
+ * @brief Fonction qui gère tout l'affichage du jeu, de la déclaration et l'initialisation des textures à leur destruction.
+ * @details Gestion des sprites de l'ATH, du compteur et des entités.
  * @author Sohail
  * @date 18 Juin 2026
  */
@@ -25,11 +25,10 @@ SDL_Texture *texture_fin_loups_gagnent = NULL;
 SDL_Texture *texture_fin_fermier_gagne = NULL;
 TTF_Font *police_compteur = NULL;
 
-//fonction qui initialise et charge les textures
 /**
  * @brief Initialise la SDL et charge les textures.
- * @details Tous les images a charger sont dans ./images et Tous les fonts dans ./fonts.
- * @return int Renvoie 1 si le chargement de la SDL et des texture est réussie, 0 si il y a eu un probleme lors du chargement.
+ * @details Toutes les images à charger sont dans ./images et toutes les polices dans ./fonts.
+ * @return int Renvoie 1 si le chargement de la SDL et des textures est réussi, 0 s'il y a eu un problème lors du chargement.
  */
 int init_affichage()
 {
@@ -82,10 +81,10 @@ int init_affichage()
 }
 
 /**
- * @brief Gestion de la direction dans l'image du sprite de la chevre en fonction de la direction en entree .
- * @details Nous nous sommes mis d'accord que direction prend dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
- * @param[in] direction la direction calculee dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
- * @return int Renvoie la direction dans le sprite qui correspont a la direction donnee en entree (expl : si on a en entree direction=1 (haut) et que dans le sprite de chevre le deplacement de la chevre est dans la ligne 2 du sprite par exemple la fonction renvoie 2).
+ * @brief Gestion de la direction dans l'image du sprite de la chèvre en fonction de la direction en entrée.
+ * @details Il est convenu que la direction prend les valeurs suivantes dans les autres fonctions : 1=haut, 2=droite, 3=bas, 4=gauche.
+ * @param[in] direction La direction calculée dans les autres fonctions (1=haut, 2=droite, 3=bas, 4=gauche).
+ * @return int Renvoie l'index de la ligne dans le sprite correspondant à la direction donnée en entrée (ex : si la direction vaut 1 (haut) et que l'animation de dos est sur la ligne 3, la fonction renvoie 3).
  */
 int gestion_direction_chevre(int direction)
 {
@@ -101,10 +100,10 @@ int gestion_direction_chevre(int direction)
 }
 
 /**
- * @brief Gestion de la direction dans l'image du sprite du fermier en fonction de la direction en entree .
- * @details Nous nous sommes mis d'accord que direction prend dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
- * @param[in] direction la direction calculee dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
- * @return int Renvoie la direction dans le sprite qui correspont a la direction donnee en entree (expl : si on a en entree direction=1 (haut) et que dans le sprite de chevre le deplacement de la chevre est dans la ligne 2 du sprite par exemple la fonction renvoie 2).
+ * @brief Gestion de la direction dans l'image du sprite du fermier en fonction de la direction en entrée.
+ * @details Il est convenu que la direction prend les valeurs suivantes dans les autres fonctions : 1=haut, 2=droite, 3=bas, 4=gauche.
+ * @param[in] direction La direction calculée dans les autres fonctions (1=haut, 2=droite, 3=bas, 4=gauche).
+ * @return int Renvoie l'index de la ligne dans le sprite correspondant à la direction donnée en entrée.
  */
 int gestion_direction_fermier(int direction)
 {
@@ -120,10 +119,10 @@ int gestion_direction_fermier(int direction)
 }
 
 /**
- * @brief Gestion de la direction dans l'image du sprite du loup en fonction de la direction en entree .
- * @details Nous nous sommes mis d'accord que direction prend dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
- * @param[in] direction la direction calculee dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
- * @return int Renvoie la direction dans le sprite qui correspont a la direction donnee en entree (expl : si on a en entree direction=1 (haut) et que dans le sprite de chevre le deplacement de la chevre est dans la ligne 2 du sprite par exemple la fonction renvoie 2).
+ * @brief Gestion de la direction dans l'image du sprite du loup en fonction de la direction en entrée.
+ * @details Il est convenu que la direction prend les valeurs suivantes dans les autres fonctions : 1=haut, 2=droite, 3=bas, 4=gauche.
+ * @param[in] direction La direction calculée dans les autres fonctions (1=haut, 2=droite, 3=bas, 4=gauche).
+ * @return int Renvoie l'index de la ligne dans le sprite correspondant à la direction donnée en entrée.
  */
 int gestion_direction_wolf(int direction)
 {
@@ -139,8 +138,8 @@ int gestion_direction_wolf(int direction)
 }
 
 /**
- * @brief Affiche la planche en haut a gauche avec un compteur du nombre de loups vivants et un compteur du nombre de chevres vivantes.
- * @param[in] nb_chevres Le nombre de chevres vivantes.
+ * @brief Affiche la planche en haut à gauche avec un compteur du nombre de loups vivants et un compteur du nombre de chèvres vivantes.
+ * @param[in] nb_chevres Le nombre de chèvres vivantes.
  * @param[in] nb_loups Le nombre de loups vivants.
  */
 void afficher_planche(int nb_chevres, int nb_loups)
@@ -205,8 +204,8 @@ void afficher_planche(int nb_chevres, int nb_loups)
 }
 
 /**
- * @brief Affiche la planche en haut a droite avec une indication sur comment changer de mode et indique aussi dans quel mode nous somme actuellement.
- * @param[in] mode Le mode dans lequel on est 0 si c'est le mode manuel 1 si c'est le mode automatique.
+ * @brief Affiche la planche en haut à droite indiquant le mode actuel et comment le changer.
+ * @param[in] mode Le mode actuel (0 pour le mode manuel, 1 pour le mode automatique).
  */
 void afficher_mode(int mode)
 {
@@ -255,8 +254,8 @@ void afficher_mode(int mode)
 }
 
 /**
- * @brief Affiche un panneau pause quand la fonction est appelee (cad quand le jeu est en pause).
- * @details Utilise un fond noir peu opaque derriere le panneau pause.
+ * @brief Affiche un panneau de pause lorsque le jeu est suspendu.
+ * @details Applique un fond noir semi-transparent derrière le panneau de pause pour griser le jeu.
  */
 void afficher_pause()
 {
@@ -286,9 +285,9 @@ void afficher_pause()
 }
     
 /**
- * @brief Affiche le panneau de fin de jeu en fonction de comment se fini le jeu.
- * @details Si tous les loups sont morts ca indique que le fermier a tue tous les loups et si tous les chevres sont mortes ca indique que les loups ont mange tous les chevres.
- * @param[in] fermier_gagne int qui vaut 1 si le fermier gagne dont il faut afficher que tous les loups sont morts et vaut 0 quand le fermier perd, il faut afficher que toutes les chevres sont mortes.
+ * @brief Affiche le panneau de fin de jeu en fonction de l'issue de la partie.
+ * @details Si tous les loups sont morts, indique que le fermier a gagné. Si toutes les chèvres sont mortes, indique que les loups ont gagné.
+ * @param[in] fermier_gagne Vaut 1 si le fermier gagne (affichage de la défaite des loups) et 0 si le fermier perd (affichage de la défaite des chèvres).
  */
 void afficher_fin(int fermier_gagne)
 {
@@ -324,15 +323,14 @@ void afficher_fin(int fermier_gagne)
     }
 }
 
-//fonction qui dessine une entite donne en parametre dans l'endroit donne en parametre suivant la frame et la direction donnees en parametre aussi  
 /**
- * @brief Dessine l'entite demandee.
- * @details les entites sont numerotees (1=chevre,2=fermier,4=loup).
- * @param[in] type_entite int le type de l'entite.
- * @param[in] position_x int Position x du sprite de l'entite sur l'ecran.
- * @param[in] position_y int Position y du sprite de l'entite sur l'ecran.
- * @param[in] frame int la frame du sprite qu'il faut utiliser.
- * @param[in] direction int Dans quelle direction va notre entite (1=haut,2=droite,3=bas,4=gauche).
+ * @brief Dessine l'entité demandée à l'écran.
+ * @details Les entités sont numérotées ainsi : 1=chèvre, 2=fermier, 4=loup.
+ * @param[in] type_entite Le type de l'entité (1, 2 ou 4).
+ * @param[in] position_x Position X du sprite sur l'écran.
+ * @param[in] position_y Position Y du sprite sur l'écran.
+ * @param[in] frame La frame du sprite à utiliser pour l'animation.
+ * @param[in] direction La direction de l'entité (1=haut, 2=droite, 3=bas, 4=gauche).
  */
 void dessiner_entite(int type_entite, int position_x, int position_y, int frame, int direction)
 {
@@ -390,7 +388,7 @@ void dessiner_entite(int type_entite, int position_x, int position_y, int frame,
     SDL_RenderCopy(renderer, texture_actuelle, &state, &destination);
 }
 /**
- * @brief Prepare l'affichage de la carte.
+ * @brief Efface le rendu actuel et dessine la texture de la carte en arrière-plan.
  */
 void dessiner_monde()
 {
@@ -398,14 +396,14 @@ void dessiner_monde()
     SDL_RenderCopy(renderer, texture_fond, NULL, NULL);
 }
 /**
- * @brief Affiche tout ce qu'on a prepare et charge avant.
+ * @brief Actualise l'écran pour afficher tout ce qui a été préparé en mémoire.
  */
 void actualiser_ecran()
 {
     SDL_RenderPresent(renderer);
 }
 /**
- * @brief Libere la memoire et les textures SDL.
+ * @brief Libère proprement la mémoire, ferme les polices et détruit les textures ainsi que la fenêtre SDL.
  */
 void quitter_affichage()
 {

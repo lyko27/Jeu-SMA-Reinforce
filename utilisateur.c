@@ -7,7 +7,11 @@
  */
 #include "utilisateur.h"
 
-
+/**
+ * @brief Récupère les entrées de l'utilisateur (clavier et fermeture de fenêtre).
+ * @param[in,out] resultat Structure qui contient toutes les interactions possibles avec le monde.
+ * @return interaction_utilisateur* Un pointeur vers la structure mise à jour.
+ */
 interaction_utilisateur *recuperer_mouvement(interaction_utilisateur *resultat)
 {
     const Uint8 *Keyborad = SDL_GetKeyboardState(NULL);

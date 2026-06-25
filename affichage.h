@@ -1,14 +1,14 @@
+/**
+ * @file utilisateur.h
+ * @brief Déclarations des fonctions d'affichage en SDL.
+ * @author Sohail
+ * @date 18 Juin 2026
+ */
 #ifndef affichage_h
 #define affichage_h
 
 #include <SDL2/SDL.h>
 
-#define TAILLE_CELLULE 10.0f
-#define LARGEUR_MONDE 200
-#define HAUTEUR_MONDE 200
-
-extern SDL_Window *window;
-extern SDL_Renderer *renderer;
 
 void afficher_planche(int nb_chevres, int nb_loups);
 void quitter_affichage();

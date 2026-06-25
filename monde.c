@@ -195,8 +195,8 @@ monde *generer_un_monde(monde *monde_courant)
     int start_y = 300;
     int écart_x = 120;
     int écart_y = 100;
-    int nbre_collonne = 2;
-    for (int i = 0; i < 10; i++)
+    int nbre_collonne = 4;
+    for (int i = 0; i < NB_CHEVRES; i++)
     {
         Goat *une_goat = malloc(sizeof(Goat));
         if (une_goat)
@@ -219,7 +219,7 @@ monde *generer_un_monde(monde *monde_courant)
             return NULL;
         }
     }
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < NB_LOUPS; i++)
     {
         Wolf *un_wolf = malloc(sizeof(Wolf));
         if (un_wolf)
@@ -280,16 +280,8 @@ monde *mis_à_jour_monde(monde *monde_courant, int tick_animation, int input_x, 
         if (wolf->decision_cooldown <= 0)
         {
             PerceptionWolf perception_wolf = calculer_perception_wolf(wolf, monde_courant);
-            if (monde_courant->mode)
-            {
-                evaluer_interets_wolf_rl(wolf, perception_wolf);
-            }
-            else
-            {
-                evaluer_interets_wolf(wolf, perception_wolf);
-            }
-            wolf->action_choisi =
-                choisir_action_softmax(wolf->table_interets, NB_ACTIONS_WOLF);
+            evaluer_interets_wolf_rl(wolf, perception_wolf);
+            wolf->action_choisi = choisir_action_softmax(wolf->table_interets, NB_ACTIONS_WOLF);
             if (wolf->action_choisi == ACTION_WOLF_ERRER)
                 wolf->angle_actuel = ((float)rand() / (float)RAND_MAX) * 2.0 * 3.14;
             wolf->decision_cooldown = 30 + (rand() % 45); // Entre 0.5s et 1.25s à 60 FPS

@@ -48,8 +48,8 @@ int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
     EpisodeThreads *args = (EpisodeThreads *)parameters;
     int episode_id = args->episode_id;
     init_trajectoire(&args->trajectoires_fermier[episode_id]);
-    for (int w = 0; w < 3; w++)
-        init_trajectoire(&args->trajectoires_loups[episode_id * 3 + w]);
+    for (int w = 0; w < NB_LOUPS; w++)
+        init_trajectoire(&args->trajectoires_loups[episode_id * NB_LOUPS + w]);
 
     monde *monde_local = creer_monde(LARGEUR, HAUTEUR);
     monde_local = generer_un_monde(monde_local);
@@ -63,7 +63,7 @@ int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
     désigné par le paramètre destination. source : https://koor.fr/C/cstring/memcpy.wp*/
 
     memcpy(monde_local->fermiers->weights, args->fermier_poids->weights, sizeof(args->fermier_poids->weights));
-    for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+    for (int w = 0; w < monde_local->nb_wolf; w++)
     {
         memcpy(monde_local->wolfs_tab[w]->weights, args->loups_poids[w]->weights, sizeof(args->loups_poids[w]->weights));
     }
@@ -74,8 +74,8 @@ int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
         float phi_fermier[DIMENSION_PHI_FERMIER];
         PerceptionFermier perception_fermier = calculer_perception_fermier(monde_local->fermiers, monde_local);
         generer_phi_fermier(perception_fermier, phi_fermier);
-        float phi_loups[3][DIMENSION_PHI_WOLF];
-        for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+        float phi_loups[NB_LOUPS][DIMENSION_PHI_WOLF];
+        for (int w = 0; w < monde_local->nb_wolf; w++)
         {
             PerceptionWolf perception_loup = calculer_perception_wolf(monde_local->wolfs_tab[w], monde_local);
             generer_phi_wolf(monde_local->wolfs_tab[w], perception_loup, phi_loups[w]);
@@ -84,16 +84,16 @@ int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
 
         // Cacul des récompenses
         float r_fermier = calculer_recompense_fermier(monde_local);
-        float r_loups[3] = {0.0f, 0.0f, 0.0f};
-        for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+        float r_loups[NB_LOUPS] = {0.0f};
+        for (int w = 0; w < monde_local->nb_wolf; w++)
         {
             r_loups[w] = calculer_recompense_loup(monde_local->wolfs_tab[w], monde_local);
         }
         // on enregistre dans la trajectoire
         ajouter_transition(&args->trajectoires_fermier[episode_id], phi_fermier, monde_local->fermiers->action_id, r_fermier);
-        for (int w = 0; w < monde_local->nb_wolf && w < 3; w++)
+        for (int w = 0; w < monde_local->nb_wolf; w++)
         {
-            ajouter_transition(&args->trajectoires_loups[episode_id * 3 + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
+            ajouter_transition(&args->trajectoires_loups[episode_id * NB_LOUPS + w], phi_loups[w], monde_local->wolfs_tab[w]->action_choisi, r_loups[w]);
         }
         // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]); // (à décomenter pour afficher mais ralenti l'entrainement)
     }
@@ -104,7 +104,7 @@ int lancer_un_episode(void *parameters) // Voir 5.4 site du projet
 // Calcul de la récompense instantanée pour le fermier
 float calculer_recompense_fermier(monde *m)
 {
-    float r = -0.5f; // Pénalité de temps
+    float r = -0.005f; // Pénalité de temps
     Fermier *f = m->fermiers;
     float min_dist_wolf = 9999.0f;
 
@@ -132,7 +132,7 @@ float calculer_recompense_fermier(monde *m)
                     float dist_g = sqrtf(dgx * dgx + dgy * dgy);
                     if (dist_g < 50.0f)
                     {
-                        r -= 10.0f; // Pénalité pour que le fermier protège la chèvre
+                        r -= 0.10f; // Pénalité pour que le fermier protège la chèvre
                     }
                 }
             }
@@ -140,12 +140,12 @@ float calculer_recompense_fermier(monde *m)
     }
     if (min_dist_wolf < 9999.0f)
     {
-        r += (800.0f - min_dist_wolf) / 100.0f; // Gradient d'approche ajusté
+        r += (800.0f - min_dist_wolf) / 5000.0f; // Gradient d'approche plus fort
     }
 
-    if (min_dist_wolf < 80.0f)
+    if (min_dist_wolf < 120.0f)
     {
-        r += 50.0f; // Grosse récompense pour chasser le loup
+        r += 1.0f; // Grosse récompense plus importante
     }
     return r;
 }
@@ -153,7 +153,7 @@ float calculer_recompense_fermier(monde *m)
 // Calcul de la récompense instantanée pour un loup
 float calculer_recompense_loup(Wolf *w, monde *m)
 {
-    float r = -0.5f; // Pénalité de temps
+    float r = -0.005f; // Pénalité de temps
     float min_dist_chevre = 9999.0f;
 
     for (int j = 0; j < m->nb_goat; j++)
@@ -170,14 +170,14 @@ float calculer_recompense_loup(Wolf *w, monde *m)
             }
             if (dist < 40.0f)
             {
-                r += 80.0f; // Récompense pour avoir mangé/attrapé une chèvre
+                r += 0.60f; // Récompense intermédiaire pour la chèvre
             }
         }
     }
 
     if (min_dist_chevre < 9999.0f)
     {
-        r += (400.0f - min_dist_chevre) / 100.0f; // Récompense pour chasser la chèvre
+        r += (400.0f - min_dist_chevre) / 4000.0f; // Gradient plus fort pour être moins timide
     }
 
     Fermier *f = m->fermiers;
@@ -188,11 +188,11 @@ float calculer_recompense_loup(Wolf *w, monde *m)
         float dist_f = sqrtf(dfx * dfx + dfy * dfy);
         if (dist_f < 200.0f)
         {
-            r -= (250.0f - dist_f) / 10.0f; // Peur du fermier
+            r -= (200.0f - dist_f) / 200.0f; // Peur seulement s'il est plus près
         }
-        if (dist_f < 100.0f)
+        if (dist_f < 120.0f)
         {
-            r -= 80.0f; // Grosse pénalité (supérieure à la récompense d'une chèvre) s'il est très proche
+            r -= 1.50f; // S'il s'approche trop, grosse punition
         }
     }
     return r;
@@ -221,21 +221,25 @@ void entrainer_agents(int simple_ou_multi_coeur)
     int nb_cycles = 10000;
     int nb_episodes = 25;
     int max_steps = 1000;
-    float alpha = 0.00000001f;
+    float alpha = 0.00002f; // Alpha légèrement réduit pour la stabilité
     float gamma = 0.99f;
 
     if (simple_ou_multi_coeur == 1)
-        printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Simple Coeur ! ...\n", nb_cycles, nb_episodes);
+        printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en "
+               "mode : Simple Coeur ! ...\n",
+               nb_cycles, nb_episodes);
     else
-        printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en mode : Multi-Coeur ! ...\n", nb_cycles, nb_episodes);
+        printf("\nEntraînement en cours pour %d cycles et %d épisodes par cycle en "
+               "mode : Multi-Coeur ! ...\n",
+               nb_cycles, nb_episodes);
 
     // Mémoriser les poids appris d'une époque à l'autre
     Fermier *fermier_poids = malloc(sizeof(Fermier));
     init_fermier(fermier_poids);
     charger_poids_fermier(fermier_poids, "poids_fermier.txt");
 
-    Wolf *loups_poids[3];
-    for (int i = 0; i < 3; i++)
+    Wolf *loups_poids[NB_LOUPS];
+    for (int i = 0; i < NB_LOUPS; i++)
     {
         loups_poids[i] = malloc(sizeof(Wolf));
         init_wolf(loups_poids[i]);
@@ -245,17 +249,19 @@ void entrainer_agents(int simple_ou_multi_coeur)
 
     for (int cycle = 1; cycle <= nb_cycles; cycle++)
     {
-        Trajectoire *trajectoires_fermier = malloc(nb_episodes * sizeof(Trajectoire));
-        Trajectoire *trajectoires_loups = malloc(nb_episodes * 3 * sizeof(Trajectoire));
+        Trajectoire *trajectoires_fermier =
+            malloc(nb_episodes * sizeof(Trajectoire));
+        Trajectoire *trajectoires_loups =
+            malloc(nb_episodes * NB_LOUPS * sizeof(Trajectoire));
 
         if (simple_ou_multi_coeur == 1)
         {
             for (int ep = 0; ep < nb_episodes; ep++)
             {
                 init_trajectoire(&trajectoires_fermier[ep]);
-                for (int w = 0; w < 3; w++)
+                for (int w = 0; w < NB_LOUPS; w++)
                 {
-                    init_trajectoire(&trajectoires_loups[ep * 3 + w]);
+                    init_trajectoire(&trajectoires_loups[ep * NB_LOUPS + w]);
                 }
 
                 monde *m = creer_monde(LARGEUR, HAUTEUR);
@@ -263,23 +269,27 @@ void entrainer_agents(int simple_ou_multi_coeur)
                 m->mode = 2;
 
                 // Injection des poids
-                memcpy(m->fermiers->weights, fermier_poids->weights, sizeof(fermier_poids->weights));
-                for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                memcpy(m->fermiers->weights, fermier_poids->weights,
+                       sizeof(fermier_poids->weights));
+                for (int w = 0; w < m->nb_wolf; w++)
                 {
-                    memcpy(m->wolfs_tab[w]->weights, loups_poids[w]->weights, sizeof(loups_poids[w]->weights));
+                    memcpy(m->wolfs_tab[w]->weights, loups_poids[w]->weights,
+                           sizeof(loups_poids[w]->weights));
                 }
 
                 for (int step = 0; step < max_steps; step++)
                 {
                     // Extraire phi dans l'état courant
                     float phi_fermier[DIMENSION_PHI_FERMIER];
-                    PerceptionFermier perc_fermier = calculer_perception_fermier(m->fermiers, m);
+                    PerceptionFermier perc_fermier =
+                        calculer_perception_fermier(m->fermiers, m);
                     generer_phi_fermier(perc_fermier, phi_fermier);
 
-                    float phi_loups[3][DIMENSION_PHI_WOLF];
-                    for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                    float phi_loups[NB_LOUPS][DIMENSION_PHI_WOLF];
+                    for (int w = 0; w < m->nb_wolf; w++)
                     {
-                        PerceptionWolf perc_wolf = calculer_perception_wolf(m->wolfs_tab[w], m);
+                        PerceptionWolf perc_wolf =
+                            calculer_perception_wolf(m->wolfs_tab[w], m);
                         generer_phi_wolf(m->wolfs_tab[w], perc_wolf, phi_loups[w]);
                     }
 
@@ -288,19 +298,21 @@ void entrainer_agents(int simple_ou_multi_coeur)
                     // Calculer les récompenses suite à l'action
                     float r_fermier = calculer_recompense_fermier(m);
 
-                    float r_loups[3] = {0.0f, 0.0f, 0.0f};
-                    for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                    float r_loups[NB_LOUPS] = {0.0f};
+                    for (int w = 0; w < m->nb_wolf; w++)
                     {
                         r_loups[w] = calculer_recompense_loup(m->wolfs_tab[w], m);
                     }
 
                     // Enregistrer l'étape dans les trajectoires correspondantes
                     ajouter_transition(&trajectoires_fermier[ep], phi_fermier, m->fermiers->action_id, r_fermier);
-                    for (int w = 0; w < m->nb_wolf && w < 3; w++)
+                    for (int w = 0; w < m->nb_wolf; w++)
                     {
-                        ajouter_transition(&trajectoires_loups[ep * 3 + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
+                        ajouter_transition(&trajectoires_loups[ep * NB_LOUPS + w], phi_loups[w], m->wolfs_tab[w]->action_choisi, r_loups[w]);
                     }
-                    // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier, r_loups[0]); // (à décomenter pour afficher mais ralenti l'entrainement)
+                    // printf("Récompense fermier : %f Recompense loup : %f\n", r_fermier,
+                    // r_loups[0]); // (à décomenter pour afficher mais ralenti
+                    // l'entrainement)
                 }
                 nettoyer_monde(m);
             }
@@ -340,15 +352,15 @@ void entrainer_agents(int simple_ou_multi_coeur)
 
         // Appliquer reinforce
         mise_a_jour_reinforce_fermier(fermier_poids, trajectoires_fermier, nb_episodes, alpha, gamma);
-        mise_a_jour_reinforce_loups(loups_poids, 3, trajectoires_loups, nb_episodes, alpha, gamma);
+        mise_a_jour_reinforce_loups(loups_poids, NB_LOUPS, trajectoires_loups, nb_episodes, alpha, gamma);
 
         // Libération de la mémoire des trajectoires
         for (int ep = 0; ep < nb_episodes; ep++)
         {
             liberer_trajectoire(&trajectoires_fermier[ep]);
-            for (int w = 0; w < 3; w++)
+            for (int w = 0; w < NB_LOUPS; w++)
             {
-                liberer_trajectoire(&trajectoires_loups[ep * 3 + w]);
+                liberer_trajectoire(&trajectoires_loups[ep * NB_LOUPS + w]);
             }
         }
         free(trajectoires_fermier);
@@ -362,10 +374,12 @@ void entrainer_agents(int simple_ou_multi_coeur)
     sauvegarder_poids_fermier(fermier_poids, "poids_fermier.txt");
     sauvegarder_poids_loup(loups_poids[0], "poids_loup.txt");
     free(fermier_poids);
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < NB_LOUPS; i++)
         free(loups_poids[i]);
     time_t end = time(NULL);
-    printf("\nEntairnement terminé ! %d cyles effectués en %ld minutes et %ld secondes\n", nbre_cycles_effectués, ((unsigned long)difftime(end, begin)) / 60, ((unsigned long)difftime(end, begin)) % 60);
+    printf("\nEntairnement terminé ! %d cyles effectués en %ld minutes et %ld " "secondes\n",
+           nbre_cycles_effectués, ((unsigned long)difftime(end, begin)) / 60,
+           ((unsigned long)difftime(end, begin)) % 60);
 }
 
 int main(int argc, char **argv)

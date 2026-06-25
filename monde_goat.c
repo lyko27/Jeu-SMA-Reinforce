@@ -85,7 +85,7 @@ Goat *update_goat(monde *monde_courant, Goat *goat, ActionGoat action, int tick_
 
   if (action == ACTION_ERRER || action == ACTION_FUIR_WOLF)
   {
-    goat->speed = 2;
+    goat->speed = 1.5;
     if (action == ACTION_FUIR_WOLF)
     {
       if (perception_goat.pos_x_wolf != -1)

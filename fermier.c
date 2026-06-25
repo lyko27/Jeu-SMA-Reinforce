@@ -2,8 +2,6 @@
  * @file fermier.c
  * @brief Implémentation des fonctions de décision et d'évaluation pour l'agent Fermier.
  * @details Gère la prise de décision manuelle (clavier) et l'évaluation des intérêts (par renforcement) du fermier.
- * @author Nicolas
- * @date 18 Juin 2026
  */
 
 #include "fermier.h"
@@ -15,7 +13,7 @@
  *          depuis la perception et les stockes comme la direction choisie par le fermier.
  * @param[in,out] fermier la structure de l'agent Fermier à modifier.
  * @param[in] perception_fermier Perception contenant les entrées utilisateur (clavier).
- * @return ActionFermier L'action de déplacement calculée (contient dx et dy).
+ * @return ActionFermier L'action de déplacement calculée dx et dy
  */
 ActionFermier decider_action_fermier(Fermier *fermier, PerceptionFermier perception_fermier)
 {

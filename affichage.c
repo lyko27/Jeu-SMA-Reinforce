@@ -1,3 +1,11 @@
+/**
+ * @file affichage.c
+ * @brief Fonction qui gere tout l'affichage du jeu de la declaration et l'initialisation des textures a leur destruction.
+ * @details Gestion des sprites de l'ath du compteur des entites.
+ * @author Sohail
+ * @date 18 Juin 2026
+ */
+
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -8,7 +16,6 @@ SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 SDL_Texture *texture_fond = NULL;
 SDL_Texture *texture_chevre = NULL;
-SDL_Texture *texture_chevreau = NULL;
 SDL_Texture *texture_fermier = NULL;
 SDL_Texture *texture_wolf = NULL;
 SDL_Texture *texture_planche = NULL;
@@ -19,6 +26,11 @@ SDL_Texture *texture_fin_fermier_gagne = NULL;
 TTF_Font *police_compteur = NULL;
 
 //fonction qui initialise et charge les textures
+/**
+ * @brief Initialise la SDL et charge les textures.
+ * @details Tous les images a charger sont dans ./images et Tous les fonts dans ./fonts.
+ * @return int Renvoie 1 si le chargement de la SDL et des texture est réussie, 0 si il y a eu un probleme lors du chargement.
+ */
 int init_affichage()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -53,7 +65,6 @@ int init_affichage()
 
     texture_fond = IMG_LoadTexture(renderer, "./images/map.png");
     texture_chevre = IMG_LoadTexture(renderer, "./images/goat.png");
-    texture_chevreau = IMG_LoadTexture(renderer, "./images/baby_goat.png");
     texture_fermier = IMG_LoadTexture(renderer, "./images/fermier_marche.png");
     texture_wolf = IMG_LoadTexture(renderer, "./images/loup.png");
     texture_planche = IMG_LoadTexture(renderer, "./images/ath.png");
@@ -62,15 +73,20 @@ int init_affichage()
     texture_fin_fermier_gagne = IMG_LoadTexture(renderer, "./images/fin_fermier_gagne.png");
     texture_fin_loups_gagnent = IMG_LoadTexture(renderer, "./images/fin_loups_gagnent.png");
 
-    if (!texture_fond || !texture_chevre || !texture_chevreau || !texture_fermier || !texture_planche || !texture_pause || !texture_mode || !texture_fin_loups_gagnent || !texture_fin_fermier_gagne)
+    if (!texture_fond || !texture_chevre || !texture_fermier || !texture_planche || !texture_pause || !texture_mode || !texture_fin_loups_gagnent || !texture_fin_fermier_gagne)
     {
         printf("Erreur chargement image : %s\n", IMG_GetError());
         return 0;
     }
     return 1;
 }
-//les fonction de gestions de directions gerent les direction en fonction du sprite de l'entite nous nous sommes mis d'accord de dire (1=haut,2=droite,3=bas,4=gauche)
 
+/**
+ * @brief Gestion de la direction dans l'image du sprite de la chevre en fonction de la direction en entree .
+ * @details Nous nous sommes mis d'accord que direction prend dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
+ * @param[in] direction la direction calculee dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
+ * @return int Renvoie la direction dans le sprite qui correspont a la direction donnee en entree (expl : si on a en entree direction=1 (haut) et que dans le sprite de chevre le deplacement de la chevre est dans la ligne 2 du sprite par exemple la fonction renvoie 2).
+ */
 int gestion_direction_chevre(int direction)
 {
     if (direction == 1)
@@ -84,6 +100,12 @@ int gestion_direction_chevre(int direction)
     return 0;
 }
 
+/**
+ * @brief Gestion de la direction dans l'image du sprite du fermier en fonction de la direction en entree .
+ * @details Nous nous sommes mis d'accord que direction prend dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
+ * @param[in] direction la direction calculee dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
+ * @return int Renvoie la direction dans le sprite qui correspont a la direction donnee en entree (expl : si on a en entree direction=1 (haut) et que dans le sprite de chevre le deplacement de la chevre est dans la ligne 2 du sprite par exemple la fonction renvoie 2).
+ */
 int gestion_direction_fermier(int direction)
 {
     if (direction == 1)
@@ -97,6 +119,12 @@ int gestion_direction_fermier(int direction)
     return 2;
 }
 
+/**
+ * @brief Gestion de la direction dans l'image du sprite du loup en fonction de la direction en entree .
+ * @details Nous nous sommes mis d'accord que direction prend dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
+ * @param[in] direction la direction calculee dans les autres fonctions (1=haut,2=droite,3=bas,4=gauche).
+ * @return int Renvoie la direction dans le sprite qui correspont a la direction donnee en entree (expl : si on a en entree direction=1 (haut) et que dans le sprite de chevre le deplacement de la chevre est dans la ligne 2 du sprite par exemple la fonction renvoie 2).
+ */
 int gestion_direction_wolf(int direction)
 {
     if (direction == 1)
@@ -110,7 +138,11 @@ int gestion_direction_wolf(int direction)
     return 0;
 }
 
-// fonction qui affiche un planche en haut a gauche avec un compteur du nombre de chevres et un compteur du nombre de loups
+/**
+ * @brief Affiche la planche en haut a gauche avec un compteur du nombre de loups vivants et un compteur du nombre de chevres vivantes.
+ * @param[in] nb_chevres Le nombre de chevres vivantes.
+ * @param[in] nb_loups Le nombre de loups vivants.
+ */
 void afficher_planche(int nb_chevres, int nb_loups)
 {
     if (!police_compteur || !texture_planche)
@@ -172,7 +204,10 @@ void afficher_planche(int nb_chevres, int nb_loups)
     }
 }
 
-//fonction qui affiche le mode en haut a gauche "automatique" ou "manuel" et qui indique que l'on peut changer de mode en appuyant sur M
+/**
+ * @brief Affiche la planche en haut a droite avec une indication sur comment changer de mode et indique aussi dans quel mode nous somme actuellement.
+ * @param[in] mode Le mode dans lequel on est 0 si c'est le mode manuel 1 si c'est le mode automatique.
+ */
 void afficher_mode(int mode)
 {
     if (!police_compteur || !texture_mode)
@@ -219,7 +254,10 @@ void afficher_mode(int mode)
     }
 }
 
-//fonction qui affiche une planche qui informe le joueur que le jeu est en pause et qu'il peut appuyer sur espace pour reprendre le jeu
+/**
+ * @brief Affiche un panneau pause quand la fonction est appelee (cad quand le jeu est en pause).
+ * @details Utilise un fond noir peu opaque derriere le panneau pause.
+ */
 void afficher_pause()
 {
 
@@ -247,8 +285,12 @@ void afficher_pause()
     SDL_RenderCopy(renderer, texture_pause, NULL, &destination);
 }
     
-//fonction qui affiche un panneau fin en fonction nde comment se fini le jeu si le fermier gagne ou perd
-void afficher_fin(int fermier_gagne) // si fermier gagne vaut 1 on affiche la texture fermier_gagne si ca vaut 0 on affiche lous_gagnent
+/**
+ * @brief Affiche le panneau de fin de jeu en fonction de comment se fini le jeu.
+ * @details Si tous les loups sont morts ca indique que le fermier a tue tous les loups et si tous les chevres sont mortes ca indique que les loups ont mange tous les chevres.
+ * @param[in] fermier_gagne int qui vaut 1 si le fermier gagne dont il faut afficher que tous les loups sont morts et vaut 0 quand le fermier perd, il faut afficher que toutes les chevres sont mortes.
+ */
+void afficher_fin(int fermier_gagne)
 {
 
     // on vérifie que l'image a bien été chargée
@@ -283,6 +325,15 @@ void afficher_fin(int fermier_gagne) // si fermier gagne vaut 1 on affiche la te
 }
 
 //fonction qui dessine une entite donne en parametre dans l'endroit donne en parametre suivant la frame et la direction donnees en parametre aussi  
+/**
+ * @brief Dessine l'entite demandee.
+ * @details les entites sont numerotees (1=chevre,2=fermier,4=loup).
+ * @param[in] type_entite int le type de l'entite.
+ * @param[in] position_x int Position x du sprite de l'entite sur l'ecran.
+ * @param[in] position_y int Position y du sprite de l'entite sur l'ecran.
+ * @param[in] frame int la frame du sprite qu'il faut utiliser.
+ * @param[in] direction int Dans quelle direction va notre entite (1=haut,2=droite,3=bas,4=gauche).
+ */
 void dessiner_entite(int type_entite, int position_x, int position_y, int frame, int direction)
 {
     int nb_image = 0;
@@ -309,13 +360,6 @@ void dessiner_entite(int type_entite, int position_x, int position_y, int frame,
         nb_ligne = 4;
         direction = gestion_direction_fermier(direction);
     }
-    else if (type_entite == 3)
-    {
-        texture_actuelle = texture_chevreau;
-        nb_image = 4;
-        nb_ligne = 5;
-    }
-
     else if (type_entite == 4) { 
         zoom=0.6;
 
@@ -345,18 +389,24 @@ void dessiner_entite(int type_entite, int position_x, int position_y, int frame,
 
     SDL_RenderCopy(renderer, texture_actuelle, &state, &destination);
 }
-
+/**
+ * @brief Prepare l'affichage de la carte.
+ */
 void dessiner_monde()
 {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture_fond, NULL, NULL);
 }
-
+/**
+ * @brief Affiche tout ce qu'on a prepare et charge avant.
+ */
 void actualiser_ecran()
 {
     SDL_RenderPresent(renderer);
 }
-
+/**
+ * @brief Libere la memoire et les textures SDL.
+ */
 void quitter_affichage()
 {
     if (police_compteur != NULL)
@@ -371,7 +421,6 @@ void quitter_affichage()
     SDL_DestroyTexture(texture_chevre);
     SDL_DestroyTexture(texture_fermier);
     SDL_DestroyTexture(texture_wolf);
-    SDL_DestroyTexture(texture_chevreau);
     SDL_DestroyTexture(texture_planche);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

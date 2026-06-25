@@ -1,5 +1,12 @@
-
+/**
+ * @file utilisateur.c
+ * @brief Fonction pour la gestion des interactions de l'utilisateur avec le jeu.
+ * @details Gestion des boutons de deplacements, de pause, de mode de jeu.
+ * @author Sohail
+ * @date 18 Juin 2026
+ */
 #include "utilisateur.h"
+
 
 interaction_utilisateur *recuperer_mouvement(interaction_utilisateur *resultat)
 {

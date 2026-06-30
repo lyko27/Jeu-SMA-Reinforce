@@ -27,8 +27,8 @@ SDL_LIBS = $(shell sdl2-config --libs) -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 # -g debogage
 # -O0 pas d'optimisation (soutenance 1)
 # -fsanitize=address,undefined fuite de mémoire
-CFLAGS = $(CFLAGS_COMMON) $(SDL_CFLAGS) -g -O0 -fsanitize=address,undefined
-LDLIBS = -pthread $(SDL_LIBS) -fsanitize=address,undefined
+CFLAGS = $(CFLAGS_COMMON) $(SDL_CFLAGS) -g -O0 
+LDLIBS = -pthread $(SDL_LIBS)
 
 # Entrainement reinforce, on optimise
 # -O3 optimizer

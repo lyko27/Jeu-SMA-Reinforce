@@ -2,6 +2,10 @@
 
 ### A Multi-Agent System simulation featuring farmers, goats, and wolves, powered by Reinforcement Learning.
 
+<p align="center">
+  <img src="images/sma.gif" alt="Simulation Demo" width="700"/>
+</p>
+
 ---
 
 ## Technical Stack

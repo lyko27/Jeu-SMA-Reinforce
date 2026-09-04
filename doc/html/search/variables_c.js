@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['renderer_0',['renderer',['../affichage_8c.html#a966da7a60c4ea3ba301e26ccc5efe452',1,'renderer:&#160;affichage.c'],['../affichage_8h.html#a966da7a60c4ea3ba301e26ccc5efe452',1,'renderer:&#160;affichage.c']]]
+  ['recompense_0',['recompense',['../structTransition.html#a6844a2a2bc86f73b2c3adb3b4ff3b415',1,'Transition']]]
 ];

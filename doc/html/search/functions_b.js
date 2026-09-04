@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['update_5fgoat_0',['update_goat',['../monde_8c.html#a51ccb6ce9ad6f9c72f0ede06edb6692d',1,'monde.c']]],
-  ['update_5fwolf_1',['update_wolf',['../monde_8c.html#a83578959da23212697c41724a51c7264',1,'monde.c']]]
+  ['recuperer_5fmouvement_0',['recuperer_mouvement',['../utilisateur_8c.html#a640747365a01df1de7e6446f68121d14',1,'recuperer_mouvement(interaction_utilisateur *resultat):&#160;utilisateur.c'],['../utilisateur_8h.html#a640747365a01df1de7e6446f68121d14',1,'recuperer_mouvement(interaction_utilisateur *resultat):&#160;utilisateur.c']]]
 ];

@@ -1,0 +1,38 @@
+<map id="reinforce.c" name="reinforce.c">
+<area shape="rect" id="Node000001" title="Implémentation de l&#39;algorithme d&#39;apprentissage par renforcement REINFORCE." alt="" coords="441,5,531,31"/>
+<area shape="rect" id="Node000002" href="$reinforce_8h_source.html" title=" " alt="" coords="191,79,283,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="447,33,291,77,290,72,445,28"/>
+<area shape="rect" id="Node000006" href="$monde_8h.html" title="Déclarations globales et structures principales du monde." alt="" coords="399,79,477,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="480,33,456,69,451,66,476,30"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,152,76,177"/>
+<area shape="poly" id="edge20_Node000001_Node000007" title=" " alt="" coords="441,26,320,43,249,59,179,81,118,112,68,146,65,141,115,108,177,76,247,54,319,37,440,20"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="501,79,569,104"/>
+<area shape="poly" id="edge18_Node000001_Node000013" title=" " alt="" coords="496,29,522,66,517,69,492,33"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="594,79,661,104"/>
+<area shape="poly" id="edge19_Node000001_Node000014" title=" " alt="" coords="510,28,593,70,591,75,508,33"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="685,79,756,104"/>
+<area shape="poly" id="edge21_Node000001_Node000015" title=" " alt="" coords="524,28,673,73,671,78,523,33"/>
+<area shape="rect" id="Node000003" href="$fermier_8h.html" title="Déclarations des structures et fonctions de l&#39;agent Fermier." alt="" coords="100,152,181,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="223,106,169,146,166,141,220,102"/>
+<area shape="rect" id="Node000004" href="$loup_8h.html" title="Déclarations des structures et fonctions de l&#39;agent Loup." alt="" coords="205,152,268,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="239,104,239,138,234,138,234,104"/>
+<area shape="rect" id="Node000005" href="$goat_8h.html" title="Déclarations des structures et types de l&#39;agent chèvre." alt="" coords="240,225,303,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="245,176,262,212,257,214,240,179"/>
+<area shape="poly" id="edge11_Node000006_Node000003" title=" " alt="" coords="399,105,195,153,194,148,398,99"/>
+<area shape="poly" id="edge10_Node000006_Node000004" title=" " alt="" coords="407,107,282,150,280,145,405,102"/>
+<area shape="poly" id="edge9_Node000006_Node000005" title=" " alt="" coords="412,107,373,126,334,154,307,184,287,215,282,212,303,181,331,150,370,122,409,102"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="399,101,266,122,90,154,89,149,265,117,398,96"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="874,152,938,177"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="478,99,490,101,593,116,674,124,756,133,861,149,860,155,755,138,673,129,592,121,490,107,477,104"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="344,152,415,177"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="430,106,399,143,395,140,426,103"/>
+<area shape="rect" id="Node000010" href="$monde__goat_8h.html" title="Déclarations des fonctions pour la gestion du monde des chèvres." alt="" coords="439,152,554,177"/>
+<area shape="poly" id="edge12_Node000006_Node000010" title=" " alt="" coords="443,103,473,141,469,144,439,106"/>
+<area shape="rect" id="Node000011" href="$monde__wolf_8h.html" title="Déclarations des fonctions pour la gestion du monde des loups." alt="" coords="579,152,692,177"/>
+<area shape="poly" id="edge14_Node000006_Node000011" title=" " alt="" coords="464,102,585,145,583,150,462,107"/>
+<area shape="rect" id="Node000012" href="$monde__fermier_8h.html" title="Déclarations pour la gestion de l&#39;agent Fermier dans le monde." alt="" coords="717,152,850,177"/>
+<area shape="poly" id="edge16_Node000006_Node000012" title=" " alt="" coords="478,101,479,101,704,147,703,152,477,107,477,106"/>
+<area shape="poly" id="edge13_Node000010_Node000006" title=" " alt="" coords="492,154,462,116,466,112,496,150"/>
+<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="609,154,489,111,491,106,611,149"/>
+<area shape="poly" id="edge17_Node000012_Node000006" title=" " alt="" coords="734,155,501,107,490,104,491,99,503,101,736,149"/>
+</map>

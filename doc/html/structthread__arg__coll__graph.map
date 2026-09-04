@@ -1,0 +1,13 @@
+<map id="thread_arg" name="thread_arg">
+<area shape="rect" id="Node000001" title=" " alt="" coords="169,196,261,221"/>
+<area shape="rect" id="Node000002" href="$structTrajectoire.html" title="Collection redimensionnable de transitions formant un épisode." alt="" coords="5,93,96,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="57,131,65,152,78,170,98,184,121,194,169,203,168,209,120,199,96,189,74,174,60,155,52,133"/>
+<area shape="rect" id="Node000003" href="$structTransition.html" title="Représente une transition (état, action, récompense) à une étape donnée." alt="" coords="8,5,93,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="53,45,53,93,48,93,48,45"/>
+<area shape="rect" id="Node000004" href="$structFermier.html" title="Structure représentant l&#39;agent Fermier dans la simulation." alt="" coords="179,93,251,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="217,133,217,196,212,196,212,133"/>
+<area shape="rect" id="Node000005" href="$structActionFermier.html" title="Représente un vecteur de déplacement élémentaire pour le fermier." alt="" coords="158,5,271,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="217,45,217,93,212,93,212,45"/>
+<area shape="rect" id="Node000006" href="$structWolf.html" title="Structure représentant l&#39;agent Loup." alt="" coords="315,93,365,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="336,133,327,154,313,174,288,190,262,201,260,196,286,186,309,170,323,152,331,131"/>
+</map>

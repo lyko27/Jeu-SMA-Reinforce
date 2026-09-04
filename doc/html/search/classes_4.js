@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['monde_0',['monde',['../structmonde.html',1,'']]]
+  ['hitbox_0',['Hitbox',['../structHitbox.html',1,'']]]
 ];

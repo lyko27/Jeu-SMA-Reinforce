@@ -1,0 +1,9 @@
+<map id="utilisateur.c" name="utilisateur.c">
+<area shape="rect" id="Node000001" title="Fonction pour la gestion des interactions de l&#39;utilisateur avec le jeu." alt="" coords="60,5,159,31"/>
+<area shape="rect" id="Node000002" href="$utilisateur_8h.html" title="Déclarations des fonctions d&#39;affichage en SDL." alt="" coords="60,79,159,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,31,112,65,107,65,107,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,101,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,106,73,143,69,140,98,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="125,152,208,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="121,103,151,139,147,143,117,106"/>
+</map>

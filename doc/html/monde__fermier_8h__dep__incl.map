@@ -1,0 +1,30 @@
+<map id="monde_fermier.h" name="monde_fermier.h">
+<area shape="rect" id="Node000001" title="Déclarations pour la gestion de l&#39;agent Fermier dans le monde." alt="" coords="352,5,485,31"/>
+<area shape="rect" id="Node000002" href="$monde_8h.html" title="Déclarations globales et structures principales du monde." alt="" coords="379,79,458,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="413,44,414,78,409,79,407,45"/>
+<area shape="rect" id="Node000012" href="$monde__fermier_8c.html" title="Implémentation de la gestion de l&#39;agent Fermier dans le monde et la simulation." alt="" coords="482,79,614,104"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="453,35,528,76,526,81,450,40"/>
+<area shape="poly" id="edge6_Node000002_Node000001" title=" " alt="" coords="425,65,423,31,428,31,430,65"/>
+<area shape="rect" id="Node000003" href="$affichage_8c.html" title="Fonction qui gère tout l&#39;affichage du jeu, de la déclaration et l&#39;initialisation des textures à leur ..." alt="" coords="5,152,99,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="367,105,111,155,99,157,98,152,110,149,366,100"/>
+<area shape="rect" id="Node000004" href="$goat_8c.html" title="Implémentation des fonctions liées à l&#39;agent chèvre." alt="" coords="123,152,186,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="367,109,187,157,185,152,365,104"/>
+<area shape="rect" id="Node000005" href="$maitre__du__jeu_8c.html" title="Fichier principal gérant la boucle de jeu et le processus d&#39;entraînement." alt="" coords="210,152,337,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="384,112,298,154,296,149,382,108"/>
+<area shape="rect" id="Node000006" href="$monde_8c.html" title="Implémentation des fonctions de gestion globale du monde de simulation." alt="" coords="474,225,553,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="450,110,471,128,490,151,507,190,515,224,509,225,502,191,486,153,468,132,447,114"/>
+<area shape="rect" id="Node000007" href="$monde__goat_8h.html" title="Déclarations des fonctions pour la gestion du monde des chèvres." alt="" coords="361,152,476,177"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="413,118,414,152,409,152,407,118"/>
+<area shape="rect" id="Node000009" href="$monde__wolf_8h.html" title="Déclarations des fonctions pour la gestion du monde des loups." alt="" coords="551,152,665,177"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="456,107,571,149,570,154,454,112"/>
+<area shape="rect" id="Node000011" href="$reinforce_8c.html" title="Implémentation de l&#39;algorithme d&#39;apprentissage par renforcement REINFORCE." alt="" coords="689,152,780,177"/>
+<area shape="poly" id="edge15_Node000002_Node000011" title=" " alt="" coords="472,102,690,151,689,156,471,107"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="425,139,423,104,428,104,430,138"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="446,183,499,223,496,227,443,188"/>
+<area shape="rect" id="Node000008" href="$monde__goat_8c.html" title="Implémentation des fonctions de gestion de l&#39;agent Chèvre dans le monde." alt="" coords="335,225,449,251"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="412,191,399,226,394,224,407,189"/>
+<area shape="poly" id="edge13_Node000009_Node000002" title=" " alt="" coords="571,149,455,107,457,102,572,144"/>
+<area shape="poly" id="edge12_Node000009_Node000006" title=" " alt="" coords="583,188,530,227,527,223,580,183"/>
+<area shape="rect" id="Node000010" href="$monde__wolf_8c.html" title="Implémentation des fonctions de gestion de l&#39;agent Wolf dans le monde." alt="" coords="577,225,689,251"/>
+<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="619,189,632,224,627,226,614,191"/>
+</map>

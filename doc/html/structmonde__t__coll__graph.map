@@ -1,0 +1,11 @@
+<map id="monde_t" name="monde_t">
+<area shape="rect" id="Node000001" title=" " alt="" coords="113,181,192,207"/>
+<area shape="rect" id="Node000002" href="$structFermier.html" title="Structure représentant l&#39;agent Fermier dans la simulation." alt="" coords="26,93,98,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,130,89,156,106,169,124,179,122,184,103,173,85,159,69,133"/>
+<area shape="rect" id="Node000003" href="$structActionFermier.html" title="Représente un vecteur de déplacement élémentaire pour le fermier." alt="" coords="5,5,119,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="65,45,65,93,59,93,59,45"/>
+<area shape="rect" id="Node000004" href="$structGoat.html" title="Structure représentant l&#39;agent Chèvre dans la simulation." alt="" coords="126,93,179,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="155,133,155,181,150,181,150,133"/>
+<area shape="rect" id="Node000005" href="$structWolf.html" title="Structure représentant l&#39;agent Loup." alt="" coords="227,93,278,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="244,133,225,159,206,173,186,184,184,179,204,169,221,155,240,130"/>
+</map>

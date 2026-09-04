@@ -1,0 +1,30 @@
+<map id="monde_wolf.h" name="monde_wolf.h">
+<area shape="rect" id="Node000001" title="Déclarations des fonctions pour la gestion du monde des loups." alt="" coords="649,5,762,31"/>
+<area shape="rect" id="Node000002" href="$monde_8c.html" title="Implémentation des fonctions de gestion globale du monde de simulation." alt="" coords="746,225,825,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="726,40,760,88,776,119,788,151,792,192,790,225,785,225,787,192,783,153,771,121,755,91,722,43"/>
+<area shape="rect" id="Node000003" href="$monde_8h.html" title="Déclarations globales et structures principales du monde." alt="" coords="537,79,615,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="667,39,592,81,589,76,664,34"/>
+<area shape="rect" id="Node000012" href="$monde__wolf_8c.html" title="Implémentation des fonctions de gestion de l&#39;agent Wolf dans le monde." alt="" coords="873,79,985,104"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="755,32,894,76,892,81,753,37"/>
+<area shape="poly" id="edge14_Node000003_Node000001" title=" " alt="" coords="615,70,690,28,693,33,617,75"/>
+<area shape="poly" id="edge6_Node000003_Node000002" title=" " alt="" coords="629,94,663,100,698,111,732,127,762,150,774,168,782,189,788,225,782,226,777,190,770,171,758,154,729,132,696,116,661,105,628,99"/>
+<area shape="rect" id="Node000004" href="$affichage_8c.html" title="Fonction qui gère tout l&#39;affichage du jeu, de la déclaration et l&#39;initialisation des textures à leur ..." alt="" coords="163,152,256,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="524,105,269,155,257,157,256,152,267,149,523,100"/>
+<area shape="rect" id="Node000005" href="$goat_8c.html" title="Implémentation des fonctions liées à l&#39;agent chèvre." alt="" coords="281,152,343,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="524,109,344,157,343,152,523,104"/>
+<area shape="rect" id="Node000006" href="$maitre__du__jeu_8c.html" title="Fichier principal gérant la boucle de jeu et le processus d&#39;entraînement." alt="" coords="367,152,494,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="542,112,456,154,453,149,539,108"/>
+<area shape="rect" id="Node000007" href="$monde__fermier_8h.html" title="Déclarations pour la gestion de l&#39;agent Fermier dans le monde." alt="" coords="5,152,139,177"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="523,102,139,155,139,149,523,96"/>
+<area shape="rect" id="Node000009" href="$monde__goat_8h.html" title="Déclarations des fonctions pour la gestion du monde des chèvres." alt="" coords="519,152,633,177"/>
+<area shape="poly" id="edge10_Node000003_Node000009" title=" " alt="" coords="570,118,572,152,566,152,565,118"/>
+<area shape="rect" id="Node000011" href="$reinforce_8c.html" title="Implémentation de l&#39;algorithme d&#39;apprentissage par renforcement REINFORCE." alt="" coords="657,152,748,177"/>
+<area shape="poly" id="edge15_Node000003_Node000011" title=" " alt="" coords="610,108,683,149,681,154,607,113"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="152,151,162,149,536,97,537,102,163,155,153,156"/>
+<area shape="rect" id="Node000008" href="$monde__fermier_8c.html" title="Implémentation de la gestion de l&#39;agent Fermier dans le monde et la simulation." alt="" coords="6,225,138,251"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="75,191,75,225,69,225,69,191"/>
+<area shape="poly" id="edge11_Node000009_Node000002" title=" " alt="" coords="624,179,752,223,751,228,622,184"/>
+<area shape="poly" id="edge12_Node000009_Node000003" title=" " alt="" coords="582,139,580,104,586,104,587,138"/>
+<area shape="rect" id="Node000010" href="$monde__goat_8c.html" title="Implémentation des fonctions de gestion de l&#39;agent Chèvre dans le monde." alt="" coords="519,225,633,251"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="579,191,579,225,573,225,573,191"/>
+</map>

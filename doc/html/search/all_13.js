@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['width_5ffermier_0',['WIDTH_FERMIER',['../monde_8h.html#a9c9f7f728cff91b0a0c8037e9622e356',1,'monde.h']]],
-  ['width_5fgoat_1',['WIDTH_GOAT',['../monde_8h.html#a8b0bb69c0262a78da46133396fee2aee',1,'monde.h']]],
-  ['width_5fwolf_2',['WIDTH_WOLF',['../monde_8h.html#acc25e536f3cfb7ff5e43b0f8629b7a02',1,'monde.h']]],
-  ['window_3',['window',['../affichage_8c.html#aaa8e409e04dcf575ef63fd5fb3db06f9',1,'window:&#160;affichage.c'],['../affichage_8h.html#aaa8e409e04dcf575ef63fd5fb3db06f9',1,'window:&#160;affichage.c']]],
-  ['wolf_4',['Wolf',['../structWolf.html',1,'']]],
-  ['wolfs_5ftab_5',['wolfs_tab',['../structmonde.html#a26fff9ade7ad2348ce5dcd3b27af8bf4',1,'monde']]]
+  ['w_0',['w',['../structHitbox.html#aee83b185959157b9fff0f5100335622c',1,'Hitbox']]],
+  ['weights_1',['weights',['../structFermier.html#ab7cd70af65d72d3514da61ae51e5e037',1,'Fermier::weights'],['../structWolf.html#ad77578730e01f41d7dc131bd009f962f',1,'Wolf::weights']]],
+  ['wolf_2',['Wolf',['../structWolf.html',1,'']]],
+  ['wolfs_5ftab_3',['wolfs_tab',['../structmonde__t.html#a151a5a2e5e1ccb3f7d999628d516bbce',1,'monde_t']]],
+  ['wolves_20powered_20by_20reinforcement_20learning_4',['A Multi-Agent System simulation featuring farmers, goats, and wolves, powered by Reinforcement Learning.',['../md_README.html#autotoc_md1',1,'']]]
 ];

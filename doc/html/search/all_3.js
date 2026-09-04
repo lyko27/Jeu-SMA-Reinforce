@@ -1,7 +1,25 @@
 var searchData=
 [
-  ['en_5fmouvement_0',['en_mouvement',['../structGoat.html#a2ee229c74bfa98c9137d783391bc343e',1,'Goat::en_mouvement'],['../structWolf.html#a38a6f7632c8a0c9e03745c714ed7b9fd',1,'Wolf::en_mouvement']]],
-  ['evaluer_5finterets_5fgoat_1',['evaluer_interets_goat',['../goat_8c.html#aeaf9da1ea58be0e0d7631f171075d44e',1,'evaluer_interets_goat(Goat *current_goat, PerceptionGoat perception_goat):&#160;goat.c'],['../goat_8h.html#ab726e0efdb394da9da26726f588a4037',1,'evaluer_interets_goat(Goat *goat, PerceptionGoat perception_goat):&#160;goat.c']]],
-  ['evaluer_5finterets_5fwolf_2',['evaluer_interets_wolf',['../loup_8c.html#a1a3fd501bbf6f1a4bb46a6532645efb1',1,'evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf):&#160;loup.c'],['../loup_8h.html#a1a3fd501bbf6f1a4bb46a6532645efb1',1,'evaluer_interets_wolf(Wolf *wolf, PerceptionWolf perception_wolf):&#160;loup.c']]],
-  ['evenement_3',['evenement',['../structevenement.html',1,'']]]
+  ['decider_5faction_5ffermier_0',['decider_action_fermier',['../fermier_8h.html#a5f58d624a8efe782edaa8fe0e46bb04d',1,'decider_action_fermier(Fermier *fermier, PerceptionFermier perception_fermier):&#160;fermier.c'],['../fermier_8c.html#a5f58d624a8efe782edaa8fe0e46bb04d',1,'decider_action_fermier(Fermier *fermier, PerceptionFermier perception_fermier):&#160;fermier.c']]],
+  ['decision_5fcooldown_1',['decision_cooldown',['../structGoat.html#aab19a01e79c313b7b413026b860a57da',1,'Goat::decision_cooldown'],['../structWolf.html#a0bc7610c1b1ebf2ae661de3907d9b32d',1,'Wolf::decision_cooldown'],['../structFermier.html#a9b2cbac9cabb9fd63916fbb328a25b72',1,'Fermier::decision_cooldown']]],
+  ['dessiner_5fentite_2',['dessiner_entite',['../affichage_8c.html#adbbd0144f79f9d521c6da1ea88dcea6f',1,'affichage.c']]],
+  ['dessiner_5fmonde_3',['dessiner_monde',['../affichage_8c.html#a6cef2e962cdd32b5989a5ff436b49def',1,'affichage.c']]],
+  ['dir_5fx_4',['dir_x',['../structFermier.html#a26ac26fc7cd170a88605cc0436973270',1,'Fermier::dir_x'],['../structGoat.html#a8279171914e3fdb608eeb2be2f94f104',1,'Goat::dir_x'],['../structWolf.html#a105d0795e37593a0079ab743ea8d7ba6',1,'Wolf::dir_x']]],
+  ['dir_5fy_5',['dir_y',['../structWolf.html#a8589ca572ece6916dea51326ebcfcd3e',1,'Wolf::dir_y'],['../structFermier.html#a3a411709939b73634a1243f085d87a44',1,'Fermier::dir_y'],['../structGoat.html#a1a94f8a689ee8f23322936d98c79464d',1,'Goat::dir_y']]],
+  ['direction_5fsprite_6',['direction_sprite',['../structFermier.html#ae1d63d26f63534cf357124b6f9bf3379',1,'Fermier::direction_sprite'],['../structGoat.html#ad934bda156d9decd5ae4d892a10212e0',1,'Goat::direction_sprite'],['../structWolf.html#a3eb47aee76813d149d354b4e4b7e784e',1,'Wolf::direction_sprite']]],
+  ['dirrection_5fchoisi_7',['dirrection_choisi',['../structFermier.html#adb41ce277012b23b2119148b52075eb2',1,'Fermier']]],
+  ['dist_5fgoat_8',['dist_goat',['../structPerceptionFermier.html#a9afa58fa49dafae22b9390dc5f7de672',1,'PerceptionFermier']]],
+  ['dist_5fgoat_5fproche_9',['dist_goat_proche',['../structPerceptionWolf.html#a9667736988f663c837fd318f5d5727cf',1,'PerceptionWolf']]],
+  ['dist_5fmur_5fbas_10',['dist_mur_bas',['../structPerceptionFermier.html#ac74e57dd932f31b285b37dc297ac1182',1,'PerceptionFermier']]],
+  ['dist_5fmur_5fdroite_11',['dist_mur_droite',['../structPerceptionFermier.html#acd8c4a3da02f9d60e5bc48f8c1e2bdde',1,'PerceptionFermier']]],
+  ['dist_5fmur_5fgauche_12',['dist_mur_gauche',['../structPerceptionFermier.html#ace76065161f5d5837a1ade5f95de521e',1,'PerceptionFermier']]],
+  ['dist_5fmur_5fhaut_13',['dist_mur_haut',['../structPerceptionFermier.html#a8a623ab02b6fb2040bba000262a279d3',1,'PerceptionFermier']]],
+  ['dist_5fwolf_14',['dist_wolf',['../structPerceptionFermier.html#ae9303d1fa6be9fe737ddf11ee7b711d8',1,'PerceptionFermier']]],
+  ['dist_5fwolf_5fproche_15',['dist_wolf_proche',['../structPerceptionGoat.html#ab28f8f590f2b527af501854728a0f81f',1,'PerceptionGoat']]],
+  ['dx_16',['dx',['../structActionFermier.html#a48a9e9ebb7e604a680ff7df8fec32976',1,'ActionFermier']]],
+  ['dx_5fgoat_17',['dx_goat',['../structPerceptionFermier.html#af14e9b9e6ee77bfdfc7c5de3831ae7af',1,'PerceptionFermier']]],
+  ['dx_5fwolf_18',['dx_wolf',['../structPerceptionFermier.html#add970142ef4ad5d8a9b87d3e8141531b',1,'PerceptionFermier']]],
+  ['dy_19',['dy',['../structActionFermier.html#a636b926764c84718f28c2a306b27b3ed',1,'ActionFermier']]],
+  ['dy_5fgoat_20',['dy_goat',['../structPerceptionFermier.html#abd499a9c1c1b50b1a81b936f552bffde',1,'PerceptionFermier']]],
+  ['dy_5fwolf_21',['dy_wolf',['../structPerceptionFermier.html#a36972f2c5aac3f5948ebb0edbbee0848',1,'PerceptionFermier']]]
 ];

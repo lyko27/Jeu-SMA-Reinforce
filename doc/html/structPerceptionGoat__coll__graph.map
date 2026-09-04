@@ -1,0 +1,5 @@
+<map id="PerceptionGoat" name="PerceptionGoat">
+<area shape="rect" id="Node000001" title="Structure de ce que qu&#39;une chèvre perçoit." alt="" coords="5,93,128,119"/>
+<area shape="rect" id="Node000002" href="$structGoat.html" title="Structure représentant l&#39;agent Chèvre dans la simulation." alt="" coords="40,5,93,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,45,69,93,64,93,64,45"/>
+</map>

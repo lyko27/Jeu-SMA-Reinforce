@@ -1,0 +1,5 @@
+<map id="Trajectoire" name="Trajectoire">
+<area shape="rect" id="Node000001" title="Collection redimensionnable de transitions formant un épisode." alt="" coords="5,93,96,119"/>
+<area shape="rect" id="Node000002" href="$structTransition.html" title="Représente une transition (état, action, récompense) à une étape donnée." alt="" coords="8,5,93,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,45,53,93,48,93,48,45"/>
+</map>

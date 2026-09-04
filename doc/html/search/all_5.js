@@ -1,11 +1,14 @@
 var searchData=
 [
-  ['generer_5fun_5fmonde_0',['generer_un_monde',['../monde_8c.html#ae69154c852190474d843553885010e6f',1,'generer_un_monde(monde *monde_courant):&#160;monde.c'],['../monde_8h.html#ae69154c852190474d843553885010e6f',1,'generer_un_monde(monde *monde_courant):&#160;monde.c']]],
-  ['gestion_5fdirection_5fchevre_1',['gestion_direction_chevre',['../affichage_8c.html#ad2fd4bc0e2e0840a5e7bed616f7f33a0',1,'affichage.c']]],
-  ['gestion_5fdirection_5ffermier_2',['gestion_direction_fermier',['../affichage_8c.html#a76cc61cdfedaed772e132fc6e5d31e1f',1,'affichage.c']]],
-  ['gestion_5fdirection_5fwolf_3',['gestion_direction_wolf',['../affichage_8c.html#a7a4488e3c7e48cb4e1be1742c7768c3c',1,'affichage.c']]],
-  ['goat_4',['Goat',['../structGoat.html',1,'']]],
-  ['goat_2ec_5',['goat.c',['../goat_8c.html',1,'']]],
-  ['goat_2eh_6',['goat.h',['../goat_8h.html',1,'']]],
-  ['goats_5ftab_7',['goats_tab',['../structPerceptionGoat.html#a9d36d732b0c0e3e67397fbeb343a4e79',1,'PerceptionGoat::goats_tab'],['../structPerceptionWolf.html#a158a18fc984557fe70c95f51f1781c39',1,'PerceptionWolf::goats_tab'],['../structmonde.html#a3408d4c1318630f6a281923dc814b290',1,'monde::goats_tab']]]
+  ['farmers_20goats_20and_20wolves_20powered_20by_20reinforcement_20learning_0',['A Multi-Agent System simulation featuring farmers, goats, and wolves, powered by Reinforcement Learning.',['../md_README.html#autotoc_md1',1,'']]],
+  ['features_1',['Features',['../md_README.html#autotoc_md4',1,'']]],
+  ['featuring_20farmers_20goats_20and_20wolves_20powered_20by_20reinforcement_20learning_2',['A Multi-Agent System simulation featuring farmers, goats, and wolves, powered by Reinforcement Learning.',['../md_README.html#autotoc_md1',1,'']]],
+  ['fermier_3',['Fermier',['../structFermier.html',1,'']]],
+  ['fermier_2ec_4',['fermier.c',['../fermier_8c.html',1,'']]],
+  ['fermier_2eh_5',['fermier.h',['../fermier_8h.html',1,'']]],
+  ['fermiers_6',['fermiers',['../structmonde__t.html#af4be00836544bf10e5b1416bc33299e2',1,'monde_t']]],
+  ['frame_7',['frame',['../structFermier.html#ad5d0279d1ca387efcb0e9588e07966e4',1,'Fermier::frame'],['../structGoat.html#aa701e2bc53e2d509a607ba1ee40910de',1,'Goat::frame'],['../structWolf.html#a52d91584bf065e58789b3ad6ec58fcca',1,'Wolf::frame']]],
+  ['free_5ffermier_8',['free_fermier',['../monde__fermier_8c.html#a316b3752a73034ad2d89092fe9be3a87',1,'free_fermier(Fermier *fermier):&#160;monde_fermier.c'],['../monde__fermier_8h.html#a316b3752a73034ad2d89092fe9be3a87',1,'free_fermier(Fermier *fermier):&#160;monde_fermier.c']]],
+  ['free_5fgoats_9',['free_goats',['../monde__goat_8c.html#a89bdd56c5d42f2effb116269a5e6c67c',1,'free_goats(Goat **tableau_goats, int nombre_goats):&#160;monde_goat.c'],['../monde__goat_8h.html#a89bdd56c5d42f2effb116269a5e6c67c',1,'free_goats(Goat **tableau_goats, int nombre_goats):&#160;monde_goat.c']]],
+  ['free_5fwolf_10',['free_wolf',['../monde__wolf_8c.html#a806463d5eb8c44d9ad020d9f3b0756ca',1,'free_wolf(Wolf **tableau_wolfs, int nombre_wolfs):&#160;monde_wolf.c'],['../monde__wolf_8h.html#a806463d5eb8c44d9ad020d9f3b0756ca',1,'free_wolf(Wolf **tableau_wolfs, int nombre_wolfs):&#160;monde_wolf.c']]]
 ];

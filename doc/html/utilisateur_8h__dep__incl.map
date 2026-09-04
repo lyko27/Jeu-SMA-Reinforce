@@ -1,0 +1,7 @@
+<map id="utilisateur.h" name="utilisateur.h">
+<area shape="rect" id="Node000001" title="Déclarations des fonctions d&#39;affichage en SDL." alt="" coords="87,5,186,31"/>
+<area shape="rect" id="Node000002" href="$maitre__du__jeu_8c.html" title="Fichier principal gérant la boucle de jeu et le processus d&#39;entraînement." alt="" coords="5,79,132,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,42,82,80,78,77,114,39"/>
+<area shape="rect" id="Node000003" href="$utilisateur_8c.html" title="Fonction pour la gestion des interactions de l&#39;utilisateur avec le jeu." alt="" coords="157,79,255,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,39,197,77,193,80,156,43"/>
+</map>

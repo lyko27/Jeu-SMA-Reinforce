@@ -19,5 +19,6 @@ var searchData=
   ['monde_5fwolf_2eh_16',['monde_wolf.h',['../monde__wolf_8h.html',1,'']]],
   ['mourrir_5fgoat_17',['mourrir_goat',['../monde__goat_8c.html#a226e4018daa9dfa8a37fb1b79a6548fa',1,'mourrir_goat(monde *monde_courant, int index_goat):&#160;monde_goat.c'],['../monde__goat_8h.html#a226e4018daa9dfa8a37fb1b79a6548fa',1,'mourrir_goat(monde *monde_courant, int index_goat):&#160;monde_goat.c']]],
   ['mourrir_5fwolf_18',['mourrir_wolf',['../monde__wolf_8c.html#a2cbca9b9e06c4f08c3f0c4281cb782a2',1,'mourrir_wolf(monde *monde_courant, int index_wolf):&#160;monde_wolf.c'],['../monde__wolf_8h.html#a2cbca9b9e06c4f08c3f0c4281cb782a2',1,'mourrir_wolf(monde *monde_courant, int index_wolf):&#160;monde_wolf.c']]],
-  ['multi_20agent_20system_20simulation_20featuring_20farmers_20goats_20and_20wolves_20powered_20by_20reinforcement_20learning_19',['A Multi-Agent System simulation featuring farmers, goats, and wolves, powered by Reinforcement Learning.',['../md_README.html#autotoc_md1',1,'']]]
+  ['multi_20agent_20predator_20prey_20simulation_20in_20c_20with_20reinforcement_20learning_20and_20posix_20multi_20threading_19',['Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading',['../md_README.html#autotoc_md24',1,'']]],
+  ['multi_20agents_20proies_20prédateurs_20en_20c_20avec_20apprentissage_20par_20renforcement_20et_20multi_20threading_20posix_20',['Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX',['../md_README_8fr.html#autotoc_md1',1,'']]]
 ];

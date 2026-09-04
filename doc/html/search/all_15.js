@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y_0',['y',['../structFermier.html#a486109aa31ec4eb9074c407fe8137865',1,'Fermier::y'],['../structGoat.html#a8da99c27210d6f7df9f388afeca8d9a8',1,'Goat::y'],['../structWolf.html#a7839762896e8f37ec049329cfa60b0e2',1,'Wolf::y'],['../structHitbox.html#aec71b48faf1f37e18c97a7912f616b2a',1,'Hitbox::y']]]
+  ['x_0',['x',['../structFermier.html#ab37d6bdc1f77f82ebbbee5e56e0c4be4',1,'Fermier::x'],['../structGoat.html#a3df51e2b6f726b4d8767fa530e7a54f0',1,'Goat::x'],['../structWolf.html#a2f069f57368f50aecf45e312b4788480',1,'Wolf::x'],['../structHitbox.html#ae141465fa05bbd2296a643414446f4bc',1,'Hitbox::x']]]
 ];

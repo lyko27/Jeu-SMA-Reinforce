@@ -3,5 +3,6 @@ var searchData=
   ['h_0',['h',['../structHitbox.html#a91f0554f2f46f7cd4d33d5892ebb8fc8',1,'Hitbox']]],
   ['hauteur_1',['hauteur',['../structmonde__t.html#ac65e6b7995c2e3c176f7bf463a276aeb',1,'monde_t']]],
   ['hitbox_2',['Hitbox',['../structHitbox.html',1,'']]],
-  ['hp_3',['hp',['../structGoat.html#af6a143c1752b20cdb72556553ee13ba5',1,'Goat::hp'],['../structWolf.html#a7e47d93a025e74db15af2f6b701c1654',1,'Wolf::hp']]]
+  ['how_20it_20works_3',['How It Works',['../md_README.html#autotoc_md30',1,'']]],
+  ['hp_4',['hp',['../structGoat.html#af6a143c1752b20cdb72556553ee13ba5',1,'Goat::hp'],['../structWolf.html#a7e47d93a025e74db15af2f6b701c1654',1,'Wolf::hp']]]
 ];

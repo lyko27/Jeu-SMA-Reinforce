@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['table_5finterets_0',['table_interets',['../structFermier.html#a400646a65a9a533990abd977139cf5f2',1,'Fermier::table_interets'],['../structGoat.html#a553aab424d8820f44d1f9f0522b9f467',1,'Goat::table_interets'],['../structWolf.html#aae87be12fe33265688369851f3ee3057',1,'Wolf::table_interets']]],
-  ['taille_1',['taille',['../structTrajectoire.html#a3e82c814239d022eed271b8c00e92f9b',1,'Trajectoire']]],
-  ['technical_20stack_2',['Technical Stack',['../md_README.html#autotoc_md3',1,'']]],
-  ['thread_5farg_3',['thread_arg',['../structthread__arg.html',1,'']]],
-  ['timer_5fmouvement_4',['timer_mouvement',['../structGoat.html#ad194b2f9f732f874e8b5cd5b549b6483',1,'Goat::timer_mouvement'],['../structWolf.html#a569ccd0bbf48bf64f21870adbabd51ac',1,'Wolf::timer_mouvement']]],
-  ['trajectoire_5',['Trajectoire',['../structTrajectoire.html',1,'']]],
-  ['transition_6',['Transition',['../structTransition.html',1,'']]],
-  ['transitions_7',['transitions',['../structTrajectoire.html#a9fb08e43f713a1c6365e566b00d8427f',1,'Trajectoire']]]
+  ['sauvegarder_5fpoids_5ffermier_0',['sauvegarder_poids_fermier',['../reinforce_8c.html#a35c67f7fa73f7bcd48eb62ec17ecf353',1,'reinforce.c']]],
+  ['sauvegarder_5fpoids_5floup_1',['sauvegarder_poids_loup',['../reinforce_8c.html#a40ad245051a0d1c947f0f779164f3ad3',1,'reinforce.c']]],
+  ['simulation_20in_20c_20with_20reinforcement_20learning_20and_20posix_20multi_20threading_2',['Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading',['../md_README.html#autotoc_md24',1,'']]],
+  ['simulation_20multi_20agents_20proies_20prédateurs_20en_20c_20avec_20apprentissage_20par_20renforcement_20et_20multi_20threading_20posix_3',['Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX',['../md_README_8fr.html#autotoc_md1',1,'']]],
+  ['speed_4',['speed',['../structFermier.html#a395ff2ce563f1e07af15b4d599921162',1,'Fermier::speed'],['../structGoat.html#a5de0fc029cb03d455bada97676ff2736',1,'Goat::speed'],['../structWolf.html#a4615d0d4150ef123a4d1c45f710edca2',1,'Wolf::speed']]],
+  ['structure_5',['Project Structure',['../md_README.html#autotoc_md41',1,'']]]
 ];

@@ -1,4 +1,28 @@
 var searchData=
 [
-  ['quitter_5faffichage_0',['quitter_affichage',['../affichage_8c.html#a9997b9c0deff4119dd1a312e048dd0b5',1,'affichage.c']]]
+  ['par_20renforcement_0',['Apprentissage par Renforcement',['../md_README_8fr.html#autotoc_md9',1,'']]],
+  ['par_20renforcement_20et_20multi_20threading_20posix_1',['Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX',['../md_README_8fr.html#autotoc_md1',1,'']]],
+  ['parallèle_2',['Entraînement Parallèle',['../md_README_8fr.html#autotoc_md10',1,'']]],
+  ['parallel_20training_3',['Parallel Training',['../md_README.html#autotoc_md33',1,'']]],
+  ['perceptionfermier_4',['PerceptionFermier',['../structPerceptionFermier.html',1,'']]],
+  ['perceptiongoat_5',['PerceptionGoat',['../structPerceptionGoat.html',1,'']]],
+  ['perceptionwolf_6',['PerceptionWolf',['../structPerceptionWolf.html',1,'']]],
+  ['phi_7',['phi',['../structTransition.html#aab70d6d47ef06e331f62d8aaef6efed5',1,'Transition']]],
+  ['pos_5fx_5ffermier_8',['pos_x_fermier',['../structPerceptionWolf.html#a3cccc8eea5520128b67ae15fd9531b3d',1,'PerceptionWolf::pos_x_fermier'],['../structPerceptionGoat.html#a9540a643e943ac3a73d24684bbacbca5',1,'PerceptionGoat::pos_x_fermier']]],
+  ['pos_5fx_5fgoat_9',['pos_x_goat',['../structPerceptionWolf.html#a09905ba42e1a35eb0530907990ada46b',1,'PerceptionWolf']]],
+  ['pos_5fx_5fwolf_10',['pos_x_wolf',['../structPerceptionGoat.html#a1354d418a5a429dcb8344541c0cc6383',1,'PerceptionGoat']]],
+  ['pos_5fy_5ffermier_11',['pos_y_fermier',['../structPerceptionGoat.html#ac2a88e0de226fa427022ce966ad7f320',1,'PerceptionGoat::pos_y_fermier'],['../structPerceptionWolf.html#a6ca58932b32b395d0decf6184506350d',1,'PerceptionWolf::pos_y_fermier']]],
+  ['pos_5fy_5fgoat_12',['pos_y_goat',['../structPerceptionWolf.html#a08680fa960422389717a0b2070803cd0',1,'PerceptionWolf']]],
+  ['pos_5fy_5fwolf_13',['pos_y_wolf',['../structPerceptionGoat.html#a265b5913300ed866c615b952f1fd128a',1,'PerceptionGoat']]],
+  ['posix_14',['Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX',['../md_README_8fr.html#autotoc_md1',1,'']]],
+  ['posix_20multi_20threading_15',['Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading',['../md_README.html#autotoc_md24',1,'']]],
+  ['prédateurs_20en_20c_20avec_20apprentissage_20par_20renforcement_20et_20multi_20threading_20posix_16',['Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX',['../md_README_8fr.html#autotoc_md1',1,'']]],
+  ['prérequis_17',['Prérequis',['../md_README_8fr.html#autotoc_md13',1,'']]],
+  ['présentation_18',['Présentation',['../md_README_8fr.html#autotoc_md3',1,'']]],
+  ['predator_20prey_20simulation_20in_20c_20with_20reinforcement_20learning_20and_20posix_20multi_20threading_19',['Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading',['../md_README.html#autotoc_md24',1,'']]],
+  ['prerequisites_20',['Prerequisites',['../md_README.html#autotoc_md36',1,'']]],
+  ['prey_20simulation_20in_20c_20with_20reinforcement_20learning_20and_20posix_20multi_20threading_21',['Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading',['../md_README.html#autotoc_md24',1,'']]],
+  ['proies_20prédateurs_20en_20c_20avec_20apprentissage_20par_20renforcement_20et_20multi_20threading_20posix_22',['Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX',['../md_README_8fr.html#autotoc_md1',1,'']]],
+  ['project_20structure_23',['Project Structure',['../md_README.html#autotoc_md41',1,'']]],
+  ['projet_24',['Architecture du Projet',['../md_README_8fr.html#autotoc_md18',1,'']]]
 ];

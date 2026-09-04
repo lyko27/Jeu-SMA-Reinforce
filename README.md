@@ -1,19 +1,17 @@
-[🇫🇷 Lire en français](README.fr.md)
+[Lire en français](README.fr.md)
 
-# EcoSim-RL — Multi-Agent Ecosystem with Reinforcement Learning
+# EcoSim-RL
+
+### Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading
 
 <div align="center">
 
 [![Language](https://img.shields.io/badge/Language-C99-00599C?style=flat-square&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C99)
-[![Graphics](https://img.shields.io/badge/Graphics-SDL2_%7C_SDL2__image_%7C_SDL2__ttf-red?style=flat-square&logo=sdl&logoColor=white)](https://www.libsdl.org/)
+[![Graphics](https://img.shields.io/badge/Graphics-SDL2-red?style=flat-square&logo=sdl&logoColor=white)](https://www.libsdl.org/)
 [![Concurrency](https://img.shields.io/badge/Concurrency-POSIX_Threads-333333?style=flat-square&logo=linux&logoColor=white)](https://en.wikipedia.org/wiki/Pthreads)
 [![Build](https://img.shields.io/badge/Build-GNU_Make-blue?style=flat-square&logo=gnu)](Makefile)
 [![Documentation](https://img.shields.io/badge/Documentation-Doxygen-2C4156?style=flat-square)](doc/html/index.html)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-
-**An interactive 2D multi-agent simulation where autonomous predators and protectors learn emergent behaviors through Monte-Carlo Policy Gradient (REINFORCE) algorithms, rendered in real time with SDL2 and accelerated via POSIX multi-threading.**
-
-[Overview](#-overview) • [Key Features](#-key-features) • [Multi-Agent Dynamics](#-multi-agent-dynamics) • [RL & Concurrency](#-reinforcement-learning--concurrency) • [Architecture](#-project-architecture) • [Quickstart](#-quickstart--controls) • [Team & Contributions](#-team--engineering-contributions)
 
 <p align="center">
   <img src="images/sma.gif" alt="Simulation Demo" width="720"/>
@@ -23,191 +21,132 @@
 
 ---
 
-## 🌟 Overview
+## Overview
 
-Developed as an end-of-year engineering project at **ISIMA** (Clermont Auvergne INP), **EcoSim-RL** models an interactive predator-prey ecosystem. Unlike traditional rule-based video game simulations with deterministic state machines, agents in this environment make decisions using a **parameterized stochastic policy** trained with **Reinforcement Learning**.
+**EcoSim-RL** is an interactive 2D Multi-Agent System (MAS) simulation written in C using SDL2. It models an ecosystem where predators and protectors learn emergent behaviors through Reinforcement Learning (Policy Gradient / REINFORCE).
 
-The simulation features:
-- **Goats (Prey)**: Reactive agents that herd, graze, and instinctively evade nearby predators.
-- **Wolves (Predators)**: Learning agents trained to track and hunt goats while steering clear of the protective farmer.
-- **Farmer (Protector)**: Hybrid agent that can be operated **manually** by the user or set to **autonomous mode** governed by a trained neural policy to safeguard the herd and eliminate wolves.
-
----
-
-## 🚀 Key Features
-
-- **Multi-Agent System (SMA)**: Decentralized autonomous agents interacting within an obstacle-bounded 2D map (lake obstacle, boundaries, entity hitboxes).
-- **Policy Gradient Learning (REINFORCE)**: Online and batch training of agent weight vectors using parameterized softmax policies and reward shaping.
-- **Parallel Training Pipeline**: High-throughput headless training module leveraging **POSIX Threads (`pthreads`)** to simulate multiple independent learning episodes concurrently.
-- **Dual Gameplay Modes & Hot-Swapping**: Switch seamlessly in real time between user control (ZQSD / WASD / Arrows) and AI policy-driven navigation at the press of a key.
-- **Real-Time SDL2 Rendering**: 60 FPS graphical pipeline with animated sprite sheets, custom pixel fonts, and dynamic HUD status overlays.
-- **Memory & Safety Hardening**: Compiled and verified with GCC sanitizers (`-fsanitize=address,undefined`) and documented with **Doxygen**.
+- **Goats (Prey)**: Reactive agents that graze and flee approaching predators.
+- **Wolves (Predators)**: Autonomous agents learning to hunt goats while avoiding the farmer.
+- **Farmer (Protector)**: Can be controlled manually or set to autonomous mode driven by a trained policy to protect the goats.
 
 ---
 
-## 🎮 Multi-Agent Dynamics
+## Features
 
-The ecosystem operates as a discrete-time continuous-space simulation where each agent executes a strict **Perception $\rightarrow$ Decision $\rightarrow$ Action** loop:
-
-```mermaid
-flowchart LR
-    subgraph World [Ecosystem State]
-        W[Map Boundaries / Obstacles / Entities]
-    end
-
-    subgraph Cycle [Agent Lifecycle]
-        P[Perception Vector Φ] --> POL[Softmax Policy π_θ]
-        POL --> A[Action Decision]
-        A --> M[World Physics Engine]
-    end
-
-    W --> P
-    M --> W
-```
-
-| Entity | Role | Behavior Model | Objective |
-| :--- | :--- | :--- | :--- |
-| **Farmer** 👨‍🌾 | Guardian | Manual Input OR Learned RL Policy | Protect goats, intercept wolves, optimize territory |
-| **Wolves** 🐺 | Predator | Learned RL Policy (Softmax gradient) | Hunt goats, coordinate attacks, avoid farmer |
-| **Goats** 🐐 | Prey | Reactive Vector Flocking | Graze peacefully, flee within predator vision radius |
+- **Multi-Agent Simulation**: Autonomous entities operating with decentralized perception-action loops on a 2D grid with obstacles.
+- **Reinforcement Learning**: Monte-Carlo Policy Gradient (REINFORCE) with Softmax action selection and reward shaping.
+- **Multi-Threaded Training**: Headless batch training accelerated with POSIX Threads (`pthreads`) across parallel CPU cores (~6x speedup).
+- **Dual Play Modes**: Seamless real-time hot-swapping between manual keyboard controls and autonomous AI policy.
+- **Real-Time Graphics**: 60 FPS rendering pipeline with SDL2, sprite sheets, custom pixel fonts, and dynamic HUD stats.
+- **Code Quality**: Strict memory management verified with AddressSanitizer and documented via Doxygen.
 
 ---
 
-## 🧠 Reinforcement Learning & Concurrency
+## How It Works
 
-### 1. State Perception & Linear Policy
-Each agent extracts a low-dimensional normalized perception vector $\Phi(s)$ representing:
-- Relative distance and angular orientation to the nearest target (prey / predator).
-- Proximity to map borders and environmental obstacles (lake hitbox).
-- Internal state variables (action cooldowns, health points).
+### Agent Behavior
 
-Actions $a \in \mathcal{A}$ are selected according to a **Softmax (Gibbs) distribution**:
+| Entity | Control | Objective |
+| :--- | :--- | :--- |
+| **Farmer** | Manual keyboard or RL Policy | Intercept wolves and protect the herd |
+| **Wolves** | Trained RL Policy | Hunt goats while keeping distance from the farmer |
+| **Goats** | Reactive flocking | Graze peacefully and flee threats |
 
-$$\pi_\theta(a \mid s) = \frac{\exp(\theta^T \phi(s, a))}{\sum_{a' \in \mathcal{A}} \exp(\theta^T \phi(s, a'))}$$
+### Reinforcement Learning
 
-### 2. Policy Gradient Optimization (REINFORCE)
-During training, agents collect trajectory transitions $(s_t, a_t, r_{t+1})$. Policy parameters $\theta$ are updated at the end of each episode via gradient ascent on the expected return $J(\theta)$:
+Agents observe a normalized perception vector (distances to targets, obstacles, and boundaries) and select actions using a Softmax policy. Trajectories are recorded during episodes, and policy weights are updated using the REINFORCE gradient ascent algorithm.
 
-$$\theta \leftarrow \theta + \alpha \sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta(a_t \mid s_t) \, G_t$$
+### Parallel Training
 
-where $G_t = \sum_{k=t}^{T-1} \gamma^{k-t} r_{k+1}$ represents the discounted cumulative reward ($\gamma = 0.99$, $\alpha = 2 \times 10^{-5}$).
-
-### 3. Multi-Threaded Parallel Training
-To bypass graphical bottlenecks and accelerate weight convergence:
-- An optimized headless training routine runs parallel worker threads (`taille_groupe = 8` threads).
-- Each thread instantiates its own isolated world clone, runs an independent episode of 1,000 steps, and records trajectories.
-- The main thread aggregates gradients and updates policy weights (`poids_fermier.txt`, `poids_loup.txt`), achieving a **~6x training speedup** on multi-core systems.
+Running `./farmer train -m` launches independent headless simulation episodes across a pool of 8 worker threads (`pthreads`), aggregating policy updates without graphical overhead.
 
 ---
 
-## 📁 Project Architecture
-
-```text
-Jeu-SMA-Reinforce/
-├── affichage.c / .h        # SDL2 rendering engine, sprites, HUD & font rendering
-├── utilisateur.c / .h      # User keyboard/event processing (manual controls & UI)
-├── maitre_du_jeu.c         # Main orchestrator: game loop, thread pool & RL training
-├── monde.c / .h            # World initialization, global physics, entity lists & lifecycles
-├── monde_fermier.c / .h    # Farmer kinematics, perception computation & reward logic
-├── monde_goat.c / .h       # Goat flocking mechanics, grazing routines & evasive maneuvers
-├── monde_wolf.c / .h       # Wolf tracking physics, perception computation & reward shaping
-├── fermier.c / .h          # Farmer data structures, inventory & policy actions
-├── loup.c / .h             # Wolf data structures, hitboxes & policy actions
-├── goat.c / .h             # Goat data structures & entity states
-├── reinforce.c / .h        # REINFORCE algorithm: trajectory buffers, softmax & gradient ascent
-├── poids_fermier.txt       # Serialized learned policy weights for the Farmer
-├── poids_loup.txt          # Serialized learned policy weights for the Wolves
-├── fonts/                  # PixeloidSans and Arial TrueType fonts
-├── images/                 # Spritesheets, UI assets, map tiles & demo GIF
-├── doc/html/               # Doxygen-generated API documentation
-├── Doxyfile                # Doxygen configuration file
-├── Makefile                # Multi-target build script (all, debug, opt, doc, clean)
-├── LICENSE                 # MIT License
-├── README.fr.md            # Documentation in French
-└── README.md               # Documentation in English
-```
-
----
-
-## ⚡ Quickstart & Controls
+## Quickstart
 
 ### Prerequisites
 
-- **GCC** (with C99 & POSIX support)
-- **SDL2**, **SDL2_image**, **SDL2_ttf**
-- **Doxygen** & **Graphviz** *(optional, for docs)*
+- GCC (C99 & POSIX support)
+- SDL2, SDL2_image, SDL2_ttf
+- Doxygen *(optional)*
 
 ```bash
-# Debian / Ubuntu
+# Ubuntu / Debian
 sudo apt-get update
-sudo apt-get install -y gcc make libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev doxygen graphviz
+sudo apt-get install -y gcc make libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev doxygen
 
 # macOS (Homebrew)
-brew install gcc make sdl2 sdl2_image sdl2_ttf doxygen graphviz
+brew install gcc make sdl2 sdl2_image sdl2_ttf doxygen
 ```
 
-### Compilation
+### Build
 
 ```bash
-# Standard build (Debug symbols included)
-make
-
-# Debug build with AddressSanitizer and UndefinedBehaviorSanitizer
-make debug
-
-# Optimized build for heavy RL training (-O3)
-make opt
-
-# Generate HTML documentation
-make doc
+make          # Standard build
+make debug    # Build with AddressSanitizer & UndefinedBehaviorSanitizer
+make opt      # Optimized build for training (-O3)
+make doc      # Generate Doxygen documentation
+make clean    # Remove build artifacts
 ```
 
-### Running the Simulation
+### Run
 
 ```bash
-# 1. Interactive Demonstration (Manual Farmer control by default)
-./farmer
-
-# 2. Fully Autonomous Simulation (Farmer guided by trained RL policy)
-./farmer test
-
-# 3. Parallel Multi-Threaded Headless Training (Accelerated via pthreads)
-./farmer train -m
-
-# 4. Single-Threaded Headless Training
-./farmer train
+./farmer           # Interactive demo (Manual farmer control by default)
+./farmer test      # Autonomous demo (Farmer controlled by RL policy)
+./farmer train -m   # Fast multi-threaded headless training
+./farmer train     # Single-threaded headless training
 ```
 
-### In-Game Controls
+### Controls
 
 | Key | Action |
 | :---: | :--- |
-| `Space` | **Pause / Resume** simulation |
-| `M` | **Toggle Mode** (Switch dynamically between Manual and Autonomous RL) |
-| `Z / Q / S / D` or `W / A / S / D` | **Move Farmer** (in manual mode) |
-| `Arrow Keys` | **Move Farmer** (alternate manual keys) |
-| `Escape` / Window Close | **Quit** game |
+| `Space` | Pause / Resume simulation |
+| `M` | Toggle mode (Manual keyboard vs. Autonomous AI) |
+| `Z / Q / S / D` or `W / A / S / D` | Move farmer (manual mode) |
+| `Arrow Keys` | Move farmer (alternative keys) |
+| `Escape` | Quit |
 
 ---
 
-## 👥 Team & Engineering Contributions
+## Project Structure
 
-This project was developed collaboratively by a team of 3 engineering students:
-
-| Contributor | Focus Areas | Key Engineering Contributions |
-| :--- | :--- | :--- |
-| **Natéo Gadaix**<br>([@lyko27](https://github.com/lyko27)) | **Game Architecture & Concurrency** | • Orchestrated game lifecycle and state manager (`maitre_du_jeu.c`)<br>• Implemented multi-threaded parallel training with `pthreads`<br>• Designed entity combat physics, HP systems & boundary collision engine<br>• Modular refactoring of world subsystems (`monde_goat.c`, `monde_wolf.c`)<br>• Doxygen documentation architecture & memory leak audit |
-| **Nicolas Bertrand**<br>([@nicolas-btd](https://github.com/nicolas-btd)) | **RL Algorithm Core** | • Implemented Monte-Carlo Policy Gradient mathematics (`reinforce.c`)<br>• Engineered reward functions and tuned hyperparameters ($\alpha, \gamma$)<br>• Formulated weight vector serialization & convergence checkpoints<br>• Added cross-platform Apple/macOS thread compatibility |
-| **Sohail Labied**<br>([@sohail-lbd](https://github.com/sohail-lbd)) | **Graphics & UI Engine** | • Engineered SDL2 rendering pipeline (`affichage.c`)<br>• Implemented event handling and keyboard navigation (`utilisateur.c`)<br>• Integrated custom pixel font and dynamic HUD stats banner (`ath.png`)<br>• Designed entity hitbox collision detection models |
+```text
+Jeu-SMA-Reinforce/
+├── affichage.c / .h        # SDL2 rendering engine, textures, HUD and text
+├── utilisateur.c / .h      # User inputs and event processing
+├── maitre_du_jeu.c         # Game loop, thread pool and training orchestrator
+├── monde.c / .h            # World state, entity management and collision physics
+├── monde_fermier.c / .h    # Farmer kinematics and perception logic
+├── monde_goat.c / .h       # Goat flocking, grazing and avoidance behaviors
+├── monde_wolf.c / .h       # Wolf tracking and hunting perception logic
+├── fermier.c / .h          # Farmer data structures and actions
+├── loup.c / .h             # Wolf data structures and actions
+├── goat.c / .h             # Goat data structures and states
+├── reinforce.c / .h        # REINFORCE algorithm and policy gradient updates
+├── poids_fermier.txt       # Trained policy weights for the farmer
+├── poids_loup.txt          # Trained policy weights for wolves
+├── fonts/                  # Pixel art and TrueType fonts
+├── images/                 # Sprites, map tiles and demo GIF
+├── doc/html/               # Doxygen API documentation
+├── Makefile                # Build system
+├── LICENSE                 # MIT License
+├── README.fr.md            # French documentation
+└── README.md               # English documentation
+```
 
 ---
 
-## 📜 Project Genesis & Cellular Automata
+## Collaborators
 
-During the first week of this project, the team built a complete **Conway's Game of Life** in C using SDL2 to establish foundational patterns in 2D grid processing, toroidal wrapping, and graphical event-driven architectures. This foundational work provided the building blocks needed to transition toward the complex, continuous-space multi-agent ecosystem presented here.
+This project was developed by:
+- **Natéo Gadaix** ([lyko27](https://github.com/lyko27))
+- **Nicolas Bertrand** ([nicolas-btd](https://github.com/nicolas-btd))
+- **Sohail Labied** ([sohail-lbd](https://github.com/sohail-lbd))
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

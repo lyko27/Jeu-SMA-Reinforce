@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Jeu-SMA-Reinforce</title>
+<title>My Project: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,33 +69,136 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Jeu-SMA-Reinforce</div></div>
+  <div class="headertitle"><div class="title">README</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> </p>
-<h2><a class="anchor" id="autotoc_md1"></a>
-A Multi-Agent System simulation featuring farmers, goats, and wolves, powered by Reinforcement Learning.</h2>
-<p><img src="images/sma.gif" alt="Simulation Demo" width="700" class="inline"/> </p>
+<div class="textblock"><p><a class="el" href="md_README_8fr.html">Lire en français</a></p>
+<h1><a class="anchor" id="autotoc_md23"></a>
+EcoSim-RL</h1>
+<h3><a class="anchor" id="autotoc_md24"></a>
+Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading</h3>
+<div align="center"></div><div align="center"><a href="https://en.wikipedia.org/wiki/C99"><img src="https://img.shields.io/badge/Language-C99-00599C?style=flat-square&amp;logo=c&amp;logoColor=white" alt="Language" class="inline"/></a> <a href="https://www.libsdl.org/"><img src="https://img.shields.io/badge/Graphics-SDL2-red?style=flat-square&amp;logo=sdl&amp;logoColor=white" alt="Graphics" class="inline"/></a> <a href="https://en.wikipedia.org/wiki/Pthreads"><img src="https://img.shields.io/badge/Concurrency-POSIX_Threads-333333?style=flat-square&amp;logo=linux&amp;logoColor=white" alt="Concurrency" class="inline"/></a> [<img src="https://img.shields.io/badge/Build-GNU_Make-blue?style=flat-square&amp;logo=gnu" alt="Build" class="inline"/>](Makefile) <a href="doc/html/index.html"><img src="https://img.shields.io/badge/Documentation-Doxygen-2C4156?style=flat-square" alt="Documentation" class="inline"/></a> [<img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" class="inline"/>](LICENSE)</div><div align="center"></div><div align="center"> <img src="images/sma.gif" alt="Simulation Demo" width="720" class="inline"/> </div><div align="center"></div><div align="center"></div><hr  />
+<h2><a class="anchor" id="autotoc_md26"></a>
+Overview</h2>
+<p><b>EcoSim-RL</b> is an interactive 2D Multi-Agent System (MAS) simulation written in C using SDL2. It models an ecosystem where predators and protectors learn emergent behaviors through Reinforcement Learning (Policy Gradient / REINFORCE).</p>
+<ul>
+<li><b>Goats (Prey)</b>: Reactive agents that graze and flee approaching predators.</li>
+<li><b>Wolves (Predators)</b>: Autonomous agents learning to hunt goats while avoiding the farmer.</li>
+<li><b>Farmer (Protector)</b>: Can be controlled manually or set to autonomous mode driven by a trained policy to protect the goats.</li>
+</ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md3"></a>
-Technical Stack</h1>
+<h2><a class="anchor" id="autotoc_md28"></a>
+Features</h2>
 <ul>
-<li><b>Language</b>: C</li>
-<li><b>Graphics</b>: SDL2</li>
-<li><b>Concurrency</b>: POSIX Threads</li>
-<li><b>Build System</b>: Makefile</li>
-<li><b>AI / Logic</b>: Reinforcement Learning algorithms</li>
-<li><b>Documentation</b>: Doxygen</li>
+<li><b>Multi-Agent Simulation</b>: Autonomous entities operating with decentralized perception-action loops on a 2D grid with obstacles.</li>
+<li><b>Reinforcement Learning</b>: Monte-Carlo Policy Gradient (REINFORCE) with Softmax action selection and reward shaping.</li>
+<li><b>Multi-Threaded Training</b>: Headless batch training accelerated with POSIX Threads (<code>pthreads</code>) across parallel CPU cores (~6x speedup).</li>
+<li><b>Dual Play Modes</b>: Seamless real-time hot-swapping between manual keyboard controls and autonomous AI policy.</li>
+<li><b>Real-Time Graphics</b>: 60 FPS rendering pipeline with SDL2, sprite sheets, custom pixel fonts, and dynamic HUD stats.</li>
+<li><b>Code Quality</b>: Strict memory management verified with AddressSanitizer and documented via Doxygen.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md4"></a>
-Features</h1>
+<hr  />
+<h2><a class="anchor" id="autotoc_md30"></a>
+How It Works</h2>
+<h3><a class="anchor" id="autotoc_md31"></a>
+Agent Behavior</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Entity   </th><th class="markdownTableHeadLeft">Control   </th><th class="markdownTableHeadLeft">Objective    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>Farmer</b>   </td><td class="markdownTableBodyLeft">Manual keyboard or RL Policy   </td><td class="markdownTableBodyLeft">Intercept wolves and protect the herd    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><b>Wolves</b>   </td><td class="markdownTableBodyLeft">Trained RL Policy   </td><td class="markdownTableBodyLeft">Hunt goats while keeping distance from the farmer    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>Goats</b>   </td><td class="markdownTableBodyLeft">Reactive flocking   </td><td class="markdownTableBodyLeft">Graze peacefully and flee threats   </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md32"></a>
+Reinforcement Learning</h3>
+<p>Agents observe a normalized perception vector (distances to targets, obstacles, and boundaries) and select actions using a Softmax policy. Trajectories are recorded during episodes, and policy weights are updated using the REINFORCE gradient ascent algorithm.</p>
+<h3><a class="anchor" id="autotoc_md33"></a>
+Parallel Training</h3>
+<p>Running <code>./farmer train -m</code> launches independent headless simulation episodes across a pool of 8 worker threads (<code>pthreads</code>), aggregating policy updates without graphical overhead.</p>
+<hr  />
+<h2><a class="anchor" id="autotoc_md35"></a>
+Quickstart</h2>
+<h3><a class="anchor" id="autotoc_md36"></a>
+Prerequisites</h3>
 <ul>
-<li><b>Multi-Agent System (SMA)</b>: Simulates autonomous entities (farmers, goats, wolves) making independent decisions in a shared ecosystem.</li>
-<li><b>Reinforcement Learning Advantage</b>: Unlike hardcoded logic, agents leverage Reinforcement Learning to dynamically adapt their survival and optimization strategies. By learning from environmental feedback (rewards and penalties), they organically improve their movements, hunting, or evading behaviors over time.</li>
-<li><b>Real-Time Rendering</b>: 2D graphical visualization of the world and agents' actions using the SDL2 library.</li>
-<li><b>Parallel Training</b>: Multi-threading implementation (pthreads) used to run multiple training episodes in parallel, significantly accelerating the reinforcement learning process.</li>
-<li><b>Comprehensive Documentation</b>: The codebase is fully documented using Doxygen, making it easy to generate HTML/LaTeX documentation and explore the project's architecture. </li>
+<li>GCC (C99 &amp; POSIX support)</li>
+<li>SDL2, SDL2_image, SDL2_ttf</li>
+<li>Doxygen *(optional)*</li>
 </ul>
+<div class="fragment"><div class="line"># Ubuntu / Debian</div>
+<div class="line">sudo apt-get update</div>
+<div class="line">sudo apt-get install -y gcc make libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev doxygen</div>
+<div class="line"> </div>
+<div class="line"># macOS (Homebrew)</div>
+<div class="line">brew install gcc make sdl2 sdl2_image sdl2_ttf doxygen</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md37"></a>
+Build</h3>
+<div class="fragment"><div class="line">make          # Standard build</div>
+<div class="line">make debug    # Build with AddressSanitizer &amp; UndefinedBehaviorSanitizer</div>
+<div class="line">make opt      # Optimized build for training (-O3)</div>
+<div class="line">make doc      # Generate Doxygen documentation</div>
+<div class="line">make clean    # Remove build artifacts</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md38"></a>
+Run</h3>
+<div class="fragment"><div class="line">./farmer           # Interactive demo (Manual farmer control by default)</div>
+<div class="line">./farmer test      # Autonomous demo (Farmer controlled by RL policy)</div>
+<div class="line">./farmer train -m   # Fast multi-threaded headless training</div>
+<div class="line">./farmer train     # Single-threaded headless training</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md39"></a>
+Controls</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">Key   </th><th class="markdownTableHeadLeft">Action    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter"><code>Space</code>   </td><td class="markdownTableBodyLeft">Pause / Resume simulation    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>M</code>   </td><td class="markdownTableBodyLeft">Toggle mode (Manual keyboard vs. Autonomous AI)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter"><code>Z / Q / S / D</code> or <code>W / A / S / D</code>   </td><td class="markdownTableBodyLeft">Move farmer (manual mode)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>Arrow Keys</code>   </td><td class="markdownTableBodyLeft">Move farmer (alternative keys)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter"><code>Escape</code>   </td><td class="markdownTableBodyLeft">Quit   </td></tr>
+</table>
+<hr  />
+<h2><a class="anchor" id="autotoc_md41"></a>
+Project Structure</h2>
+<div class="fragment"><div class="line">Jeu-SMA-Reinforce/</div>
+<div class="line">├── affichage.c / .h        # SDL2 rendering engine, textures, HUD and text</div>
+<div class="line">├── utilisateur.c / .h      # User inputs and event processing</div>
+<div class="line">├── maitre_du_jeu.c         # Game loop, thread pool and training orchestrator</div>
+<div class="line">├── monde.c / .h            # World state, entity management and collision physics</div>
+<div class="line">├── monde_fermier.c / .h    # Farmer kinematics and perception logic</div>
+<div class="line">├── monde_goat.c / .h       # Goat flocking, grazing and avoidance behaviors</div>
+<div class="line">├── monde_wolf.c / .h       # Wolf tracking and hunting perception logic</div>
+<div class="line">├── fermier.c / .h          # Farmer data structures and actions</div>
+<div class="line">├── loup.c / .h             # Wolf data structures and actions</div>
+<div class="line">├── goat.c / .h             # Goat data structures and states</div>
+<div class="line">├── reinforce.c / .h        # REINFORCE algorithm and policy gradient updates</div>
+<div class="line">├── poids_fermier.txt       # Trained policy weights for the farmer</div>
+<div class="line">├── poids_loup.txt          # Trained policy weights for wolves</div>
+<div class="line">├── fonts/                  # Pixel art and TrueType fonts</div>
+<div class="line">├── images/                 # Sprites, map tiles and demo GIF</div>
+<div class="line">├── doc/html/               # Doxygen API documentation</div>
+<div class="line">├── Makefile                # Build system</div>
+<div class="line">├── LICENSE                 # MIT License</div>
+<div class="line">├── README.fr.md            # French documentation</div>
+<div class="line">└── README.md               # English documentation</div>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md43"></a>
+Collaborators</h2>
+<p>This project was developed by:</p><ul>
+<li><b>Natéo Gadaix</b> (<a href="https://github.com/lyko27">lyko27</a>)</li>
+<li><b>Nicolas Bertrand</b> (<a href="https://github.com/nicolas-btd">nicolas-btd</a>)</li>
+<li><b>Sohail Labied</b> (<a href="https://github.com/sohail-lbd">sohail-lbd</a>)</li>
+</ul>
+<hr  />
+<h2><a class="anchor" id="autotoc_md45"></a>
+License</h2>
+<p>This project is licensed under the MIT License. See [LICENSE](LICENSE) for details. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

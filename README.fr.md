@@ -64,21 +64,6 @@ La commande `./farmer train -m` exécute des épisodes de simulation indépendan
 
 ## Démarrage Rapide
 
-### Prérequis
-
-- GCC (support C99 et POSIX)
-- SDL2, SDL2_image, SDL2_ttf
-- Doxygen *(optionnel)*
-
-```bash
-# Ubuntu / Debian
-sudo apt-get update
-sudo apt-get install -y gcc make libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev doxygen
-
-# macOS (Homebrew)
-brew install gcc make sdl2 sdl2_image sdl2_ttf doxygen
-```
-
 ### Compilation
 
 ```bash
@@ -105,7 +90,6 @@ make clean    # Suppression des fichiers objets et binaires
 | `Espace` | Mettre en pause / Reprendre la simulation |
 | `M` | Changer de mode (Contrôle manuel vs. IA autonome) |
 | `Z / Q / S / D` ou `W / A / S / D` | Déplacer le fermier (mode manuel) |
-| `Flèches directionnelles` | Déplacer le fermier (touches alternatives) |
 | `Échap` | Quitter le jeu |
 
 ---

@@ -64,21 +64,6 @@ Running `./farmer train -m` launches independent headless simulation episodes ac
 
 ## Quickstart
 
-### Prerequisites
-
-- GCC (C99 & POSIX support)
-- SDL2, SDL2_image, SDL2_ttf
-- Doxygen *(optional)*
-
-```bash
-# Ubuntu / Debian
-sudo apt-get update
-sudo apt-get install -y gcc make libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev doxygen
-
-# macOS (Homebrew)
-brew install gcc make sdl2 sdl2_image sdl2_ttf doxygen
-```
-
 ### Build
 
 ```bash
@@ -105,7 +90,6 @@ make clean    # Remove build artifacts
 | `Space` | Pause / Resume simulation |
 | `M` | Toggle mode (Manual keyboard vs. Autonomous AI) |
 | `Z / Q / S / D` or `W / A / S / D` | Move farmer (manual mode) |
-| `Arrow Keys` | Move farmer (alternative keys) |
 | `Escape` | Quit |
 
 ---

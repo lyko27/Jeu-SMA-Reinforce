@@ -1,6 +1,6 @@
 [Lire en français](README.fr.md)
 
-# EcoSim-RL
+# Jeu-SMA-Reinforce
 
 ### Multi-Agent Predator-Prey Simulation in C with Reinforcement Learning and POSIX Multi-Threading
 
@@ -23,7 +23,7 @@
 
 ## Overview
 
-**EcoSim-RL** is an interactive 2D Multi-Agent System (MAS) simulation written in C using SDL2. It models an ecosystem where predators and protectors learn emergent behaviors through Reinforcement Learning (Policy Gradient / REINFORCE).
+**Jeu-SMA-Reinforce** is an interactive 2D Multi-Agent System (MAS) simulation written in C using SDL2. It models an ecosystem where predators and protectors learn emergent behaviors through Reinforcement Learning (Policy Gradient / REINFORCE).
 
 - **Goats (Prey)**: Reactive agents that graze and flee approaching predators.
 - **Wolves (Predators)**: Autonomous agents learning to hunt goats while avoiding the farmer.

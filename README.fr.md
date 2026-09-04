@@ -1,6 +1,6 @@
 [Read in English](README.md)
 
-# EcoSim-RL
+# Jeu-SMA-Reinforce
 
 ### Simulation Multi-Agents Proies-Prédateurs en C avec Apprentissage par Renforcement et Multi-Threading POSIX
 
@@ -23,7 +23,7 @@
 
 ## Présentation
 
-**EcoSim-RL** est une simulation 2D d'un Système Multi-Agents (SMA) développée en C avec SDL2. Elle modélise un écosystème où prédateurs et protecteur développent des comportements émergents par Apprentissage par Renforcement (Policy Gradient / REINFORCE).
+**Jeu-SMA-Reinforce** est une simulation 2D d'un Système Multi-Agents (SMA) développée en C avec SDL2. Elle modélise un écosystème où prédateurs et protecteur développent des comportements émergents par Apprentissage par Renforcement (Policy Gradient / REINFORCE).
 
 - **Chèvres (Proies)** : Agents réactifs qui broutent et fuient à l'approche des prédateurs.
 - **Loups (Prédateurs)** : Agents autonomes apprenant à chasser les chèvres tout en esquivant le fermier.
